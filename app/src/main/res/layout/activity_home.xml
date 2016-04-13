@@ -4,15 +4,111 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/lvFood"
+    <RelativeLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"></RelativeLayout>
 
-    <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
-        android:id="@+id/menu"
+    <FrameLayout
+        android:id="@+id/layoutMenu"
         android:layout_width="match_parent"
         android:layout_height="@dimen/menu_home_height"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorBgMenu" />
+        android:layout_alignParentBottom="true">
+
+
+        <RadioGroup
+            android:id="@+id/rgMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBgMenu"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <RadioButton
+                android:id="@+id/btnHome"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/menu_clicked"
+                android:button="@null"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/btnNear"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/menu_clicked"
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/btnAdd"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/menu_clicked"
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/btnSearch"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/menu_clicked"
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/btnAccount"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/menu_clicked"
+                android:button="@null" />
+        </RadioGroup>
+
+        <RadioGroup
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checkedButton="0"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@mipmap/ic_home" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@mipmap/ic_nere" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@mipmap/ic_add" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@mipmap/ic_search" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@mipmap/ount" />
+        </RadioGroup>
+    </FrameLayout>
+
 </RelativeLayout>

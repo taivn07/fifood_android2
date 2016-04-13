@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorButtonLoginATVS">#7ec41d</color>
     <color name="colorBgMenu">#27aae2</color>
+    <color name="colorBgMenuClicked">#ffcc00</color>
+    <color name="colorAddress">#BBC6C7</color>
+    <color name="colorBackgroundGray">#e6e6e6</color>
 </resources>

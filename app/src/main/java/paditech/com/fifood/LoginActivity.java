@@ -35,19 +35,18 @@ public class LoginActivity extends AppCompatActivity implements Constant {
         AppEventsLogger.activateApp(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String accEmail = preferences.getString(EMAIL,null);
+        String accEmail = preferences.getString(EMAIL, "null");
 
 
         setContentView(R.layout.activity_login);
 
-        if (accEmail!= null) {
+        if (accEmail != null) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);
             this.finish();
         }
 
         init();
-
 
     }
 
@@ -69,6 +68,7 @@ public class LoginActivity extends AppCompatActivity implements Constant {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Toast.makeText(LoginActivity.this, "Login sucess", Toast.LENGTH_SHORT).show();
+
 
                 Log.e("STATUS", "sucess");
             }
