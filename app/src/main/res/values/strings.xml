@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">FiFood</string>
+    <string name="txtOr">hoặc</string>
+    <string name="new_sign_in">Đăng ký mới</string>
+    <string name="join_now">Tham gia ngay</string>
+    <string name="login_atvs">Đăng nhập bằng ATVS</string>
+    <string name="login_fb"> Đăng nhập bằng Facebook</string>
+    <string name="facebook_app_id">866267263484907</string>
+
+    <string name="fb_login_protocol_scheme">fbAPP_ID</string>
+</resources>

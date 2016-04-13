@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_active="true">
+        <bitmap android:src="@mipmap/bg_login1_ac_frame"></bitmap>
+    </item>
+
+    <item android:state_active="false">
+        <bitmap android:src="@mipmap/bg_login1_frame"></bitmap>
+    </item>
+
+</selector>
