@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundGray"
     android:orientation="vertical"
-    >
+    android:paddingBottom="@dimen/menu_home_height">
 
 
     <LinearLayout
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/store_name"
+            android:text="@string/store_address"
             android:textColor="#000"
             android:textStyle="bold" />
 
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/store_name"
+            android:text="@string/store_desc"
             android:textColor="#000"
             android:textStyle="bold" />
 
@@ -87,7 +87,7 @@
                 <RadioButton
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@mipmap/ic_good"
+                    android:background="@drawable/btn_good_click"
                     android:button="@null" />
 
                 <TextView
@@ -101,7 +101,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@mipmap/ic_nogood"
+                    android:background="@drawable/btn_bad_click"
                     android:button="@null" />
 
                 <TextView
@@ -147,12 +147,13 @@
                 android:layout_alignParentRight="true"
                 android:background="@mipmap/ic_addphoto" />
 
-            <GridView
-                android:id="@+id/gridPhoto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></GridView>
+
         </RelativeLayout>
 
+        <GridView
+            android:id="@+id/gridPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></GridView>
 
     </LinearLayout>
 

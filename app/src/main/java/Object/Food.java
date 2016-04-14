@@ -9,19 +9,21 @@ public class Food {
     private String address;
     private long lat;
     private long longth;
+    private long distance;
+
     private String shop_id;
-    private String lang;
+    private int totalComment;
+    private int rating;
 
     public Food() {
     }
 
-    public Food(String name, String address, long lat, long longth, String shop_id, String lang) {
+    public Food(String name, String address, long lat, long longth, String shop_id) {
         this.name = name;
         this.address = address;
         this.lat = lat;
         this.longth = longth;
         this.shop_id = shop_id;
-        this.lang = lang;
     }
 
 
@@ -65,11 +67,27 @@ public class Food {
         this.shop_id = shop_id;
     }
 
-    public String getLang() {
-        return lang;
+    public long getDistance() {
+        return distance;
     }
 
-    public void setLang(String lang) {
-        this.lang = lang;
+    public void setDistance(long distance) {
+        this.distance = distance;
+    }
+
+    public int getTotalComment() {
+        return totalComment;
+    }
+
+    public void setTotalComment(int totalComment) {
+        this.totalComment = totalComment;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }

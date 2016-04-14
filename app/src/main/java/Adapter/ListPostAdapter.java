@@ -1,7 +1,6 @@
 package Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +12,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import Object.Food;
-import paditech.com.fifood.DetailFoodActivity;
 import paditech.com.fifood.R;
 
 /**
  * Created by USER on 13/4/2016.
  */
-public class ListFoodAdapter extends BaseAdapter {
+public class ListPostAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Food> listFood = new ArrayList<>();
 
-    public ListFoodAdapter(Context context, ArrayList<Food> listFood) {
+    public ListPostAdapter(Context context, ArrayList<Food> listFood) {
         this.context = context;
         this.listFood = listFood;
     }
@@ -51,17 +49,13 @@ public class ListFoodAdapter extends BaseAdapter {
         ViewHolder viewHolder;
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_list_menu_food, parent, false);
+            convertView = inflater.inflate(R.layout.item_list_post_food, parent, false);
 
             viewHolder = new ViewHolder();
             viewHolder.name = (TextView) convertView.findViewById(R.id.tvFoodName);
             viewHolder.addr = (TextView) convertView.findViewById(R.id.tvAddress);
-            viewHolder.far = (TextView) convertView.findViewById(R.id.tvFar);
-            viewHolder.rate1 = (CheckBox) convertView.findViewById(R.id.btnRate1);
-            viewHolder.rate2 = (CheckBox) convertView.findViewById(R.id.btnRate2);
-            viewHolder.rate3 = (CheckBox) convertView.findViewById(R.id.btnRate3);
-            viewHolder.rate4 = (CheckBox) convertView.findViewById(R.id.btnRate4);
-            viewHolder.rate5 = (CheckBox) convertView.findViewById(R.id.btnRate5);
+            viewHolder.sum = (TextView) convertView.findViewById(R.id.tvSum);
+            viewHolder.numb = (TextView) convertView.findViewById(R.id.tvNumb);
             viewHolder.img = (ImageView) convertView.findViewById(R.id.imgFood);
 
             convertView.setTag(viewHolder);
@@ -71,25 +65,15 @@ public class ListFoodAdapter extends BaseAdapter {
         Food food = listFood.get(position);
         viewHolder.name.setText(food.getName());
         viewHolder.addr.setText(food.getAddress());
-        viewHolder.far.setText("Cach 12 km");
-        viewHolder.rate1.setChecked(true);
-        viewHolder.rate2.setChecked(true);
+        viewHolder.sum.setText("Phản hồi: 22");
 
-
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DetailFoodActivity.class);
-                context.startActivity(intent);
-            }
-        });
         return convertView;
     }
 
     private class ViewHolder {
 
-        TextView name, addr, far;
+        TextView name, addr, numb, sum;
         ImageView img;
-        CheckBox rate1, rate2, rate3, rate4, rate5;
+
     }
 }

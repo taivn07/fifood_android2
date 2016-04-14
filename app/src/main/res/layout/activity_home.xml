@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     android:orientation="vertical">
+
 
     <RelativeLayout
         android:id="@+id/mainLayout"
@@ -11,9 +14,10 @@
 
     <FrameLayout
         android:id="@+id/layoutMenu"
+        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="@dimen/menu_home_height"
-        android:layout_alignParentBottom="true">
+        >
 
 
         <RadioGroup
@@ -111,4 +115,4 @@
         </RadioGroup>
     </FrameLayout>
 
-</RelativeLayout>
+</FrameLayout>

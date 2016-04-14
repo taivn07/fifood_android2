@@ -10,5 +10,14 @@
     <string name="store_name">Tên cửa hàng</string>
     <string name="store_address">Địa chỉ</string>
     <string name="store_desc">Nội dung</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="post_total">Tổng số bài đăng</string>
+    <string name="good">Tốt</string>
+    <string name="bad">Xấu</string>
+    <string name="isChecked">Không vi phạm</string>
+    <string name="isNotChecked">Vi phạm</string>
+    <string name="foodSafely">Đánh giá của cơ quan chức năng</string>
+    <string name="post">Gửi</string>
+    <string name="hint_comment">Viết bình luận</string>
 
 </resources>

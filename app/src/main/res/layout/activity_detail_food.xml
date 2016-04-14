@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="120dp"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/detailLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_list_menu_food_height"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="10"
+
+                >
+
+                <ImageView
+                    android:id="@+id/imgFood"
+                    android:layout_width="@dimen/item_list_menu_food_height"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/bg" />
+
+                <RelativeLayout
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tvFoodName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="This is a food"
+                        android:textColor="#000"
+                        android:textSize="@dimen/text_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvFoodName"
+                        android:layout_marginTop="10dp"
+                        android:text="This is a food"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_address_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:paddingBottom="20dp"
+                    android:paddingTop="20dp">
+
+                    <LinearLayout
+                        android:id="@+id/rateLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:orientation="horizontal"
+                        android:padding="5dp"
+                        android:weightSum="5">
+
+                        <CheckBox
+                            android:id="@+id/btnRate1"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rate_checked"
+                            android:button="@null"
+                            android:checked="true" />
+
+                        <CheckBox
+                            android:id="@+id/btnRate2"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rate_checked"
+                            android:button="@null" />
+
+                        <CheckBox
+                            android:id="@+id/btnRate3"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rate_checked"
+                            android:button="@null" />
+
+                        <CheckBox
+                            android:id="@+id/btnRate4"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rate_checked"
+                            android:button="@null" />
+
+                        <CheckBox
+                            android:id="@+id/btnRate5"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rate_checked"
+                            android:button="@null" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvFar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rateLayout"
+                        android:gravity="center"
+                        android:text="Cách 2km"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_address_size" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_below="@+id/detailLayout"
+
+                android:layout_marginTop="@dimen/primary_login_margin">
+
+                <ImageView
+                    android:id="@+id/imgFood"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/bg" />
+
+                <TextView
+                    android:id="@+id/tvNumb"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/border_textview_post_numb_detail"
+                    android:gravity="center"
+                    android:text="6"
+                    android:textColor="#fff"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:padding="10dp">
+
+                <RelativeLayout
+
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvGoodCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textSize="@dimen/text_address_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvGoodCount"
+                        android:drawableLeft="@mipmap/ic_good_ac"
+                        android:gravity="center"
+                        android:text="@string/good"
+                        android:textSize="@dimen/text_address_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/tvBadCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textSize="@dimen/text_address_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvBadCount"
+                        android:drawableLeft="@mipmap/ic_nogood_ac"
+                        android:gravity="center"
+                        android:text="@string/bad"
+                        android:textSize="@dimen/text_address_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tvIsCheck"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/isChecked" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvIsCheck"
+                        android:gravity="center"
+                        android:text="@string/foodSafely"
+                        android:textSize="@dimen/text_address_size"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="@color/colorAddress"></View>
+
+            <ListView
+                android:id="@+id/lvComment"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"></ListView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_alignParentBottom="true"
+        android:background="#fff">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:weightSum="10">
+
+            <EditText
+                android:id="@+id/etComment"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                android:background="@drawable/border_edittext_write_comment"
+                android:hint="@string/hint_comment"
+                android:padding="5dp"
+                android:textColorHint="@color/colorAddress" />
+
+            <TextView
+                android:id="@+id/btnPost"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="@string/post"
+                android:textColor="@color/colorBgMenu" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:padding="10dp"
+            android:weightSum="10">
+
+            <ImageButton
+                android:id="@+id/btnCamera"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@mipmap/bt_addphoto" />
+
+            <RadioGroup
+                android:id="@+id/btnBadGood"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/line"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"
+
+                >
+
+                <RadioButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/btn_good_click"
+                    android:button="@null" />
+
+                <TextView
+                    android:id="@+id/tvGood"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Tốt" />
+
+                <RadioButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/btn_bad_click"
+                    android:button="@null" />
+
+                <TextView
+                    android:id="@+id/tvBad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Xấu" />
+
+
+            </RadioGroup>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp">
+
+                <CheckBox
+                    android:id="@+id/cbReport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toLeftOf="@+id/cbReport"
+                    android:gravity="center"
+                    android:text="Báo cáo vi phạm VSATTP" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
