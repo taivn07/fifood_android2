@@ -7,13 +7,22 @@ public class Food {
 
     private String name;
     private String address;
-    private long lat;
-    private long longth;
-    private long distance;
+    private double lat;
+    private double longth;
+    private double distance;
 
     private String shop_id;
     private int totalComment;
     private int rating;
+    private String imgUrl;
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
     public Food() {
     }
@@ -43,19 +52,19 @@ public class Food {
         this.address = address;
     }
 
-    public long getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(long lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public long getLongth() {
+    public double getLongth() {
         return longth;
     }
 
-    public void setLongth(long longth) {
+    public void setLongth(double longth) {
         this.longth = longth;
     }
 
@@ -67,11 +76,11 @@ public class Food {
         this.shop_id = shop_id;
     }
 
-    public long getDistance() {
+    public double getDistance() {
         return distance;
     }
 
-    public void setDistance(long distance) {
+    public void setDistance(double distance) {
         this.distance = distance;
     }
 

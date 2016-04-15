@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundGray"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/menu_home_height">
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -76,7 +75,7 @@
                 android:background="@color/colorBackgroundGray"></View>
 
             <RadioGroup
-                android:id="@+id/btnBadGood"
+                android:id="@+id/rgBadGood"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_below="@+id/line"
@@ -85,6 +84,7 @@
                 >
 
                 <RadioButton
+                    android:id="@+id/rbGood"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/btn_good_click"
@@ -92,12 +92,14 @@
 
                 <TextView
                     android:id="@+id/tvGood"
+
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="Tốt" />
 
                 <RadioButton
+                    android:id="@+id/rbBad"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"

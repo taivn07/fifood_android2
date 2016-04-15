@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MyTheme"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -26,7 +27,7 @@
                 >
 
                 <ImageView
-                    android:id="@+id/imgFood"
+                    android:id="@+id/imgMain"
                     android:layout_width="@dimen/item_list_menu_food_height"
                     android:layout_height="match_parent"
                     android:padding="8dp"
@@ -41,7 +42,7 @@
                     android:padding="10dp">
 
                     <TextView
-                        android:id="@+id/tvFoodName"
+                        android:id="@+id/tvName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="This is a food"
@@ -120,7 +121,7 @@
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/tvFar"
+                        android:id="@+id/tvDistance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/rateLayout"
@@ -139,15 +140,14 @@
 
                 android:layout_marginTop="@dimen/primary_login_margin">
 
-                <ImageView
-                    android:id="@+id/imgFood"
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/bg" />
+                    android:layout_height="match_parent" />
+
 
                 <TextView
-                    android:id="@+id/tvNumb"
+                    android:id="@+id/tvShopID"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="right"
@@ -260,6 +260,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
             android:padding="10dp"
             android:weightSum="10">
 
@@ -359,6 +361,20 @@
             </RelativeLayout>
 
         </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/mainLayout"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff">
+
+        <ProgressBar
+            android:id="@+id/pbHeaderProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"></ProgressBar>
     </RelativeLayout>
 
 </RelativeLayout>

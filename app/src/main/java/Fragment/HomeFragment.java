@@ -14,6 +14,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import Adapter.ListFoodAdapter;
+import Constant.Constant;
 import paditech.com.fifood.DetailFoodActivity;
 import paditech.com.fifood.R;
 import Object.Food;
@@ -21,11 +22,12 @@ import Object.Food;
 /**
  * Created by USER on 13/4/2016.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements Constant {
 
     private ListView lvFood;
-    private ArrayList<Food> listFood;
+    public ArrayList<Food> listFood;
     private ListFoodAdapter adapter;
+
 
     @Nullable
     @Override
@@ -42,18 +44,7 @@ public class HomeFragment extends Fragment {
     private void init(View view) {
 
         lvFood = (ListView) view.findViewById(R.id.lvFood);
-        listFood = new ArrayList<>();
-        listFood.add(new Food("Bánh mỳ", "số 2 hai bà trưng, hà nội", 0, 0, null, null));
-        listFood.add(new Food("Bánh mỳ", "số 2 hai bà trưng, hà nội", 0, 0, null, null));
-        listFood.add(new Food("Bánh mỳ", "số 2 hai bà trưng, hà nội", 0, 0, null, null));
-        listFood.add(new Food("Bánh mỳ", "số 2 hai bà trưng, hà nội", 0, 0, null, null));
-        listFood.add(new Food("Bánh mỳ", "số 2 hai bà trưng, hà nội", 0, 0, null, null));
-        listFood.add(new Food("Bánh mỳ", "số 2 hai bà trưng, hà nội", 0, 0, null, null));
-        listFood.add(new Food("Bánh mỳ", "số 2 hai bà trưng, hà nội", 0, 0, null, null));
-        listFood.add(new Food("Bánh mỳ", "số 2 hai bà trưng, hà nội", 0, 0, null, null));
-
-
-        adapter = new ListFoodAdapter(getActivity(), listFood);
+        adapter = new ListFoodAdapter(getActivity(), listFood, HOME_FRAGMENT);
         lvFood.setAdapter(adapter);
 
 

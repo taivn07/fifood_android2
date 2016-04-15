@@ -2,17 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_list_menu_food_height"
-    android:padding="10dp"
     android:orientation="horizontal"
+    android:padding="10dp"
     android:weightSum="10"
 
     >
 
     <ImageView
+        android:id="@+id/imgFood"
         android:layout_width="@dimen/item_list_menu_food_height"
         android:layout_height="match_parent"
         android:padding="8dp"
-        android:id="@+id/imgFood"
         android:scaleType="centerCrop"
         android:src="@mipmap/bg" />
 
@@ -27,6 +27,8 @@
             android:id="@+id/tvFoodName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:text="This is a food"
             android:textColor="#000"
             android:textSize="@dimen/text_size"
@@ -37,6 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvFoodName"
+            android:lines="1"
+            android:ellipsize="end"
             android:layout_marginTop="10dp"
             android:text="This is a food"
             android:textColor="@color/colorAddress"
@@ -66,7 +70,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/rate_checked"
                 android:button="@null"
-                android:checked="true" />
+                android:checked="true"
+                android:clickable="false" />
 
             <CheckBox
                 android:id="@+id/btnRate2"
@@ -74,7 +79,8 @@
                 android:layout_height="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/rate_checked"
-                android:button="@null" />
+                android:button="@null"
+                android:clickable="false" />
 
             <CheckBox
                 android:id="@+id/btnRate3"
@@ -82,7 +88,8 @@
                 android:layout_height="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/rate_checked"
-                android:button="@null" />
+                android:button="@null"
+                android:clickable="false" />
 
             <CheckBox
                 android:id="@+id/btnRate4"
@@ -90,7 +97,8 @@
                 android:layout_height="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/rate_checked"
-                android:button="@null" />
+                android:button="@null"
+                android:clickable="false" />
 
             <CheckBox
                 android:id="@+id/btnRate5"
@@ -98,17 +106,18 @@
                 android:layout_height="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/rate_checked"
-                android:button="@null" />
+                android:button="@null"
+                android:clickable="false" />
 
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tvFar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rateLayout"
             android:gravity="center"
             android:text="Cách 2km"
-            android:id="@+id/tvFar"
             android:textColor="@color/colorAddress"
             android:textSize="@dimen/text_address_size" />
     </RelativeLayout>

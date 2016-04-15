@@ -10,8 +10,12 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.util.ArrayList;
 
+import Constant.Constant;
 import Object.Food;
 import paditech.com.fifood.DetailFoodActivity;
 import paditech.com.fifood.R;
@@ -19,13 +23,30 @@ import paditech.com.fifood.R;
 /**
  * Created by USER on 13/4/2016.
  */
-public class ListFoodAdapter extends BaseAdapter {
+public class ListFoodAdapter extends BaseAdapter implements Constant {
     private Context context;
     private ArrayList<Food> listFood = new ArrayList<>();
 
-    public ListFoodAdapter(Context context, ArrayList<Food> listFood) {
+    private ImageLoader imageLoader;
+    private DisplayImageOptions options;
+
+    private String key;
+
+    public ListFoodAdapter(Context context, ArrayList<Food> listFood, String key) {
         this.context = context;
         this.listFood = listFood;
+        this.key = key;
+
+        configOptionImage();
+    }
+
+    public void configOptionImage() {
+        imageLoader = ImageLoader.getInstance();
+        options = new DisplayImageOptions.Builder().cacheInMemory(true)
+                .cacheOnDisc(true).resetViewBeforeLoading(true)
+                .showImageForEmptyUri(R.mipmap.ic_launcher)
+                .showImageOnFail(R.mipmap.ic_launcher)
+                .build();
     }
 
     @Override
@@ -57,30 +78,42 @@ public class ListFoodAdapter extends BaseAdapter {
             viewHolder.name = (TextView) convertView.findViewById(R.id.tvFoodName);
             viewHolder.addr = (TextView) convertView.findViewById(R.id.tvAddress);
             viewHolder.far = (TextView) convertView.findViewById(R.id.tvFar);
-            viewHolder.rate1 = (CheckBox) convertView.findViewById(R.id.btnRate1);
-            viewHolder.rate2 = (CheckBox) convertView.findViewById(R.id.btnRate2);
-            viewHolder.rate3 = (CheckBox) convertView.findViewById(R.id.btnRate3);
-            viewHolder.rate4 = (CheckBox) convertView.findViewById(R.id.btnRate4);
-            viewHolder.rate5 = (CheckBox) convertView.findViewById(R.id.btnRate5);
+            viewHolder.rates[0] = (CheckBox) convertView.findViewById(R.id.btnRate1);
+            viewHolder.rates[1] = (CheckBox) convertView.findViewById(R.id.btnRate2);
+            viewHolder.rates[2] = (CheckBox) convertView.findViewById(R.id.btnRate3);
+            viewHolder.rates[3] = (CheckBox) convertView.findViewById(R.id.btnRate4);
+            viewHolder.rates[4] = (CheckBox) convertView.findViewById(R.id.btnRate5);
             viewHolder.img = (ImageView) convertView.findViewById(R.id.imgFood);
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        Food food = listFood.get(position);
+        final Food food = listFood.get(position);
         viewHolder.name.setText(food.getName());
         viewHolder.addr.setText(food.getAddress());
-        viewHolder.far.setText("Cach 12 km");
-        viewHolder.rate1.setChecked(true);
-        viewHolder.rate2.setChecked(true);
+        viewHolder.far.setText(Double.toString(food.getDistance()).substring(0, 3) + " km");
+        int rateing = food.getRating();
+
+        for (int i = 0; i < 5; i++) {
+            if (i < rateing)
+                viewHolder.rates[i].setChecked(true);
+            else viewHolder.rates[i].setChecked(false);
+        }
+
+        imageLoader.displayImage(food.getImgUrl(), viewHolder.img, options);
 
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DetailFoodActivity.class);
-                context.startActivity(intent);
+                if (key.equals(HOME_FRAGMENT)) {
+                    Intent intent = new Intent(context, DetailFoodActivity.class);
+                    intent.putExtra(ID, food.getShop_id());
+                    intent.putExtra(LAT, food.getLat());
+                    intent.putExtra(LONGTH, food.getLongth());
+                    context.startActivity(intent);
+                }
             }
         });
         return convertView;
@@ -90,6 +123,6 @@ public class ListFoodAdapter extends BaseAdapter {
 
         TextView name, addr, far;
         ImageView img;
-        CheckBox rate1, rate2, rate3, rate4, rate5;
+        CheckBox rates[] = new CheckBox[5];
     }
 }

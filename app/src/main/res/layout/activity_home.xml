@@ -10,14 +10,22 @@
     <RelativeLayout
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></RelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/menu_home_height">
+
+        <ProgressBar
+            android:id="@+id/pbHeaderProgress"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></ProgressBar>
+    </RelativeLayout>
+
 
     <FrameLayout
         android:id="@+id/layoutMenu"
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="@dimen/menu_home_height"
-        >
+        android:layout_gravity="bottom">
 
 
         <RadioGroup

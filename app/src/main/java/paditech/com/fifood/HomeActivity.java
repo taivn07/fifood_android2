@@ -7,41 +7,70 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import Constant.Constant;
 import Fragment.AccountFragment;
 import Fragment.AddFragment;
 import Fragment.HomeFragment;
 import Fragment.NearFragment;
 import Fragment.SearchFragment;
+import GPSTracker.GPSTracker;
 import Object.Food;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import Adapter.ListFoodAdapter;
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import GPSTracker.CheckConnectNetwork;
 
 
 /**
  * Created by USER on 13/4/2016.
  */
-public class HomeActivity extends FragmentActivity {
+public class HomeActivity extends FragmentActivity implements Constant {
 
     public ArrayList<Food> listFood;
 
     private RadioGroup rgMenu;
 
+    private HomeFragment homeFragment;
+    private NearFragment nearFragment;
+    private AddFragment addFragment;
+    private SearchFragment searchFragment;
+    private AccountFragment accountFragment;
+
+    private double lat, longth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setProgressBarIndeterminateVisibility(true);
         setContentView(R.layout.activity_home);
+
+        getListFoodNear("vi", 25, 0);
 
         ActionBar actionBar = getActionBar();
 
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorBgMenu)));
         actionBar.setTitle(Html.fromHtml("<b>Home</b>"));
+
 
         init();
 
@@ -49,17 +78,12 @@ public class HomeActivity extends FragmentActivity {
     }
 
     private void init() {
+        homeFragment = new HomeFragment();
+        nearFragment = new NearFragment();
+        addFragment = new AddFragment();
+        searchFragment = new SearchFragment();
+        accountFragment = new AccountFragment();
 
-        listFood = new ArrayList<>();
-
-        final HomeFragment homeFragment = new HomeFragment();
-        final NearFragment nearFragment = new NearFragment();
-        final AddFragment addFragment = new AddFragment();
-        final SearchFragment searchFragment = new SearchFragment();
-        final AccountFragment accountFragment = new AccountFragment();
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.mainLayout, homeFragment).commit();
 
         rgMenu = (RadioGroup) findViewById(R.id.rgMenu);
 
@@ -95,6 +119,7 @@ public class HomeActivity extends FragmentActivity {
 
                     }
                     case R.id.btnNear: {
+                        nearFragment.listFood=listFood;
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.mainLayout, nearFragment).commit();
                         break;
@@ -106,8 +131,78 @@ public class HomeActivity extends FragmentActivity {
     }
 
 
-    private void getListFoodNear(String lang, long lat, long longth) {
+    private void getListFoodNear(String lang, int offset, int index) {
 
+        getCurrentLocation();
+        listFood = new ArrayList<>();
+        AsyncHttpClient aClient = new AsyncHttpClient();
+/*
+        aClient.addHeader(KEY_X_API_TOKEN, API_TOCKEN);
+        aClient.addHeader(KEY_X_APP_PLATFORM, PLATFORM);
+        aClient.addHeader(KEY_X_APP_VERSION, VERSION);
+        aClient.addHeader(KEY_X_LOCATE, LOCATE);
+        aClient.addHeader(KEY_X_UID, UID);*/
+
+        RequestParams params = new RequestParams();
+        params.put(LANG, lang);
+        params.put(LAT, lat);
+        params.put(LONGTH, longth);
+        params.put(OFFSET, offset);
+        params.put(INDEX, index);
+
+
+        aClient.post(BASE_URL + RECOMMENT, params, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.e("JSON", "POST FAIL");
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                try {
+                    JSONObject jsonObject = new JSONObject(responseString);
+
+                    JSONObject response = jsonObject.getJSONObject(RESPONSE);
+
+                    JSONArray shops = response.getJSONArray(SHOPS);
+
+                    for (int i = 0; i < shops.length(); i++) {
+                        Food food = new Food();
+                        food.setAddress(shops.getJSONObject(i).getString(ADDRESS));
+                        food.setDistance(shops.getJSONObject(i).getDouble(DISTANCE));
+                        food.setLat(shops.getJSONObject(i).getDouble(LAT));
+                        food.setLongth(shops.getJSONObject(i).getDouble(LONGTH));
+                        food.setName(shops.getJSONObject(i).getString(NAME));
+                        food.setRating(shops.getJSONObject(i).getInt(RATING));
+                        food.setShop_id(shops.getJSONObject(i).getString(ID));
+                        food.setImgUrl(shops.getJSONObject(i).getJSONObject(FILE).getString(URL));
+
+                        listFood.add(food);
+                    }
+                    homeFragment.listFood = listFood;
+                    Log.e("SIZE", listFood.size() + "");
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.mainLayout, homeFragment).commit();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                setProgressBarIndeterminateVisibility(false);
+
+
+            }
+        });
+
+
+    }
+
+    private void getCurrentLocation() {
+        GPSTracker tracker = new GPSTracker(this);
+        lat = tracker.getLat();
+        longth = tracker.getLng();
+
+        Log.e("LAT + LNG", lat+" and "+longth);
     }
 
     @Override
