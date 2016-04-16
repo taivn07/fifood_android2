@@ -55,7 +55,7 @@ public class HomeActivity extends FragmentActivity implements Constant {
     private SearchFragment searchFragment;
     private AccountFragment accountFragment;
 
-    private double lat, longth;
+    public static double currLat, currLongth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +119,7 @@ public class HomeActivity extends FragmentActivity implements Constant {
 
                     }
                     case R.id.btnNear: {
-                        nearFragment.listFood=listFood;
+                        nearFragment.listFood = listFood;
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.mainLayout, nearFragment).commit();
                         break;
@@ -145,8 +145,8 @@ public class HomeActivity extends FragmentActivity implements Constant {
 
         RequestParams params = new RequestParams();
         params.put(LANG, lang);
-        params.put(LAT, lat);
-        params.put(LONGTH, longth);
+        params.put(LAT, currLat);
+        params.put(LONGTH, currLongth);
         params.put(OFFSET, offset);
         params.put(INDEX, index);
 
@@ -199,10 +199,10 @@ public class HomeActivity extends FragmentActivity implements Constant {
 
     private void getCurrentLocation() {
         GPSTracker tracker = new GPSTracker(this);
-        lat = tracker.getLat();
-        longth = tracker.getLng();
+        currLat = tracker.getLat();
+        currLongth = tracker.getLng();
 
-        Log.e("LAT + LNG", lat+" and "+longth);
+        Log.e("LAT + LNG", currLat + " and " + currLongth);
     }
 
     @Override

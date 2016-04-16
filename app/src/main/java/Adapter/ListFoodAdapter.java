@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -19,6 +20,7 @@ import Constant.Constant;
 import Object.Food;
 import paditech.com.fifood.DetailFoodActivity;
 import paditech.com.fifood.R;
+import Constant.ImageLoaderConfig;
 
 /**
  * Created by USER on 13/4/2016.
@@ -27,8 +29,6 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
     private Context context;
     private ArrayList<Food> listFood = new ArrayList<>();
 
-    private ImageLoader imageLoader;
-    private DisplayImageOptions options;
 
     private String key;
 
@@ -37,17 +37,9 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
         this.listFood = listFood;
         this.key = key;
 
-        configOptionImage();
+        ImageLoaderConfig.imageLoaderConfig();
     }
 
-    public void configOptionImage() {
-        imageLoader = ImageLoader.getInstance();
-        options = new DisplayImageOptions.Builder().cacheInMemory(true)
-                .cacheOnDisc(true).resetViewBeforeLoading(true)
-                .showImageForEmptyUri(R.mipmap.ic_launcher)
-                .showImageOnFail(R.mipmap.ic_launcher)
-                .build();
-    }
 
     @Override
     public int getCount() {
@@ -78,11 +70,7 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
             viewHolder.name = (TextView) convertView.findViewById(R.id.tvFoodName);
             viewHolder.addr = (TextView) convertView.findViewById(R.id.tvAddress);
             viewHolder.far = (TextView) convertView.findViewById(R.id.tvFar);
-            viewHolder.rates[0] = (CheckBox) convertView.findViewById(R.id.btnRate1);
-            viewHolder.rates[1] = (CheckBox) convertView.findViewById(R.id.btnRate2);
-            viewHolder.rates[2] = (CheckBox) convertView.findViewById(R.id.btnRate3);
-            viewHolder.rates[3] = (CheckBox) convertView.findViewById(R.id.btnRate4);
-            viewHolder.rates[4] = (CheckBox) convertView.findViewById(R.id.btnRate5);
+            viewHolder.rating = (RatingBar) convertView.findViewById(R.id.ratingBar);
             viewHolder.img = (ImageView) convertView.findViewById(R.id.imgFood);
 
             convertView.setTag(viewHolder);
@@ -92,16 +80,12 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
         final Food food = listFood.get(position);
         viewHolder.name.setText(food.getName());
         viewHolder.addr.setText(food.getAddress());
-        viewHolder.far.setText(Double.toString(food.getDistance()).substring(0, 3) + " km");
+        viewHolder.far.setText((int) (food.getDistance()) + " km");
         int rateing = food.getRating();
+        viewHolder.rating.setRating(rateing);
 
-        for (int i = 0; i < 5; i++) {
-            if (i < rateing)
-                viewHolder.rates[i].setChecked(true);
-            else viewHolder.rates[i].setChecked(false);
-        }
 
-        imageLoader.displayImage(food.getImgUrl(), viewHolder.img, options);
+        ImageLoaderConfig.imageLoader.displayImage(food.getImgUrl(), viewHolder.img, ImageLoaderConfig.options);
 
 
         convertView.setOnClickListener(new View.OnClickListener() {
@@ -110,8 +94,6 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
                 if (key.equals(HOME_FRAGMENT)) {
                     Intent intent = new Intent(context, DetailFoodActivity.class);
                     intent.putExtra(ID, food.getShop_id());
-                    intent.putExtra(LAT, food.getLat());
-                    intent.putExtra(LONGTH, food.getLongth());
                     context.startActivity(intent);
                 }
             }
@@ -123,6 +105,6 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
 
         TextView name, addr, far;
         ImageView img;
-        CheckBox rates[] = new CheckBox[5];
+        RatingBar rating;
     }
 }

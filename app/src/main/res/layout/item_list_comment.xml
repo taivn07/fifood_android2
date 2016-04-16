@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/imgAvartar"
+            android:layout_width="@dimen/button_login_height"
+            android:layout_height="@dimen/button_login_height"
+            android:src="@mipmap/ic_launcher"
+            app:civ_shadow="false"
+            app:civ_shadow_radius="0" />
+
+        <TextView
+            android:id="@+id/tvNickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_toRightOf="@+id/imgAvartar"
+            android:text="NHA nha"
+            android:textColor="#000"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="1:am" />
+
+        <TextView
+            android:id="@+id/tvComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvNickname"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_toRightOf="@+id/imgAvartar"
+            android:text="" />
+
+
+        <Constant.ExpanableListView
+            android:id="@+id/listPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvComment"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_toRightOf="@+id/imgAvartar"
+            android:fadingEdge="none"
+            android:focusable="false"
+            android:scrollbars="none"></Constant.ExpanableListView>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -5,9 +5,9 @@
     android:layout_height="match_parent">
 
     <ScrollView
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="120dp"
         android:scrollbars="vertical">
 
         <LinearLayout
@@ -36,6 +36,7 @@
 
                 <RelativeLayout
                     android:layout_width="1dp"
+                    android:id="@+id/btnShowMap"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
 
@@ -45,6 +46,8 @@
                         android:id="@+id/tvName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="2"
                         android:text="This is a food"
                         android:textColor="#000"
                         android:textSize="@dimen/text_size"
@@ -54,8 +57,10 @@
                         android:id="@+id/tvAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tvFoodName"
+                        android:layout_below="@+id/tvName"
                         android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="This is a food"
                         android:textColor="@color/colorAddress"
                         android:textSize="@dimen/text_address_size" />
@@ -68,63 +73,22 @@
                     android:paddingBottom="20dp"
                     android:paddingTop="20dp">
 
-                    <LinearLayout
-                        android:id="@+id/rateLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_centerHorizontal="true"
+                        android:isIndicator="true"
+                        android:numStars="5"
 
-                        android:orientation="horizontal"
-                        android:padding="5dp"
-                        android:weightSum="5">
-
-                        <CheckBox
-                            android:id="@+id/btnRate1"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/rate_checked"
-                            android:button="@null"
-                            android:checked="true" />
-
-                        <CheckBox
-                            android:id="@+id/btnRate2"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/rate_checked"
-                            android:button="@null" />
-
-                        <CheckBox
-                            android:id="@+id/btnRate3"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/rate_checked"
-                            android:button="@null" />
-
-                        <CheckBox
-                            android:id="@+id/btnRate4"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/rate_checked"
-                            android:button="@null" />
-
-                        <CheckBox
-                            android:id="@+id/btnRate5"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/rate_checked"
-                            android:button="@null" />
-
-                    </LinearLayout>
+                        android:progressDrawable="@drawable/ratingbar_yellow"
+                        android:stepSize="0.1" />
 
                     <TextView
                         android:id="@+id/tvDistance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/rateLayout"
+                        android:layout_below="@+id/ratingBar"
                         android:gravity="center"
                         android:text="Cách 2km"
                         android:textColor="@color/colorAddress"
@@ -243,10 +207,14 @@
                 android:layout_margin="10dp"
                 android:background="@color/colorAddress"></View>
 
-            <ListView
+            <Constant.ExpanableListView
                 android:id="@+id/lvComment"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"></ListView>
+                android:layout_height="wrap_content"
+                android:fadingEdge="none"
+                android:layout_marginBottom="120dp"
+                android:focusable="false"
+                android:scrollbars="none"></Constant.ExpanableListView>
 
         </LinearLayout>
     </ScrollView>
@@ -255,7 +223,7 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_alignParentBottom="true"
-        android:background="#fff">
+        android:background="@color/colorBackgroundComment">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -7,7 +7,7 @@
     <dimen name="button_login_height">60dp</dimen>
     <dimen name="button_login_wight">300dp</dimen>
     <dimen name="menu_home_height">70dp</dimen>
-    <dimen name="item_list_menu_food_height">100dp</dimen>
+    <dimen name="item_list_menu_food_height">120dp</dimen>
     <dimen name="text_address_size">12dp</dimen>
     <dimen name="edit_text_height">12dp</dimen>
     <dimen name="padding_small">5dp</dimen>

@@ -43,6 +43,9 @@
         <activity
             android:name=".DetailFoodActivity"
             android:theme="@style/MyTheme" />
+        <activity
+            android:name=".ShowMapFoodActivity"
+            android:theme="@style/MyTheme" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

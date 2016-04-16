@@ -8,4 +8,5 @@
     <color name="colorBgMenuClicked">#ffcc00</color>
     <color name="colorAddress">#989B9E</color>
     <color name="colorBackgroundGray">#e6e6e6</color>
+    <color name="colorBackgroundComment">#fff</color>
 </resources>

@@ -49,9 +49,25 @@ public interface Constant {
     public final static String LIKE_NUMB = "like_num";
     public final static String DISLIKE_NUMB = "dislike_num";
     public final static String SHOP_ID = "shop_id";
+    public final static String IMAGES = "images";
+    public final static String CONTENT = "content";
+    public final static String IS_LIKE = "is_like";
+    public final static String IS_REPORT = "is_report";
+    public final static String IS_MAIN = "is_main";
+    public final static String USER_ID = "user_id";
+    public final static String USERNAME = "username";
+    public final static String NICKNAME = "nickname";
+    public final static String USER_PROFILE_IMAGE = "user_profile_image";
+    public final static String TIME = "time";
+    public final static String COMMENTS = "comments";
+    public final static String FILES = "files";
+
 
     public final static String HOME_FRAGMENT = "HOME_FRAGMENT";
     public final static String NEAR_FRAGMENT = "NEAR_FRAGMENT";
+
+    public final static String DETAIL_RESPONSE = "DETAIL_RESPONSE";
+    public final static String IMAGES_RESPONSE = "IMAGES_RESPONSE";
 
 
 }
