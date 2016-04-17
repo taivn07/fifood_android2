@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment implements Constant {
     private void init(View view) {
 
         lvFood = (ListView) view.findViewById(R.id.lvFood);
-        adapter = new ListFoodAdapter(getActivity(), listFood, HOME_FRAGMENT);
+        adapter = new ListFoodAdapter(getActivity(), listFood);
         lvFood.setAdapter(adapter);
 
 

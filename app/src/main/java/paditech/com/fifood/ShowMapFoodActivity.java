@@ -3,7 +3,9 @@ package paditech.com.fifood;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,9 +15,23 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import Constant.ImageLoaderConfig;
 
+
+import com.akexorcist.googledirection.DirectionCallback;
+import com.akexorcist.googledirection.GoogleDirection;
+import com.akexorcist.googledirection.constant.AvoidType;
+import com.akexorcist.googledirection.model.Direction;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -23,6 +39,8 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import Adapter.ListCommentAdapter;
 import Adapter.ViewPagerAdapter;
@@ -40,14 +58,17 @@ public class ShowMapFoodActivity extends Activity implements Constant {
     private TextView tvName, tvAddress, tvDistance;
     private RatingBar ratingBar;
     private String detailResponse;
+    private MarkerOptions markerOptions;
+    private GoogleMap googleMap;
+
+    private Marker marker;
 
 
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setProgressBarIndeterminateVisibility(true);
+
         setContentView(R.layout.activity_map_food);
 
         Bundle bundle = getIntent().getExtras();
@@ -60,18 +81,20 @@ public class ShowMapFoodActivity extends Activity implements Constant {
     private void init() {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        getShopDetail(detailResponse);
+
         imgMain = (ImageView) findViewById(R.id.imgMain);
         tvName = (TextView) findViewById(R.id.tvName);
         tvAddress = (TextView) findViewById(R.id.tvAddress);
         tvDistance = (TextView) findViewById(R.id.tvDistance);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
+        getShopDetail(detailResponse);
+
 
     }
 
     private void getShopDetail(String responseString) {
-        /*JSONObject jsonObject = null;
+        JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(responseString);
             JSONObject response = jsonObject.getJSONObject(RESPONSE);
@@ -83,13 +106,81 @@ public class ShowMapFoodActivity extends Activity implements Constant {
 
             ImageLoaderConfig.imageLoader.displayImage(response.getJSONObject(FILE).getString(URL), imgMain, ImageLoaderConfig.options);
 
+            double lat = response.getDouble(LAT);
+            double lng = response.getDouble(LONGTH);
+            setMapLocation(new LatLng(HomeActivity.currLat, HomeActivity.currLongth), new LatLng(lat, lng));
 
-            JSONArray images = response.getJSONArray(IMAGES);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-*/
 
+    }
+
+    private void setMapLocation(LatLng currLatLng, LatLng foodLatLng) {
+
+        googleMap = ((MapFragment) this
+                .getFragmentManager().findFragmentById(R.id.maps)).getMap();
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+        googleMap.setMyLocationEnabled(true);
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLatLng, 13));
+
+        GoogleDirection.withServerKey(getResources().getString(R.string.google_maps_server_key))
+                .from(currLatLng)
+                .to(foodLatLng)
+                .avoid(AvoidType.FERRIES)
+                .avoid(AvoidType.HIGHWAYS)
+                .execute(new DirectionCallback() {
+                    @Override
+                    public void onDirectionSuccess(Direction direction, String rawBody) {
+                        if (direction.isOK()) {
+                            // Do something
+                        } else {
+                            // Do something
+                        }
+                    }
+
+                    @Override
+                    public void onDirectionFailure(Throwable t) {
+                        // Do something
+                    }
+                });
+
+        /*markerOptions = new MarkerOptions();
+        googleMap = ((MapFragment) this
+                .getFragmentManager().findFragmentById(R.id.map)).getMap();
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        googleMap.setMyLocationEnabled(true);
+
+        // set fit bound marker
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(latLng);
+        LatLngBounds bound = builder.build();
+
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bound, 20, 20, 3);
+
+        if (googleMap != null) {
+            markerOptions.position(latLng);
+            String name = "nha";
+            if (name.isEmpty()) {
+                name = "Current Location";
+            }
+            markerOptions.title(name);
+            marker = googleMap.addMarker(markerOptions);
+            marker.showInfoWindow();
+            googleMap.moveCamera(cu);
+            googleMap.animateCamera(cu);
+        }*/
     }
 
 
@@ -100,4 +191,5 @@ public class ShowMapFoodActivity extends Activity implements Constant {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

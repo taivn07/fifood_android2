@@ -1,4 +1,5 @@
 <resources>
+    <string name="google_maps_server_key">AIzaSyDJJrExYNgXAg5s-pVJ4w0scBhFJLQXYOw</string>
     <string name="app_name">FiFood</string>
     <string name="txtOr">hoặc</string>
     <string name="new_sign_in">Đăng ký mới</string>
@@ -19,5 +20,5 @@
     <string name="foodSafely">Đánh giá của cơ quan chức năng</string>
     <string name="post">Gửi</string>
     <string name="hint_comment">Viết bình luận</string>
-
+    <string name="add_store">Thêm cửa hàng</string>
 </resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="@dimen/item_list_menu_food_height"
+        android:layout_height="@dimen/item_list_menu_food_height"
+        android:scaleType="fitXY"
+        android:id="@+id/img"
+        android:src="@mipmap/bg" />
+
+    <Button
+        android:id="@+id/btnDel"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="right"
+        android:background="@mipmap/ic_del" />
+</FrameLayout>

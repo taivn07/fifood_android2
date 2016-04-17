@@ -2,6 +2,10 @@ package Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+
+import Fragment.NearFragment;
+
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -28,18 +33,22 @@ import Constant.ImageLoaderConfig;
 public class ListFoodAdapter extends BaseAdapter implements Constant {
     private Context context;
     private ArrayList<Food> listFood = new ArrayList<>();
+    private NearFragment fragment;
 
-
-    private String key;
-
-    public ListFoodAdapter(Context context, ArrayList<Food> listFood, String key) {
+    public ListFoodAdapter(Context context, ArrayList<Food> listFood, NearFragment nearFragment) {
         this.context = context;
         this.listFood = listFood;
-        this.key = key;
+        fragment = nearFragment;
 
         ImageLoaderConfig.imageLoaderConfig();
     }
 
+    public ListFoodAdapter(Context context, ArrayList<Food> listFood) {
+        this.context = context;
+        this.listFood = listFood;
+
+        ImageLoaderConfig.imageLoaderConfig();
+    }
 
     @Override
     public int getCount() {
@@ -57,7 +66,7 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -91,10 +100,12 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (key.equals(HOME_FRAGMENT)) {
+                if (fragment == null) {
                     Intent intent = new Intent(context, DetailFoodActivity.class);
                     intent.putExtra(ID, food.getShop_id());
                     context.startActivity(intent);
+                } else {
+                    fragment.showMarker(new LatLng(food.getLat(), food.getLongth()), position);
                 }
             }
         });

@@ -15,7 +15,7 @@
         >
 
         <ImageView
-            android:id="@+id/imgFood"
+            android:id="@+id/imgMain"
             android:layout_width="@dimen/item_list_menu_food_height"
             android:layout_height="match_parent"
             android:padding="8dp"
@@ -60,16 +60,16 @@
             <RatingBar
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
-                android:numStars="5"
                 android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
                 android:isIndicator="true"
+                android:numStars="5"
 
                 android:progressDrawable="@drawable/ratingbar_yellow"
                 android:stepSize="0.1" />
 
             <TextView
-                android:id="@+id/tvFar"
+                android:id="@+id/tvDistance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ratingBar"
@@ -88,20 +88,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/detailLayout"
         android:layout_marginTop="@dimen/primary_login_margin" />
-
-    <RelativeLayout
-        android:id="@+id/mainLayout"
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#fff">
-
-        <ProgressBar
-            android:id="@+id/pbHeaderProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"></ProgressBar>
-    </RelativeLayout>
 
 
 </RelativeLayout>

@@ -10,12 +10,11 @@ public class Food {
     private double lat;
     private double longth;
     private double distance;
-
     private String shop_id;
     private int totalComment;
     private int rating;
     private String imgUrl;
-
+    private String content;
     public String getImgUrl() {
         return imgUrl;
     }
@@ -35,6 +34,13 @@ public class Food {
         this.shop_id = shop_id;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public String getName() {
         return name;

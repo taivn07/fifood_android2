@@ -1,8 +1,11 @@
 package Fragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.InflateException;
@@ -11,11 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -41,6 +47,7 @@ public class NearFragment extends Fragment implements Constant {
     private GoogleMap googleMap;
 
     private Marker marker;
+    private ArrayList<Marker> listMarker;
 
     private View view;
 
@@ -68,42 +75,85 @@ public class NearFragment extends Fragment implements Constant {
 
         lvFood = (ListView) view.findViewById(R.id.lvFood);
 
-        adapter = new ListFoodAdapter(getActivity(), listFood, NEAR_FRAGMENT);
+        adapter = new ListFoodAdapter(getActivity(), listFood, this);
         lvFood.setAdapter(adapter);
 
         LatLng latLng = new LatLng(20.996309, 105.827309);
-        setMapLocation(latLng);
+        setMapLocation();
 
-
+        lvFood.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    private void setMapLocation(LatLng latLng) {
+    private void setMapLocation() {
         markerOptions = new MarkerOptions();
         googleMap = ((MapFragment) getActivity()
                 .getFragmentManager().findFragmentById(R.id.map)).getMap();
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         googleMap.setMyLocationEnabled(true);
 
-        // set fit bound marker
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(latLng);
-        LatLngBounds bound = builder.build();
 
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bound, 20, 20, 3);
+        googleMap.clear();
 
-        if (googleMap != null) {
-            markerOptions.position(latLng);
-            String name = "nha";
-            if (name.isEmpty()) {
-                name = "Current Location";
+        listMarker = new ArrayList<>();
+        for (int i = 0; i < listFood.size(); i++) {
+            LatLng latLng = new LatLng(listFood.get(i).getLat(), listFood.get(i).getLongth());
+            builder.include(latLng);
+            switch (i % 4) {
+                case 0: {
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_map1));
+                    break;
+                }
+                case 1: {
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_map2));
+                    break;
+                }
+                case 2: {
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_map3));
+                    break;
+                }
+                case 3: {
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_map4));
+                    break;
+                }
             }
-            markerOptions.title(name);
+
+            markerOptions.position(latLng);
+            markerOptions.title(listFood.get(i).getName());
             marker = googleMap.addMarker(markerOptions);
             marker.showInfoWindow();
-            googleMap.moveCamera(cu);
-            googleMap.animateCamera(cu);
+            listMarker.add(marker);
+
         }
+        LatLngBounds bounds = builder.build();
+        final CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 5);
+
+        googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                googleMap.moveCamera(cu);
+                googleMap.animateCamera(cu);
+            }
+        });
+    }
+
+    public void showMarker(LatLng latLng, int position) {
+
+        CameraUpdate cu = CameraUpdateFactory.newLatLng(latLng);
+        googleMap.moveCamera(cu);
+        googleMap.animateCamera(cu);
+
+        listMarker.get(position).showInfoWindow();
     }
 
 }

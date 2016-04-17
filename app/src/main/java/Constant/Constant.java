@@ -62,10 +62,6 @@ public interface Constant {
     public final static String COMMENTS = "comments";
     public final static String FILES = "files";
 
-
-    public final static String HOME_FRAGMENT = "HOME_FRAGMENT";
-    public final static String NEAR_FRAGMENT = "NEAR_FRAGMENT";
-
     public final static String DETAIL_RESPONSE = "DETAIL_RESPONSE";
     public final static String IMAGES_RESPONSE = "IMAGES_RESPONSE";
 
