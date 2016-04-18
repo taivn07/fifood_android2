@@ -4,12 +4,11 @@
 
     <uses-sdk android:minSdkVersion="14"></uses-sdk>
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
@@ -45,6 +44,9 @@
             android:theme="@style/MyTheme" />
         <activity
             android:name=".ShowMapFoodActivity"
+            android:theme="@style/MyTheme" />
+        <activity
+            android:name=".PickMultiPhotoActivity"
             android:theme="@style/MyTheme" />
 
         <meta-data

@@ -62,6 +62,6 @@ public class GridPhotoAdapter extends BaseAdapter {
                 addFragment.deleteImage(position);
             }
         });
-        return null;
+        return convertView;
     }
 }

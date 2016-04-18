@@ -207,14 +207,14 @@
                 android:layout_margin="10dp"
                 android:background="@color/colorAddress"></View>
 
-            <Constant.ExpanableListView
+            <Constant.ExpandableHeightListView
                 android:id="@+id/lvComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fadingEdge="none"
                 android:layout_marginBottom="120dp"
                 android:focusable="false"
-                android:scrollbars="none"></Constant.ExpanableListView>
+                android:scrollbars="none"></Constant.ExpandableHeightListView>
 
         </LinearLayout>
     </ScrollView>

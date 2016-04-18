@@ -1,176 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorBackgroundGray"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_vertical_margin">
+        android:layout_height="match_parent"
+        android:background="@color/colorBackgroundGray"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/store_name"
-            android:textColor="#000"
-            android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/etName"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:background="#fff"
-            android:padding="@dimen/padding_small" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/store_address"
-            android:textColor="#000"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etAddress"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:background="#fff"
-            android:padding="@dimen/padding_small" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/store_desc"
-            android:textColor="#000"
-            android:textStyle="bold" />
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:background="#fff"
-            android:paddingBottom="10dp">
+            android:orientation="vertical"
+            android:padding="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/store_name"
+                android:textColor="#000"
+                android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/etDesc"
+                android:id="@+id/etName"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="#fff"
+                android:padding="@dimen/padding_small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/store_address"
+                android:textColor="#000"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etAddress"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
                 android:layout_marginTop="10dp"
                 android:background="#fff"
                 android:padding="@dimen/padding_small" />
 
-            <View
-                android:id="@+id/line"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/etDesc"
-                android:layout_margin="10dp"
-                android:background="@color/colorBackgroundGray"></View>
-
-            <RadioGroup
-                android:id="@+id/rgBadGood"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_below="@+id/line"
-                android:orientation="horizontal"
-
-                >
-
-                <RadioButton
-                    android:id="@+id/rbGood"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/btn_good_click"
-                    android:button="@null" />
-
-                <TextView
-                    android:id="@+id/tvGood"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Tốt" />
-
-                <RadioButton
-                    android:id="@+id/rbBad"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/btn_bad_click"
-                    android:button="@null" />
-
-                <TextView
-                    android:id="@+id/tvBad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Xấu" />
-
-            </RadioGroup>
-
-            <CheckBox
-                android:id="@+id/cbReport"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true" />
-
             <TextView
-                android:id="@+id/tvReport"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentBottom="true"
-                android:layout_toLeftOf="@+id/cbReport"
-                android:gravity="center"
-                android:text="Báo cáo vi phạm VSATTP" />
-        </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/store_desc"
+                android:textColor="#000"
+                android:textStyle="bold" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="@dimen/activity_vertical_margin">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="#fff"
+                android:paddingBottom="10dp">
+
+                <EditText
+                    android:id="@+id/etDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#fff"
+                    android:padding="@dimen/padding_small" />
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/etDesc"
+                    android:layout_margin="10dp"
+                    android:background="@color/colorBackgroundGray"></View>
+
+                <RadioGroup
+                    android:id="@+id/rgBadGood"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/line"
+                    android:orientation="horizontal"
+
+                    >
+
+                    <RadioButton
+                        android:id="@+id/rbGood"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/btn_good_click"
+                        android:button="@null" />
+
+                    <TextView
+                        android:id="@+id/tvGood"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Tốt" />
+
+                    <RadioButton
+                        android:id="@+id/rbBad"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/btn_bad_click"
+                        android:button="@null" />
+
+                    <TextView
+                        android:id="@+id/tvBad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Xấu" />
+
+                </RadioGroup>
+
+                <CheckBox
+                    android:id="@+id/cbReport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true" />
+
+                <TextView
+                    android:id="@+id/tvReport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toLeftOf="@+id/cbReport"
+                    android:gravity="center"
+                    android:text="Báo cáo vi phạm VSATTP" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                <Button
+                    android:id="@+id/btnCamera"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/bt_addphoto" />
+
+                <Button
+                    android:id="@+id/btnAddImage"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@mipmap/ic_addphoto" />
+
+
+            </RelativeLayout>
+
+            <Constant.ExpandableHeightGridView
+                android:id="@+id/gridPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="3"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"></Constant.ExpandableHeightGridView>
 
             <Button
-                android:id="@+id/btnCamera"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:background="@mipmap/bt_addphoto" />
+                android:id="@+id/btnCreateShop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/colorBgMenuClicked"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:paddingRight="@dimen/activity_vertical_margin"
+                android:text="@string/add_store"
+                android:textColor="#fff" />
 
-            <Button
-                android:id="@+id/btnAddImage"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:background="@mipmap/ic_addphoto" />
-
-
-        </RelativeLayout>
-
-        <GridView
-            android:id="@+id/gridPhoto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:numColumns="3"></GridView>
-
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/colorBgMenuClicked"
-            android:paddingLeft="@dimen/activity_vertical_margin"
-            android:paddingRight="@dimen/activity_vertical_margin"
-            android:text="@string/add_store"
-            android:textColor="#fff" />
-
-    </LinearLayout>
+        </LinearLayout>
 
 
-</ScrollView>
+    </ScrollView>
+
+
+</FrameLayout>

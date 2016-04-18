@@ -27,7 +27,7 @@ import Adapter.ListCommentAdapter;
 import Adapter.ViewPagerAdapter;
 import Constant.Constant;
 import cz.msebera.android.httpclient.Header;
-import Constant.ExpanableListView;
+import Constant.ExpandableHeightListView;
 
 /**
  * Created by USER on 14/4/2016.
@@ -42,7 +42,7 @@ public class DetailFoodActivity extends Activity implements Constant {
     private TextView tvName, tvAddress, tvDistance, tvShopID, tvGoodNumb, tvBadNumb;
     private RatingBar ratingBar;
     private ViewPager pager;
-    private ExpanableListView lvComment;
+    private ExpandableHeightListView lvComment;
 
     private String detailResponse, imagesResponse;
 
@@ -76,7 +76,7 @@ public class DetailFoodActivity extends Activity implements Constant {
         tvBadNumb = (TextView) findViewById(R.id.tvBadCount);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         pager = (ViewPager) findViewById(R.id.pager);
-        lvComment = (ExpanableListView) findViewById(R.id.lvComment);
+        lvComment = (ExpandableHeightListView) findViewById(R.id.lvComment);
         btnShowMap = findViewById(R.id.btnShowMap);
 
 

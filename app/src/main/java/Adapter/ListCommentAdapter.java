@@ -1,13 +1,10 @@
 package Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,13 +12,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 import Constant.Constant;
 import Constant.ImageLoaderConfig;
-import paditech.com.fifood.DetailFoodActivity;
 import paditech.com.fifood.R;
-import Constant.ExpanableListView;
+import Constant.ExpandableHeightListView;
 
 /**
  * Created by USER on 15/4/2016.
@@ -72,7 +66,7 @@ public class ListCommentAdapter extends BaseAdapter implements Constant {
             viewHolder.tvComment = (TextView) convertView.findViewById(R.id.tvComment);
             viewHolder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
             viewHolder.imgAvartar = (ImageView) convertView.findViewById(R.id.imgAvartar);
-            viewHolder.lvPhoto = (ExpanableListView) convertView.findViewById(R.id.listPhoto);
+            viewHolder.lvPhoto = (ExpandableHeightListView) convertView.findViewById(R.id.listPhoto);
 
             convertView.setTag(viewHolder);
         } else {
@@ -103,6 +97,6 @@ public class ListCommentAdapter extends BaseAdapter implements Constant {
 
         TextView tvNickname, tvComment, tvTime;
         ImageView imgAvartar;
-        ExpanableListView lvPhoto;
+        ExpandableHeightListView lvPhoto;
     }
 }

@@ -1,27 +1,27 @@
 package Constant;
 
-/**
- * Created by USER on 16/4/2016.
- */
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.GridView;
 
-public class ExpanableListView extends ListView {
+/**
+ * Created by USER on 18/4/2016.
+ */
+public class ExpandableHeightGridView extends GridView {
 
     boolean expanded = false;
 
-    public ExpanableListView(Context context) {
+    public ExpandableHeightGridView(Context context) {
         super(context);
     }
 
-    public ExpanableListView(Context context, AttributeSet attrs) {
+    public ExpandableHeightGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ExpanableListView(Context context, AttributeSet attrs, int defStyle) {
+    public ExpandableHeightGridView(Context context, AttributeSet attrs,
+                                    int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -31,12 +31,9 @@ public class ExpanableListView extends ListView {
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // HACK! TAKE THAT ANDROID!
         if (isExpanded()) {
-            // Calculate entire height by providing a very large height hint.
-            // But do not use the highest 2 bits of this integer; those are
-            // reserved for the MeasureSpec mode.
-            int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
+            int expandSpec = MeasureSpec.makeMeasureSpec(MEASURED_SIZE_MASK,
+                    MeasureSpec.AT_MOST);
             super.onMeasure(widthMeasureSpec, expandSpec);
 
             ViewGroup.LayoutParams params = getLayoutParams();

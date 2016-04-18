@@ -61,6 +61,10 @@ public interface Constant {
     public final static String TIME = "time";
     public final static String COMMENTS = "comments";
     public final static String FILES = "files";
+    public final static String TOKEN = "token";
+    public final static String MAIN_FILE_ID = "main_file_id";
+
+    public final static String RESULT="result";
 
     public final static String DETAIL_RESPONSE = "DETAIL_RESPONSE";
     public final static String IMAGES_RESPONSE = "IMAGES_RESPONSE";
