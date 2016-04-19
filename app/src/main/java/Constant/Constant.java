@@ -63,6 +63,7 @@ public interface Constant {
     public final static String FILES = "files";
     public final static String TOKEN = "token";
     public final static String MAIN_FILE_ID = "main_file_id";
+    public final static String NOTIFY_NUM = "notify_num";
 
     public final static String RESULT="result";
 

@@ -103,6 +103,7 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
                 if (fragment == null) {
                     Intent intent = new Intent(context, DetailFoodActivity.class);
                     intent.putExtra(ID, food.getShop_id());
+                    intent.putExtra(NAME, food.getName());
                     context.startActivity(intent);
                 } else {
                     fragment.showMarker(new LatLng(food.getLat(), food.getLongth()), position);

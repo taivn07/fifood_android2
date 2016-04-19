@@ -46,16 +46,13 @@
             android:text="" />
 
 
-        <Constant.ExpandableHeightListView
-            android:id="@+id/listPhoto"
+        <ImageView
+            android:id="@+id/img"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvComment"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_toRightOf="@+id/imgAvartar"
-            android:fadingEdge="none"
-            android:focusable="false"
-            android:scrollbars="none"></Constant.ExpandableHeightListView>
+            android:layout_marginTop="@dimen/padding_small"
+            android:layout_toRightOf="@+id/imgAvartar"></ImageView>
 
     </RelativeLayout>
 

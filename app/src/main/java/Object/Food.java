@@ -15,6 +15,16 @@ public class Food {
     private int rating;
     private String imgUrl;
     private String content;
+    private int notifyNum;
+
+    public int getNotifyNum() {
+        return notifyNum;
+    }
+
+    public void setNotifyNum(int notifyNum) {
+        this.notifyNum = notifyNum;
+    }
+
     public String getImgUrl() {
         return imgUrl;
     }

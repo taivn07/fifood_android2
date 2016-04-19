@@ -4,19 +4,21 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundGray"
     android:orientation="vertical"
-    android:padding="@dimen/activity_vertical_margin">
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
         android:id="@+id/tvPostTotal"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:text="@string/post_total"
         android:textColor="#000" />
 
     <ListView
         android:id="@+id/lvFood"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/primary_login_margin"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/primary_login_margin"></ListView>
 
 </LinearLayout>

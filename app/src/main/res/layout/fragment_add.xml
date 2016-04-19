@@ -131,9 +131,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/padding_small"
                     android:layout_toLeftOf="@+id/cbReport"
                     android:gravity="center"
-                    android:text="Báo cáo vi phạm VSATTP" />
+                    android:text="Báo cáo vi phạm VSATTP"
+                    android:textSize="@dimen/text_address_size" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -147,13 +149,21 @@
                     android:layout_height="match_parent"
                     android:background="@mipmap/bt_addphoto" />
 
-                <Button
-                    android:id="@+id/btnAddImage"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:background="@mipmap/ic_addphoto" />
 
+                <ImageView
+                    android:id="@+id/imgAvartar"
+                    android:layout_width="@dimen/button_login_height"
+                    android:layout_height="@dimen/button_login_height"
+                    android:layout_alignParentRight="true" />
+
+                <Button
+                    android:id="@+id/btnChooseAvatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/imgAvartar"
+                    android:background="@drawable/btn_choose_img_avatar_click"
+                    android:text="Choose image avatar"
+                    android:textSize="@dimen/text_address_size" />
 
             </RelativeLayout>
 
@@ -175,6 +185,7 @@
                 android:paddingRight="@dimen/activity_vertical_margin"
                 android:text="@string/add_store"
                 android:textColor="#fff" />
+
 
         </LinearLayout>
 

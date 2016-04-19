@@ -10,7 +10,8 @@
     <RelativeLayout
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/menu_home_height">
 
         <ProgressBar
             android:id="@+id/pbHeaderProgress"
@@ -86,36 +87,36 @@
             android:weightSum="5">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/menu_icon_size"
+                android:layout_height="@dimen/menu_icon_size"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:src="@mipmap/ic_home" />
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/menu_icon_size"
+                android:layout_height="@dimen/menu_icon_size"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:src="@mipmap/ic_nere" />
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/menu_icon_size"
+                android:layout_height="@dimen/menu_icon_size"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:src="@mipmap/ic_add" />
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/menu_icon_size"
+                android:layout_height="@dimen/menu_icon_size"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:src="@mipmap/ic_search" />
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/menu_icon_size"
+                android:layout_height="@dimen/menu_icon_size"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:src="@mipmap/ount" />

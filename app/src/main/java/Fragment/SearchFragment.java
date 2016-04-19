@@ -44,6 +44,8 @@ public class SearchFragment extends Fragment implements Constant {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        getActivity().setProgressBarIndeterminateVisibility(false);
+
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         init(view);
         return view;
@@ -57,13 +59,9 @@ public class SearchFragment extends Fragment implements Constant {
         btnSearch = view.findViewById(R.id.btnSearch);
 
         listFood = new ArrayList<>();
-
-        adapter = new ListFoodAdapter(getActivity(), listFood);
-
-        lvFood.setAdapter(adapter);
+        lvFood.setExpanded(true);
 
         setBtnSearchClicked();
-        lvFood.setExpanded(true);
 
 
     }
@@ -123,7 +121,6 @@ public class SearchFragment extends Fragment implements Constant {
                     Log.e("SIZE search", listFood.size() + "");
 
                     adapter = new ListFoodAdapter(getActivity(), listFood);
-                    lvFood.setExpanded(true);
                     lvFood.setAdapter(adapter);
 
 

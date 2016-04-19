@@ -1,5 +1,7 @@
 package Adapter;
 
+import Object.Comment;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import Constant.Constant;
 import Constant.ImageLoaderConfig;
 import paditech.com.fifood.R;
@@ -21,29 +25,24 @@ import Constant.ExpandableHeightListView;
  * Created by USER on 15/4/2016.
  */
 public class ListCommentAdapter extends BaseAdapter implements Constant {
-    private JSONArray listComment;
+    private ArrayList<Comment> listComment;
 
     private Context context;
 
-    public ListCommentAdapter(JSONArray listComment, Context context) {
+    public ListCommentAdapter(ArrayList<Comment> listComment, Context context) {
         this.listComment = listComment;
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return listComment.length();
+        return listComment.size();
     }
 
     @Override
     public Object getItem(int position) {
-        try {
-            return listComment.getJSONObject(position);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        return listComment.get(position);
 
-        return null;
     }
 
     @Override
@@ -66,29 +65,22 @@ public class ListCommentAdapter extends BaseAdapter implements Constant {
             viewHolder.tvComment = (TextView) convertView.findViewById(R.id.tvComment);
             viewHolder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
             viewHolder.imgAvartar = (ImageView) convertView.findViewById(R.id.imgAvartar);
-            viewHolder.lvPhoto = (ExpandableHeightListView) convertView.findViewById(R.id.listPhoto);
+            viewHolder.img = (ImageView) convertView.findViewById(R.id.img);
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        try {
-            JSONObject comment = listComment.getJSONObject(position);
-            double time = comment.getDouble(TIME);
-            viewHolder.tvTime.setText(comment.getString(TIME));
-            viewHolder.tvComment.setText(comment.getString(CONTENT));
-            viewHolder.tvNickname.setText(comment.getString(NICKNAME));
+        Comment comment = listComment.get(position);
+        double time = comment.getTime();
+        viewHolder.tvTime.setText(comment.getTime() + "");
+        viewHolder.tvComment.setText(comment.getContent());
+        viewHolder.tvNickname.setText(comment.getNickname());
 
-            JSONArray imgs = comment.getJSONArray(FILES);
-            if (imgs.length() > 0) {
-                viewHolder.lvPhoto.setAdapter(new ListPhotoAdapter(imgs, context));
-                viewHolder.lvPhoto.setExpanded(true);
-            }
 
-            ImageLoaderConfig.imageLoader.displayImage(comment.getString(USER_PROFILE_IMAGE), viewHolder.imgAvartar, ImageLoaderConfig.options);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        ImageLoaderConfig.imageLoader.displayImage(comment.getUserProfifeImage(), viewHolder.imgAvartar, ImageLoaderConfig.options);
+        ImageLoaderConfig.imageLoader.displayImage(comment.getImgUrl(), viewHolder.img, ImageLoaderConfig.options);
+
 
         return convertView;
     }
@@ -97,6 +89,6 @@ public class ListCommentAdapter extends BaseAdapter implements Constant {
 
         TextView tvNickname, tvComment, tvTime;
         ImageView imgAvartar;
-        ExpandableHeightListView lvPhoto;
+        ImageView img;
     }
 }

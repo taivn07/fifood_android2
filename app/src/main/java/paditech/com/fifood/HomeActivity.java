@@ -56,6 +56,8 @@ public class HomeActivity extends FragmentActivity implements Constant {
     private AccountFragment accountFragment;
 
     public static double currLat, currLongth;
+    public static String userID = "4", token = "8K2MY6IVCCOZ", nickname="Paditech";
+    public static String profileImageUrl = "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xat1/v/t1.0-1/s200x200/11204909_122874381407241_2799622312940915518_n.jpg?oh=138425eec69e4750b27f8d7d74079d6b&oe=57080315&__gda__=1463440946_3dabeb9fe56b383205d858007b46f2a3";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

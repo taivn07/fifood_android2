@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import Constant.ImageLoaderConfig;
 import Object.Food;
 import paditech.com.fifood.R;
 
@@ -65,7 +66,10 @@ public class ListPostAdapter extends BaseAdapter {
         Food food = listFood.get(position);
         viewHolder.name.setText(food.getName());
         viewHolder.addr.setText(food.getAddress());
-        viewHolder.sum.setText("Phản hồi: 22");
+        viewHolder.sum.setText("Phản hồi: " + food.getTotalComment());
+        viewHolder.numb.setText(food.getNotifyNum() + "");
+
+        ImageLoaderConfig.imageLoader.displayImage(food.getImgUrl(), viewHolder.img, ImageLoaderConfig.options);
 
         return convertView;
     }

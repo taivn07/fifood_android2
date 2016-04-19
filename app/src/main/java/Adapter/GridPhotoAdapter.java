@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.github.lzyzsd.circleprogress.DonutProgress;
+
 import java.util.ArrayList;
 
 import Fragment.AddFragment;
@@ -53,7 +55,9 @@ public class GridPhotoAdapter extends BaseAdapter {
 
         ImageView img = (ImageView) convertView.findViewById(R.id.img);
         View btnDel = convertView.findViewById(R.id.btnDel);
+        DonutProgress circleProgress = (DonutProgress) convertView.findViewById(R.id.pbUploadImg);
 
+        circleProgress.setProgress(100);
         img.setImageBitmap(listBitmap.get(position));
 
         btnDel.setOnClickListener(new View.OnClickListener() {
@@ -64,4 +68,6 @@ public class GridPhotoAdapter extends BaseAdapter {
         });
         return convertView;
     }
+
+
 }
