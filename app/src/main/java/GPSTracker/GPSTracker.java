@@ -5,8 +5,10 @@ package GPSTracker;
  */
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -15,6 +17,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
 
 public class GPSTracker extends Service
         implements LocationListener {
@@ -64,7 +67,6 @@ public class GPSTracker extends Service
                 if (this.isNetworkEnable) {
 
                     if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
                         return;
                     }
                     this.locationManager.requestLocationUpdates("network", 1000L, 1000.0F, this);
@@ -87,6 +89,7 @@ public class GPSTracker extends Service
                         }
                     }
                 }
+
             }
             return;
         } catch (Exception localException) {

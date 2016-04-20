@@ -8,7 +8,10 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -16,6 +19,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -40,7 +44,12 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Adapter.GridPhotoAdapter;
 import Adapter.ListFoodAdapter;
@@ -53,6 +62,7 @@ import paditech.com.fifood.PickMultiPhotoActivity;
 import paditech.com.fifood.R;
 import Object.Food;
 import Constant.GetImageFile;
+import Constant.HideKeyBoard;
 
 /**
  * Created by USER on 13/4/2016.
@@ -64,13 +74,15 @@ public class AddFragment extends Fragment implements Constant {
     private EditText etName, etAddress, etDesc;
     private RadioGroup rgGoodBad;
     private CheckBox cbReport;
-    private View btnCamera, tvReport, btnCreateShop;
+    private View btnCamera, tvReport, btnCreateShop, mainLayout, btnRefresh;
     private TextView tvGood, tvBad;
     private ExpandableHeightGridView gridPhoto;
     private ArrayList<Bitmap> listBitmap;
     private ArrayList<File> listFile;
     private GridPhotoAdapter adapter;
     private String arrayImageId = "";
+    private ProgressBar progressBar;
+
 
     private boolean isLike;
 
@@ -92,13 +104,17 @@ public class AddFragment extends Fragment implements Constant {
         cbReport = (CheckBox) view.findViewById(R.id.cbReport);
         btnCamera = view.findViewById(R.id.btnCamera);
         btnCreateShop = view.findViewById(R.id.btnCreateShop);
+        btnRefresh = view.findViewById(R.id.btnRefresh);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         tvGood = (TextView) view.findViewById(R.id.tvGood);
         tvBad = (TextView) view.findViewById(R.id.tvBad);
         tvReport = view.findViewById(R.id.tvReport);
         gridPhoto = (ExpandableHeightGridView) view.findViewById(R.id.gridPhoto);
+        mainLayout = view.findViewById(R.id.mainLayout);
         setRgGoodBadCheckedChange();
         setBtnCameraClicked();
         setBtnCreateShopClicked();
+        hideKeyBoardOnOutClicked();
 
         listBitmap = new ArrayList<>();
         listFile = new ArrayList<>();
@@ -106,6 +122,43 @@ public class AddFragment extends Fragment implements Constant {
         gridPhoto.setAdapter(adapter);
         gridPhoto.setExpanded(true);
 
+        setCurrentAddress();
+
+
+        setBtnRefreshClicked();
+
+    }
+
+    private void setBtnRefreshClicked() {
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                btnRefresh.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+
+                setCurrentAddress();
+            }
+        });
+    }
+
+
+    public void setCurrentAddress() {
+        GetCurrentAddress getCurrentAddress = new GetCurrentAddress();
+        getCurrentAddress.execute();
+
+
+    }
+
+    private void hideKeyBoardOnOutClicked() {
+        mainLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                HideKeyBoard.hideSoftKeyboard(getActivity());
+                return false;
+            }
+        });
     }
 
     private void setBtnCreateShopClicked() {
@@ -323,5 +376,32 @@ public class AddFragment extends Fragment implements Constant {
 
     }
 
+    private class GetCurrentAddress extends AsyncTask {
+        private String address;
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            Geocoder geocoder;
+            List<Address> addresses;
+            geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
+            try {
+                addresses = geocoder.getFromLocation(HomeActivity.currLat, HomeActivity.currLongth, 1);
+                if (addresses.size() > 0) {
+                    address = addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getLocality();
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            etAddress.setText(address);
+        }
+    }
 
 }

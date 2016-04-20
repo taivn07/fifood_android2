@@ -36,7 +36,7 @@ import Object.Food;
 public class AccountFragment extends Fragment implements Constant {
 
     private ListView lvFood;
-    private ArrayList<Food> listFood;
+    public ArrayList<Food> listFood;
     private ListPostAdapter adapter;
 
     @Nullable
@@ -53,9 +53,6 @@ public class AccountFragment extends Fragment implements Constant {
     private void init(View view) {
 
         lvFood = (ListView) view.findViewById(R.id.lvFood);
-
-        listFood = new ArrayList<>();
-
         getListPost("vi", 25, 0, "1", "8K2MY6IVCCOZ");
 
 

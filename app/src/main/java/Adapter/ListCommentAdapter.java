@@ -76,8 +76,6 @@ public class ListCommentAdapter extends BaseAdapter implements Constant {
         viewHolder.tvTime.setText(comment.getTime() + "");
         viewHolder.tvComment.setText(comment.getContent());
         viewHolder.tvNickname.setText(comment.getNickname());
-
-
         ImageLoaderConfig.imageLoader.displayImage(comment.getUserProfifeImage(), viewHolder.imgAvartar, ImageLoaderConfig.options);
         ImageLoaderConfig.imageLoader.displayImage(comment.getImgUrl(), viewHolder.img, ImageLoaderConfig.options);
 

@@ -20,4 +20,10 @@
         <item name="android:textColor">#fff</item>
     </style>
 
+
+    <style name="foodRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingbar_yellow</item>
+        <!--<item name="android:maxHeight">8dip</item>
+        <item name="android:maxWidth">8dip</item>-->
+    </style>
 </resources>

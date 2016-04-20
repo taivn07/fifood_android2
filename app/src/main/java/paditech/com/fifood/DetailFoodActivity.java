@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
@@ -49,6 +50,7 @@ import Constant.Constant;
 import cz.msebera.android.httpclient.Header;
 import Constant.ExpandableHeightListView;
 import Constant.GetImageFile;
+import Constant.HideKeyBoard;
 
 /**
  * Created by USER on 14/4/2016.
@@ -76,6 +78,7 @@ public class DetailFoodActivity extends Activity implements Constant {
     private int isLike = 0, isReport = 0;
     private ArrayList<Comment> listComment;
     private ListCommentAdapter adapter;
+    private View scrollView;
 
     @Override
 
@@ -121,15 +124,26 @@ public class DetailFoodActivity extends Activity implements Constant {
         etComment = (EditText) findViewById(R.id.etComment);
         rgBadGood = (RadioGroup) findViewById(R.id.rgBadGood);
         cbReport = (CheckBox) findViewById(R.id.cbReport);
-
+        scrollView = findViewById(R.id.scrollView);
 
         setBtnShowMapClicked();
         btnCameraClicked();
         setBtnPostClicked();
 
+        hideKeyBoard();
         adapter = new ListCommentAdapter(listComment, DetailFoodActivity.this);
         lvComment.setAdapter(adapter);
         lvComment.setExpanded(true);
+    }
+
+    private void hideKeyBoard() {
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                HideKeyBoard.hideSoftKeyboard(DetailFoodActivity.this);
+                return false;
+            }
+        });
     }
 
     private void setBtnPostClicked() {

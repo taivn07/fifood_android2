@@ -89,7 +89,7 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
         final Food food = listFood.get(position);
         viewHolder.name.setText(food.getName());
         viewHolder.addr.setText(food.getAddress());
-        viewHolder.far.setText((int) (food.getDistance()) + " km");
+        viewHolder.far.setText(String.format("%.02f", (float) (food.getDistance())) + " km");
         int rateing = food.getRating();
         viewHolder.rating.setRating(rateing);
 
@@ -107,6 +107,9 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
                     context.startActivity(intent);
                 } else {
                     fragment.showMarker(new LatLng(food.getLat(), food.getLongth()), position);
+                    fragment.showItemOnTopListview(position);
+                    fragment.showMaps();
+
                 }
             }
         });

@@ -11,6 +11,7 @@
         android:scrollbars="vertical">
 
         <LinearLayout
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#fff"
@@ -72,7 +73,7 @@
                     <RatingBar
                         android:id="@+id/ratingBar"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="24px"
                         android:layout_centerHorizontal="true"
                         android:isIndicator="true"
                         android:numStars="5"
@@ -279,8 +280,8 @@
                 >
 
                 <RadioButton
-                    android:layout_width="40dp"
                     android:id="@+id/rbGood"
+                    android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/btn_good_click"
                     android:button="@null" />
@@ -293,8 +294,8 @@
                     android:text="Tốt" />
 
                 <RadioButton
-                    android:layout_width="40dp"
                     android:id="@+id/rbBad"
+                    android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/btn_bad_click"

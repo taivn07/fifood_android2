@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -28,6 +29,7 @@ import cz.msebera.android.httpclient.Header;
 import paditech.com.fifood.HomeActivity;
 import paditech.com.fifood.R;
 import Object.Food;
+import Constant.HideKeyBoard;
 
 /**
  * Created by USER on 13/4/2016.
@@ -39,6 +41,7 @@ public class SearchFragment extends Fragment implements Constant {
     private ExpandableHeightListView lvFood;
     private ArrayList<Food> listFood;
     private ListFoodAdapter adapter;
+    private View mainLayout;
 
     @Nullable
     @Override
@@ -57,13 +60,34 @@ public class SearchFragment extends Fragment implements Constant {
         etName = (EditText) view.findViewById(R.id.etName);
         lvFood = (ExpandableHeightListView) view.findViewById(R.id.lvFood);
         btnSearch = view.findViewById(R.id.btnSearch);
+        mainLayout = view.findViewById(R.id.mainLayout);
 
         listFood = new ArrayList<>();
         lvFood.setExpanded(true);
 
         setBtnSearchClicked();
+        hideKeyBoard();
 
 
+    }
+
+    private void hideKeyBoard() {
+
+        btnSearch.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                HideKeyBoard.hideSoftKeyboard(getActivity());
+                return false;
+            }
+        });
+        mainLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                HideKeyBoard.hideSoftKeyboard(getActivity());
+
+                return false;
+            }
+        });
     }
 
     private void setBtnSearchClicked() {

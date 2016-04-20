@@ -45,18 +45,17 @@ import GPSTracker.CheckConnectNetwork;
  */
 public class HomeActivity extends FragmentActivity implements Constant {
 
-    public ArrayList<Food> listFood;
-
+    public ArrayList<Food> listFood, listNear, listPost;
     private RadioGroup rgMenu;
-
     private HomeFragment homeFragment;
     private NearFragment nearFragment;
     private AddFragment addFragment;
     private SearchFragment searchFragment;
     private AccountFragment accountFragment;
+    private ActionBar actionBar;
 
     public static double currLat, currLongth;
-    public static String userID = "4", token = "8K2MY6IVCCOZ", nickname="Paditech";
+    public static String userID = "4", token = "8K2MY6IVCCOZ", nickname = "Paditech";
     public static String profileImageUrl = "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xat1/v/t1.0-1/s200x200/11204909_122874381407241_2799622312940915518_n.jpg?oh=138425eec69e4750b27f8d7d74079d6b&oe=57080315&__gda__=1463440946_3dabeb9fe56b383205d858007b46f2a3";
 
     @Override
@@ -68,7 +67,7 @@ public class HomeActivity extends FragmentActivity implements Constant {
 
         getListFoodNear("vi", 25, 0);
 
-        ActionBar actionBar = getActionBar();
+        actionBar = getActionBar();
 
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorBgMenu)));
         actionBar.setTitle(Html.fromHtml("<b>Home</b>"));
@@ -86,8 +85,9 @@ public class HomeActivity extends FragmentActivity implements Constant {
         searchFragment = new SearchFragment();
         accountFragment = new AccountFragment();
 
-
         rgMenu = (RadioGroup) findViewById(R.id.rgMenu);
+
+        rgMenu.setEnabled(false);
 
         rgMenu.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -97,34 +97,42 @@ public class HomeActivity extends FragmentActivity implements Constant {
                 switch (checkedId) {
 
                     case R.id.btnHome: {
+                        actionBar.setTitle(Html.fromHtml("<b>Home</b>"));
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.mainLayout, homeFragment).commit();
                         break;
 
                     }
                     case R.id.btnAccount: {
+                        listPost = new ArrayList<Food>();
+                        accountFragment.listFood = listPost;
+                        actionBar.setTitle(Html.fromHtml("<b>Các bài đã đăng</b>"));
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.mainLayout, accountFragment).commit();
                         break;
 
                     }
                     case R.id.btnAdd: {
+                        actionBar.setTitle(Html.fromHtml("<b>Thêm quán ăn</b>"));
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.mainLayout, addFragment).commit();
                         break;
 
                     }
                     case R.id.btnSearch: {
+                        actionBar.setTitle(Html.fromHtml("<b>Tìm kiếm</b>"));
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.mainLayout, searchFragment).commit();
                         break;
 
                     }
                     case R.id.btnNear: {
-                        nearFragment.listFood = listFood;
+                        actionBar.setTitle(Html.fromHtml("<b>Gần đây</b>"));
+                        nearFragment.listFood = listNear;
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.mainLayout, nearFragment).commit();
                         break;
+
 
                     }
                 }
@@ -137,13 +145,8 @@ public class HomeActivity extends FragmentActivity implements Constant {
 
         getCurrentLocation();
         listFood = new ArrayList<>();
+        listNear = new ArrayList<>();
         AsyncHttpClient aClient = new AsyncHttpClient();
-/*
-        aClient.addHeader(KEY_X_API_TOKEN, API_TOCKEN);
-        aClient.addHeader(KEY_X_APP_PLATFORM, PLATFORM);
-        aClient.addHeader(KEY_X_APP_VERSION, VERSION);
-        aClient.addHeader(KEY_X_LOCATE, LOCATE);
-        aClient.addHeader(KEY_X_UID, UID);*/
 
         RequestParams params = new RequestParams();
         params.put(LANG, lang);
@@ -180,18 +183,20 @@ public class HomeActivity extends FragmentActivity implements Constant {
                         food.setImgUrl(shops.getJSONObject(i).getJSONObject(FILE).getString(URL));
 
                         listFood.add(food);
+                        listNear.add(food);
                     }
                     homeFragment.listFood = listFood;
                     Log.e("SIZE", listFood.size() + "");
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                     ft.replace(R.id.mainLayout, homeFragment).commit();
 
+                    rgMenu.setEnabled(true);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 setProgressBarIndeterminateVisibility(false);
-
 
             }
         });

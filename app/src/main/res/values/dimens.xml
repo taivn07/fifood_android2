@@ -9,9 +9,12 @@
     <dimen name="menu_home_height">60dp</dimen>
     <dimen name="item_list_menu_food_height">90dp</dimen>
     <dimen name="text_address_size">10dp</dimen>
-    <dimen name="edit_text_height">12dp</dimen>
+    <dimen name="edit_text_height">15dp</dimen>
     <dimen name="padding_small">5dp</dimen>
     <dimen name="menu_icon_size">30dp</dimen>
+    <dimen name="bad_good_icon_size">25dp</dimen>
+    <dimen name="btn_take_photo_size">50dp</dimen>
+    <dimen name="list_item_size">100dp</dimen>
 
 
 </resources>

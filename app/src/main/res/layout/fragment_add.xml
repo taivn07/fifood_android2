@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,6 +12,7 @@
 
 
         <LinearLayout
+            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -21,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/store_name"
                 android:textColor="#000"
+                android:textSize="@dimen/edit_text_height"
                 android:textStyle="bold" />
 
             <EditText
@@ -29,7 +32,8 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="#fff"
-                android:padding="@dimen/padding_small" />
+                android:padding="@dimen/padding_small"
+                android:textSize="@dimen/edit_text_height" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -37,15 +41,43 @@
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:text="@string/store_address"
                 android:textColor="#000"
+                android:textSize="@dimen/edit_text_height"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/etAddress"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                android:background="#fff"
-                android:padding="@dimen/padding_small" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/etAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="#fff"
+                    android:padding="@dimen/padding_small"
+                    android:paddingRight="30dp"
+                    android:textSize="@dimen/edit_text_height" />
+
+                <Button
+                    android:id="@+id/btnRefresh"
+                    android:layout_width="@dimen/bad_good_icon_size"
+                    android:layout_height="@dimen/bad_good_icon_size"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/padding_small"
+                    android:background="@mipmap/ic_refresh" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="@dimen/bad_good_icon_size"
+                    android:layout_height="@dimen/bad_good_icon_size"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/padding_small"
+                    android:indeterminate="true"
+                    android:indeterminateDrawable="@drawable/progressbar_refresh_style"
+                    android:visibility="gone" />
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -53,6 +85,7 @@
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:text="@string/store_desc"
                 android:textColor="#000"
+                android:textSize="@dimen/edit_text_height"
                 android:textStyle="bold" />
 
             <RelativeLayout
@@ -68,7 +101,8 @@
                     android:layout_height="160dp"
                     android:layout_marginTop="10dp"
                     android:background="#fff"
-                    android:padding="@dimen/padding_small" />
+                    android:padding="@dimen/padding_small"
+                    android:textSize="@dimen/edit_text_height" />
 
                 <View
                     android:id="@+id/line"
@@ -89,8 +123,8 @@
 
                     <RadioButton
                         android:id="@+id/rbGood"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="@dimen/bad_good_icon_size"
+                        android:layout_height="@dimen/bad_good_icon_size"
                         android:background="@drawable/btn_good_click"
                         android:button="@null" />
 
@@ -100,13 +134,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Tốt" />
+                        android:text="Tốt"
+                        android:textSize="@dimen/edit_text_height" />
 
                     <RadioButton
                         android:id="@+id/rbBad"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="@dimen/bad_good_icon_size"
+                        android:layout_height="@dimen/bad_good_icon_size"
                         android:layout_marginLeft="10dp"
+
                         android:background="@drawable/btn_bad_click"
                         android:button="@null" />
 
@@ -115,16 +151,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Xấu" />
+                        android:text="Xấu"
+                        android:textSize="@dimen/edit_text_height" />
 
                 </RadioGroup>
 
                 <CheckBox
                     android:id="@+id/cbReport"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/bad_good_icon_size"
                     android:layout_height="40dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical" />
 
                 <TextView
                     android:id="@+id/tvReport"
@@ -135,17 +173,17 @@
                     android:layout_toLeftOf="@+id/cbReport"
                     android:gravity="center"
                     android:text="Báo cáo vi phạm VSATTP"
-                    android:textSize="@dimen/text_address_size" />
+                    android:textSize="@dimen/edit_text_height" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="@dimen/btn_take_photo_size"
                 android:layout_marginTop="@dimen/activity_vertical_margin">
 
                 <Button
                     android:id="@+id/btnCamera"
-                    android:layout_width="60dp"
+                    android:layout_width="@dimen/btn_take_photo_size"
                     android:layout_height="match_parent"
                     android:background="@mipmap/bt_addphoto" />
 
@@ -162,8 +200,10 @@
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/imgAvartar"
                     android:background="@drawable/btn_choose_img_avatar_click"
+                    android:paddingLeft="@dimen/padding_small"
+                    android:paddingRight="@dimen/padding_small"
                     android:text="Choose image avatar"
-                    android:textSize="@dimen/text_address_size" />
+                    android:textSize="@dimen/edit_text_height" />
 
             </RelativeLayout>
 
@@ -184,7 +224,9 @@
                 android:paddingLeft="@dimen/activity_vertical_margin"
                 android:paddingRight="@dimen/activity_vertical_margin"
                 android:text="@string/add_store"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                android:textSize="@dimen/edit_text_height"
+                android:textStyle="bold" />
 
 
         </LinearLayout>

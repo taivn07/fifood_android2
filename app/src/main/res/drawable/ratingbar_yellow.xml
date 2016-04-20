@@ -2,12 +2,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@android:id/background"
-        android:width="8dp"
-        android:height="8dp"
+
         android:drawable="@mipmap/ic_rate1" />
     <item
         android:id="@android:id/progress"
-        android:width="8dp"
-        android:height="8dp"
+
         android:drawable="@mipmap/ic_rate2" />
 </layer-list>
