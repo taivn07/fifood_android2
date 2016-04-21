@@ -5,26 +5,22 @@ import android.content.Intent;
 
 import Fragment.NearFragment;
 
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
 import Constant.Constant;
 import Object.Food;
-import paditech.com.fifood.DetailFoodActivity;
-import paditech.com.fifood.R;
+import paditech.com.fifood_android.DetailFoodActivity;
+import paditech.com.fifood_android.R;
 import Constant.ImageLoaderConfig;
 
 /**

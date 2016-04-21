@@ -1,4 +1,4 @@
-package paditech.com.fifood;
+package paditech.com.fifood_android;
 
 import android.app.ActionBar;
 import android.app.Activity;

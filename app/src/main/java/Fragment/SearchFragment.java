@@ -3,14 +3,12 @@ package Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
@@ -26,8 +24,8 @@ import Adapter.ListFoodAdapter;
 import Constant.Constant;
 import Constant.ExpandableHeightListView;
 import cz.msebera.android.httpclient.Header;
-import paditech.com.fifood.HomeActivity;
-import paditech.com.fifood.R;
+import paditech.com.fifood_android.HomeActivity;
+import paditech.com.fifood_android.R;
 import Object.Food;
 import Constant.HideKeyBoard;
 

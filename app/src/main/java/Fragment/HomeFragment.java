@@ -1,16 +1,13 @@
 package Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -26,9 +23,8 @@ import java.util.ArrayList;
 import Adapter.ListFoodAdapter;
 import Constant.Constant;
 import cz.msebera.android.httpclient.Header;
-import paditech.com.fifood.DetailFoodActivity;
-import paditech.com.fifood.HomeActivity;
-import paditech.com.fifood.R;
+import paditech.com.fifood_android.HomeActivity;
+import paditech.com.fifood_android.R;
 import Object.Food;
 
 /**

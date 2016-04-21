@@ -73,7 +73,7 @@
                     <RatingBar
                         android:id="@+id/ratingBar"
                         android:layout_width="wrap_content"
-                        android:layout_height="24px"
+                        android:layout_height="@dimen/text_size"
                         android:layout_centerHorizontal="true"
                         android:isIndicator="true"
                         android:numStars="5"
@@ -86,7 +86,6 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/ratingBar"
                         android:gravity="center"
-
                         android:text="Cách 2km"
                         android:textColor="@color/colorAddress"
                         android:textSize="@dimen/text_address_size" />
@@ -137,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="1"
-                        android:textSize="@dimen/text_address_size"
+                        android:textSize="@dimen/text_size"
                         android:textStyle="bold" />
 
                     <TextView
@@ -147,7 +146,7 @@
                         android:drawableLeft="@mipmap/ic_good_ac"
                         android:gravity="center"
                         android:text="@string/good"
-                        android:textSize="@dimen/text_address_size" />
+                        android:textSize="@dimen/text_size" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -161,7 +160,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="1"
-                        android:textSize="@dimen/text_address_size"
+                        android:textSize="@dimen/text_size"
                         android:textStyle="bold" />
 
                     <TextView
@@ -171,7 +170,7 @@
                         android:drawableLeft="@mipmap/ic_nogood_ac"
                         android:gravity="center"
                         android:text="@string/bad"
-                        android:textSize="@dimen/text_address_size" />
+                        android:textSize="@dimen/text_size" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -291,6 +290,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:textSize="@dimen/text_size"
                     android:text="Tốt" />
 
                 <RadioButton
@@ -303,6 +303,7 @@
 
                 <TextView
                     android:id="@+id/tvBad"
+                    android:textSize="@dimen/text_size"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -330,8 +331,10 @@
                     android:layout_alignParentBottom="true"
                     android:layout_toLeftOf="@+id/cbReport"
                     android:gravity="center"
+                    android:layout_toRightOf="@+id/rgBadGood"
                     android:text="Báo cáo vi phạm VSATTP"
-                    android:textSize="@dimen/text_address_size" />
+                    android:textSize="@dimen/text_size"
+                    android:lines="2"/>
             </RelativeLayout>
 
         </LinearLayout>
@@ -339,7 +342,6 @@
 
     <RelativeLayout
         android:id="@+id/mainLayout"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff">

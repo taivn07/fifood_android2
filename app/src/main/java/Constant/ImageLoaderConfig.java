@@ -3,7 +3,7 @@ package Constant;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import paditech.com.fifood.R;
+import paditech.com.fifood_android.R;
 
 /**
  * Created by USER on 15/4/2016.

@@ -1,7 +1,6 @@
-package paditech.com.fifood;
+package paditech.com.fifood_android;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,8 +9,6 @@ import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
-import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -31,13 +28,9 @@ import Fragment.SearchFragment;
 import GPSTracker.GPSTracker;
 import Object.Food;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
-import Adapter.ListFoodAdapter;
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.entity.StringEntity;
-import GPSTracker.CheckConnectNetwork;
 
 
 /**
@@ -55,8 +48,6 @@ public class HomeActivity extends FragmentActivity implements Constant {
     private ActionBar actionBar;
 
     public static double currLat, currLongth;
-    public static String userID = "4", token = "8K2MY6IVCCOZ", nickname = "Paditech";
-    public static String profileImageUrl = "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xat1/v/t1.0-1/s200x200/11204909_122874381407241_2799622312940915518_n.jpg?oh=138425eec69e4750b27f8d7d74079d6b&oe=57080315&__gda__=1463440946_3dabeb9fe56b383205d858007b46f2a3";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +59,12 @@ public class HomeActivity extends FragmentActivity implements Constant {
         getListFoodNear("vi", 25, 0);
 
         actionBar = getActionBar();
-
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorBgMenu)));
         actionBar.setTitle(Html.fromHtml("<b>Home</b>"));
 
 
+
         init();
-
-
     }
 
     private void init() {
@@ -104,7 +93,6 @@ public class HomeActivity extends FragmentActivity implements Constant {
 
                     }
                     case R.id.btnAccount: {
-                        listPost = new ArrayList<Food>();
                         accountFragment.listFood = listPost;
                         actionBar.setTitle(Html.fromHtml("<b>Các bài đã đăng</b>"));
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

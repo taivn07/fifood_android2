@@ -1,19 +1,13 @@
 package Fragment;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -22,13 +16,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableListView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -38,7 +28,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -56,9 +45,9 @@ import java.util.ArrayList;
 import Adapter.ListFoodAdapter;
 import Constant.Constant;
 import cz.msebera.android.httpclient.Header;
-import paditech.com.fifood.DetailFoodActivity;
-import paditech.com.fifood.HomeActivity;
-import paditech.com.fifood.R;
+import paditech.com.fifood_android.DetailFoodActivity;
+import paditech.com.fifood_android.HomeActivity;
+import paditech.com.fifood_android.R;
 import Object.Food;
 
 import Constant.ImageLoaderConfig;
@@ -375,28 +364,13 @@ public class NearFragment extends Fragment implements Constant {
 
     public void showMarker(LatLng latLng, int position) {
 
-        CameraUpdate cu = CameraUpdateFactory.newLatLng(latLng);
-        googleMap.moveCamera(cu);
-        googleMap.animateCamera(cu);
+        if(googleMap!=null) {
+            CameraUpdate cu = CameraUpdateFactory.newLatLng(latLng);
+            googleMap.moveCamera(cu);
+            googleMap.animateCamera(cu);
 
-        listMarker.get(position).showInfoWindow();
+            listMarker.get(position).showInfoWindow();
+        }
     }
-
-    private View getViewMarker(int position) {
-
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.item_marker_maps, null);
-        TextView name = (TextView) v.findViewById(R.id.tvName);
-        TextView distance = (TextView) v.findViewById(R.id.tvDistance);
-        ImageView img = (ImageView) v.findViewById(R.id.img);
-        RatingBar ratingBar = (RatingBar) v.findViewById(R.id.ratingBar);
-
-        name.setText(listFood.get(position).getName());
-        ImageLoaderConfig.imageLoader.displayImage(listFood.get(position).getImgUrl(), img, ImageLoaderConfig.options);
-        distance.setText(listFood.get(position).getDistance() + "");
-        ratingBar.setRating(listFood.get(position).getRating());
-        return view;
-    }
-
 
 }

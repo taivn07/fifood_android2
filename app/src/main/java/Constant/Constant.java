@@ -4,7 +4,7 @@ package Constant;
  * Created by USER on 13/4/2016.
  */
 public interface Constant {
-    public final static String EMAIL = "EMAIL";
+    public final static String EMAIL = "email";
     public final static String KEY_X_API_TOKEN = "X-API_TOKEN";
     public final static String KEY_X_APP_PLATFORM = "X-APP-PLATFORM";
     public final static String KEY_X_APP_VERSION = "X-APP-VERSION";
@@ -35,6 +35,7 @@ public interface Constant {
     public final static String COMMENT = "comment";
     public final static String MY_SHOP = "myshop";
     public final static String NEAR_ME = "nearme";
+    public final static String FB_TOKEN = "fb_token";
 
     public final static String RESPONSE = "response";
     public final static String SHOPS = "shops";
@@ -64,6 +65,10 @@ public interface Constant {
     public final static String TOKEN = "token";
     public final static String MAIN_FILE_ID = "main_file_id";
     public final static String NOTIFY_NUM = "notify_num";
+    public final static String FB_ID = "fb_id";
+    public final static String EXPIRES = "expires";
+    public final static String PROFILE_IMAGE = "profile_image";
+    public final static String USER = "user";
 
     public final static String RESULT="result";
 

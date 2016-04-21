@@ -6,13 +6,6 @@
     android:padding="@dimen/activity_vertical_margin"
     android:theme="@android:style/Theme.NoTitleBar">
 
-    <ImageView
-        android:id="@+id/imgLogo"
-        android:layout_width="320dp"
-        android:layout_height="140dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="130dp"
-        android:background="@mipmap/logo" />
 
     <RelativeLayout
         android:id="@+id/layoutLogin"
@@ -20,9 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="35dp"
-
-        >
+        android:layout_marginBottom="35dp">
 
         <Button
             android:id="@+id/btnLoginATVS"
@@ -69,15 +60,16 @@
             android:text="@string/login_fb"
             android:textColor="#fff" />
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/line"
-            android:visibility="gone" />
-
-
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="320dp"
+        android:layout_height="140dp"
+        android:layout_above="@+id/layoutLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:background="@mipmap/logo" />
 
     <TextView
         android:id="@+id/tvNewSignin"

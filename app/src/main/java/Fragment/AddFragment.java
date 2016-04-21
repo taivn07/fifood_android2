@@ -1,22 +1,17 @@
 package Fragment;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,43 +19,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.lzyzsd.circleprogress.CircleProgress;
-import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import Adapter.GridPhotoAdapter;
-import Adapter.ListFoodAdapter;
 import Constant.Constant;
 import Constant.ExpandableHeightGridView;
 import cz.msebera.android.httpclient.Header;
-import paditech.com.fifood.DetailFoodActivity;
-import paditech.com.fifood.HomeActivity;
-import paditech.com.fifood.PickMultiPhotoActivity;
-import paditech.com.fifood.R;
-import Object.Food;
+import paditech.com.fifood_android.HomeActivity;
+import paditech.com.fifood_android.PickMultiPhotoActivity;
+import paditech.com.fifood_android.R;
 import Constant.GetImageFile;
 import Constant.HideKeyBoard;
 
@@ -238,10 +222,7 @@ public class AddFragment extends Fragment implements Constant {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST && resultCode == getActivity().RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
-
-            Uri tempUri = GetImageFile.getImageUri(getActivity(), photo);
-
-            File finalFile = new File(GetImageFile.getRealPathFromURI(getActivity(), tempUri));
+            File finalFile = GetImageFile.getImageFile(getActivity(),photo);
 
             uploadImage(finalFile, "1", "V6VDTERWUONH170817209946291", "vi");
 

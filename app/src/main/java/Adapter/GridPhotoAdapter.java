@@ -13,7 +13,7 @@ import com.github.lzyzsd.circleprogress.DonutProgress;
 import java.util.ArrayList;
 
 import Fragment.AddFragment;
-import paditech.com.fifood.R;
+import paditech.com.fifood_android.R;
 
 /**
  * Created by USER on 17/4/2016.

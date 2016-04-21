@@ -1,4 +1,4 @@
-package paditech.com.fifood;
+package paditech.com.fifood_android;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,10 +21,10 @@ import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import Constant.ImageLoaderConfig;
 import Object.Comment;
@@ -41,7 +40,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 
 import Adapter.ListCommentAdapter;
@@ -57,10 +55,8 @@ import Constant.HideKeyBoard;
  */
 public class DetailFoodActivity extends Activity implements Constant {
     private static int CAMERA_REQUEST = 999;
-    private static int PICK_MULTI_PHOTOS = 888;
     private static int PICK_IMAGE_REQUEST = 777;
     private String shopID;
-    private double lat, longth;
     private View mainLayout;
     private View btnShowMap, btnCamera, btnPost;
     private RadioGroup rgBadGood;
@@ -72,7 +68,8 @@ public class DetailFoodActivity extends Activity implements Constant {
     private ExpandableHeightListView lvComment;
     private EditText etComment;
 
-    private String detailResponse, imagesResponseURL, imagesResponseID;
+    private String detailResponse;
+    private int imagesResponseID = -1;
     private Bitmap commentBitmap;
 
     private int isLike = 0, isReport = 0;
@@ -102,7 +99,6 @@ public class DetailFoodActivity extends Activity implements Constant {
     }
 
     private void init() {
-        listComment = new ArrayList<>();
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         getShopDetail("vi");
@@ -144,13 +140,43 @@ public class DetailFoodActivity extends Activity implements Constant {
                 return false;
             }
         });
+
+        lvComment.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                HideKeyBoard.hideSoftKeyboard(DetailFoodActivity.this);
+                return false;
+            }
+        });
     }
 
     private void setBtnPostClicked() {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createComment("vi");
+                if(LoginActivity.user==null){
+                    final AlertDialog.Builder builder=new AlertDialog.Builder(DetailFoodActivity.this);
+                    builder.setMessage("Bạn cần phải đăng nhập để bình luận!");
+                    builder.setPositiveButton("Đăng nhập", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(DetailFoodActivity.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                            finish();
+                        }
+                    });
+                    builder.setNegativeButton("Bỏ qua", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    builder.show();
+                }else
+                    if(etComment.getText().toString().trim().equals("")){
+                        Toast.makeText(DetailFoodActivity.this, "Bạn chưa nhập bình luận!", Toast.LENGTH_SHORT).show();
+                    }else {
+                        createComment("vi");
+                    }
+
             }
         });
     }
@@ -160,7 +186,7 @@ public class DetailFoodActivity extends Activity implements Constant {
             @Override
             public void onClick(View v) {
 
-               /* AlertDialog.Builder alertDialog = new AlertDialog.Builder(DetailFoodActivity.this);
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(DetailFoodActivity.this);
 
                 alertDialog.setMessage("Get pictures by?");
                 alertDialog.setCancelable(true);
@@ -175,17 +201,16 @@ public class DetailFoodActivity extends Activity implements Constant {
                 alertDialog.setPositiveButton("Choose from library", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(DetailFoodActivity.this, PickMultiPhotoActivity.class);
-                        startActivityForResult(intent, PICK_MULTI_PHOTOS);
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
                     }
                 });
 
-                alertDialog.show();*/
+                alertDialog.show();
 
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+
 
             }
         });
@@ -201,15 +226,22 @@ public class DetailFoodActivity extends Activity implements Constant {
             try {
                 commentBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
-                File file = new File(GetImageFile.getPath(this, uri));
+                File file = GetImageFile.getImageFile(this, commentBitmap);
 
                 setProgressBarIndeterminateVisibility(true);
 
-                uploadImage(file, HomeActivity.userID, HomeActivity.token, "vi");
+                uploadImage(file, LoginActivity.user.getUserID(), LoginActivity.user.getToken(), LoginActivity.lang);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            File finalFile = GetImageFile.getImageFile(this ,photo);
+
+            uploadImage(finalFile, LoginActivity.user.getUserID(), LoginActivity.user.getToken(), LoginActivity.lang);
+        }
+
 
     }
 
@@ -248,12 +280,13 @@ public class DetailFoodActivity extends Activity implements Constant {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 try {
+
+                    Log.e("IMAGE UPLOAD", responseString);
                     JSONObject jsonObject = new JSONObject(responseString);
 
                     JSONObject response = jsonObject.getJSONObject(RESPONSE);
 
-                    imagesResponseURL = response.getString(URL);
-                    imagesResponseID = response.getString(ID);
+                    imagesResponseID = response.getInt(ID);
                     setProgressBarIndeterminateVisibility(false);
 
                     progress.dismiss();
@@ -268,6 +301,7 @@ public class DetailFoodActivity extends Activity implements Constant {
     }
 
     private void getShopDetail(String lang) {
+        listComment=new ArrayList<>();
         AsyncHttpClient aClient = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put(LANG, lang);
@@ -305,18 +339,17 @@ public class DetailFoodActivity extends Activity implements Constant {
                     for (int i = 0; i < comments.length(); i++) {
                         Comment comment = new Comment();
                         comment.setContent(comments.getJSONObject(i).getString(CONTENT));
-                        comment.setImgUrl(comments.getJSONObject(i).getJSONArray(FILES).getJSONObject(0).getString(URL));
+                        if(comments.getJSONObject(i).getJSONArray(FILES).length()>0)
+                            comment.setImgUrl(comments.getJSONObject(i).getJSONArray(FILES).getJSONObject(0).getString(URL));
                         comment.setIsLike(comments.getJSONObject(i).getInt(IS_LIKE));
                         comment.setIsMain(comments.getJSONObject(i).getInt(IS_MAIN));
                         comment.setIsReport(comments.getJSONObject(i).getInt(IS_REPORT));
                         comment.setNickname(comments.getJSONObject(i).getString(NICKNAME));
                         comment.setUserProfifeImage(comments.getJSONObject(i).getString(USER_PROFILE_IMAGE));
-
                         listComment.add(comment);
                     }
-
-                    adapter.notifyDataSetChanged();
-
+                    adapter=new ListCommentAdapter(listComment,DetailFoodActivity.this);
+                    lvComment.setAdapter(adapter);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -379,10 +412,7 @@ public class DetailFoodActivity extends Activity implements Constant {
     }
 
     private void setImageViewpager(JSONArray a) {
-
-
         ViewPagerAdapter adapter = new ViewPagerAdapter(a, this);
-
         pager.setAdapter(adapter);
 
     }
@@ -410,10 +440,10 @@ public class DetailFoodActivity extends Activity implements Constant {
         RequestParams params = new RequestParams();
         params.put(LANG, lang);
         params.put(SHOP_ID, shopID);
-        params.put(USER_ID, HomeActivity.userID);
-        params.put(TOKEN, HomeActivity.token);
+        params.put(USER_ID, LoginActivity.user.getUserID());
+        params.put(TOKEN, LoginActivity.user.getToken());
         params.put(CONTENT, etComment.getText().toString().trim());
-        params.put(FILE, imagesResponseID);
+        if(imagesResponseID>0) params.put(FILES, imagesResponseID);
 
 
         if (rgBadGood.getCheckedRadioButtonId() == R.id.rbGood) isLike = 1;
@@ -428,35 +458,19 @@ public class DetailFoodActivity extends Activity implements Constant {
                 Log.e("JSON", "POST FAIL");
                 progressDialog.dismiss();
             }
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 Log.e("JSON", responseString + "");
                 try {
                     JSONObject jsonObject = new JSONObject(responseString);
-
                     JSONObject response = jsonObject.getJSONObject(RESPONSE);
-
                     if (response.getString(RATING) != null) {
-
-                        Comment comment = new Comment();
-
-                        comment.setContent(etComment.getText().toString().trim());
-                        comment.setImgUrl(imagesResponseURL);
-                        comment.setIsLike(isLike);
-                        comment.setIsReport(isReport);
-                        comment.setNickname(HomeActivity.nickname);
-                        comment.setUserProfifeImage(HomeActivity.profileImageUrl);
-
-                        listComment.add(comment);
-
-                        adapter.notifyDataSetChanged();
-
+                        getShopDetail(LoginActivity.lang);
                         progressDialog.dismiss();
-
+                        imagesResponseID = -1;
+                        lvComment.setSelection(listComment.size()-1);
+                        etComment.setText("");
                     }
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     progressDialog.dismiss();

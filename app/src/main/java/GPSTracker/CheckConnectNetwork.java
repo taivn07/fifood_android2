@@ -16,7 +16,7 @@ public class CheckConnectNetwork {
         this.context = paramContext;
     }
 
-    public boolean isNetworkOnline() {
+    public boolean isNetworkOnline(Context context) {
         boolean status = false;
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

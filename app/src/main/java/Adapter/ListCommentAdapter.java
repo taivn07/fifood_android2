@@ -10,16 +10,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import Constant.Constant;
 import Constant.ImageLoaderConfig;
-import paditech.com.fifood.R;
-import Constant.ExpandableHeightListView;
+import paditech.com.fifood_android.R;
 
 /**
  * Created by USER on 15/4/2016.
@@ -77,7 +72,8 @@ public class ListCommentAdapter extends BaseAdapter implements Constant {
         viewHolder.tvComment.setText(comment.getContent());
         viewHolder.tvNickname.setText(comment.getNickname());
         ImageLoaderConfig.imageLoader.displayImage(comment.getUserProfifeImage(), viewHolder.imgAvartar, ImageLoaderConfig.options);
-        ImageLoaderConfig.imageLoader.displayImage(comment.getImgUrl(), viewHolder.img, ImageLoaderConfig.options);
+        if(comment.getImgUrl()!=null)
+            ImageLoaderConfig.imageLoader.displayImage(comment.getImgUrl(), viewHolder.img, ImageLoaderConfig.options);
 
 
         return convertView;
