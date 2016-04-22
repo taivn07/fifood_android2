@@ -25,23 +25,18 @@ import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import Constant.ImageLoaderConfig;
 import Object.Comment;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import Adapter.ListCommentAdapter;
 import Adapter.ViewPagerAdapter;
 import Constant.Constant;
@@ -72,7 +67,6 @@ public class DetailFoodActivity extends Activity implements Constant {
     private int imagesResponseID = -1;
     private Bitmap commentBitmap;
 
-    private int isLike = 0, isReport = 0;
     private ArrayList<Comment> listComment;
     private ListCommentAdapter adapter;
     private View scrollView;
@@ -101,8 +95,8 @@ public class DetailFoodActivity extends Activity implements Constant {
     private void init() {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        getShopDetail("vi");
-        getListImageFood("vi");
+        getShopDetail(LoginActivity.lang);
+        getListImageFood(LoginActivity.lang);
         mainLayout = findViewById(R.id.mainLayout);
         imgMain = (ImageView) findViewById(R.id.imgMain);
         tvName = (TextView) findViewById(R.id.tvName);
@@ -148,12 +142,22 @@ public class DetailFoodActivity extends Activity implements Constant {
                 return false;
             }
         });
+
+        pager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                HideKeyBoard.hideSoftKeyboard(DetailFoodActivity.this);
+                return false;
+            }
+        });
     }
+
 
     private void setBtnPostClicked() {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                HideKeyBoard.hideSoftKeyboard(DetailFoodActivity.this);
                 if(LoginActivity.user==null){
                     final AlertDialog.Builder builder=new AlertDialog.Builder(DetailFoodActivity.this);
                     builder.setMessage("Bạn cần phải đăng nhập để bình luận!");
@@ -174,7 +178,7 @@ public class DetailFoodActivity extends Activity implements Constant {
                     if(etComment.getText().toString().trim().equals("")){
                         Toast.makeText(DetailFoodActivity.this, "Bạn chưa nhập bình luận!", Toast.LENGTH_SHORT).show();
                     }else {
-                        createComment("vi");
+                        createComment(LoginActivity.lang);
                     }
 
             }
@@ -326,7 +330,7 @@ public class DetailFoodActivity extends Activity implements Constant {
 
                     tvName.setText(response.getString(NAME));
                     tvAddress.setText(response.getString(ADDRESS));
-                    tvDistance.setText((int) response.getDouble(DISTANCE) + " km");
+                    tvDistance.setText((int) response.getDouble(DISTANCE) + " m");
                     tvGoodNumb.setText(response.getString(LIKE_NUMB));
                     tvBadNumb.setText(response.getString(DISLIKE_NUMB));
                     ratingBar.setRating((int) response.getDouble(RATING));
@@ -446,11 +450,10 @@ public class DetailFoodActivity extends Activity implements Constant {
         if(imagesResponseID>0) params.put(FILES, imagesResponseID);
 
 
-        if (rgBadGood.getCheckedRadioButtonId() == R.id.rbGood) isLike = 1;
+        if (rgBadGood.getCheckedRadioButtonId() == R.id.rbGood) params.put(IS_LIKE, 1);
+        if(rgBadGood.getCheckedRadioButtonId() == R.id.rbBad) params.put(IS_MAIN, 1);
+        if (cbReport.isChecked()) params.put(IS_REPORT, 1);
 
-        if (cbReport.isChecked()) isReport = 1;
-        params.put(IS_REPORT, isReport);
-        params.put(IS_LIKE, isLike);
 
         aClient.post(BASE_URL + COMMENT, params, new TextHttpResponseHandler() {
             @Override

@@ -1,12 +1,14 @@
 package paditech.com.fifood_android;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -15,33 +17,28 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-
+import GPSTracker.CheckConnectNetwork;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-
 import Constant.Constant;
 import Object.User;
 import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends AppCompatActivity implements Constant {
-
     private View btnLoginFb, btnJoinNow;
     private CallbackManager callbackManager;
     private SharedPreferences preferences;
+    private ProgressDialog progressDialog;
     public static User user;
     public static String lang = "vi";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,65 +90,42 @@ public class LoginActivity extends AppCompatActivity implements Constant {
         btnLoginFb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email", "user_photos", "public_profile"));
-                LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-                        String fbToken = accessToken.getToken().toString();
-                        Log.e("SUCCESS", fbToken + "\n" + loginResult.getAccessToken().getToken());
-                        getInfo("vi", fbToken, loginResult);
-                    }
+                if (CheckConnectNetwork.isNetworkOnline(LoginActivity.this)) {
+                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email", "user_photos", "public_profile"));
+                    LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                        @Override
+                        public void onSuccess(LoginResult loginResult) {
+                            AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                            String fbToken = accessToken.getToken().toString();
+                            Log.e("SUCCESS", fbToken + "\n" + loginResult.getAccessToken().getToken());
+                            getUserInfo(LoginActivity.lang, fbToken, loginResult);
+                        }
 
-                    @Override
-                    public void onCancel() {
-                        Log.e("SUCCESS", "cancel");
-                    }
+                        @Override
+                        public void onCancel() {
+                            Log.e("SUCCESS", "cancel");
+                        }
 
-                    @Override
-                    public void onError(FacebookException error) {
-                        Log.e("SUCCESS", error + "");
-                    }
-                });
+                        @Override
+                        public void onError(FacebookException error) {
+                            Log.e("SUCCESS", error + "");
+                        }
+                    });
+                } else {
+                    CheckConnectNetwork.showNotifyNetwork(LoginActivity.this);
+                }
             }
         });
     }
 
-    private void register(LoginResult loginResult) {
-        GraphRequest request = GraphRequest.newMeRequest(
-                loginResult.getAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.v("LoginActivity", response.toString());
-                        String email = object.optString("email");
-                        String id = object.optString("id");
-                        String name = object.optString("name");
-                        Log.e("FB", response.toString() + "");
-                        User user = new User();
-                        user.setEmail(email);
-                        user.setFb_id(id + "11");
-                        user.setNickname(name);
-                        user.setProfile_image("http://graph.facebook.com/" + id + "/picture?type=large");
-                        Date cDate = new Date();
-                        String fDate = new SimpleDateFormat("yyyy-MM-dd h:m:s").format(cDate);
-                        Log.e("DATE", fDate);
-                        user.setExpires(fDate);
-                        registerAccount(user, "vi");
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email");
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
-
-    private void getInfo(String lang, String token, final LoginResult loginResult) {
+    private void getUserInfo(String lang, String token, final LoginResult loginResult) {
+        progressDialog=new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         AsyncHttpClient aClient = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put(LANG, lang);
         params.put(FB_TOKEN, token);
-
         aClient.post(BASE_URL + AUTH, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -164,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                     Log.e("GET INFO", responseString + "");
                     JSONObject response = new JSONObject(responseString).getJSONObject(RESPONSE);
                     if (responseString.contains("\"result\":")) {
-                        register(loginResult);
+                        registerByFacebook(loginResult);
                     } else {
                         JSONObject u = response.getJSONObject(USER);
                         preferences.edit().putString(TOKEN, u.getString(TOKEN)).commit();
@@ -179,12 +153,46 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                         startActivity(intent);
                         finish();
 
+                        progressDialog.dismiss();
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    private void registerByFacebook(LoginResult loginResult) {
+        GraphRequest request = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        Log.v("LoginActivity", response.toString());
+                        String email = object.optString("email");
+                        String id = object.optString("id");
+                        String name = object.optString("name");
+                        Log.e("FB", response.toString() + "");
+
+                        User user = new User();
+                        user.setEmail(email);
+                        user.setFb_id(id + "11");
+                        user.setNickname(name);
+                        user.setProfile_image("http://graph.facebook.com/" + id + "/picture?type=large");
+                        Date cDate = new Date();
+                        String fDate = new SimpleDateFormat("yyyy-MM-dd h:m:s").format(cDate);
+                        Log.e("DATE", fDate);
+                        user.setExpires(fDate);
+
+                        registerAccount(user, "vi");
+
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,email");
+        request.setParameters(parameters);
+        request.executeAsync();
     }
 
     private void registerAccount(User u, String lang) {
@@ -202,12 +210,12 @@ public class LoginActivity extends AppCompatActivity implements Constant {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.e("REGISTER", "FAIL");
+                progressDialog.dismiss();
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 try {
-
                     String res = responseString.substring(responseString.indexOf("{"));
                     Log.e("REGISTER", res + "");
                     JSONObject response = new JSONObject(res).getJSONObject(RESPONSE).getJSONObject(USER);
@@ -223,8 +231,10 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
+                    progressDialog.dismiss();
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    progressDialog.dismiss();
                 }
 
             }

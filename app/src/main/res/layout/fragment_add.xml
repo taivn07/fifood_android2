@@ -170,6 +170,8 @@
                     android:layout_height="40dp"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="@dimen/padding_small"
+                    android:layout_toRightOf="@+id/rgBadGood"
+                    android:maxLines="2"
                     android:layout_toLeftOf="@+id/cbReport"
                     android:gravity="center"
                     android:text="Báo cáo vi phạm VSATTP"

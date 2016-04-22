@@ -3,8 +3,10 @@ package paditech.com.fifood_android;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -17,6 +19,7 @@ import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
 import com.akexorcist.googledirection.constant.AvoidType;
 import com.akexorcist.googledirection.model.Direction;
+import com.akexorcist.googledirection.util.DirectionConverter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -26,6 +29,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import Constant.Constant;
 
@@ -82,7 +87,7 @@ public class ShowMapFoodActivity extends Activity implements Constant {
 
             tvName.setText(response.getString(NAME));
             tvAddress.setText(response.getString(ADDRESS));
-            tvDistance.setText((int) response.getDouble(DISTANCE) + " km");
+            tvDistance.setText((int) response.getDouble(DISTANCE) + " m");
             ratingBar.setRating((int) response.getDouble(RATING));
 
             ImageLoaderConfig.imageLoader.displayImage(response.getJSONObject(FILE).getString(URL), imgMain, ImageLoaderConfig.options);
@@ -97,7 +102,7 @@ public class ShowMapFoodActivity extends Activity implements Constant {
 
     }
 
-    private void setMapLocation(LatLng currLatLng, LatLng foodLatLng) {
+    private void setMapLocation(final LatLng currLatLng, final LatLng foodLatLng) {
 
         googleMap = ((MapFragment) this
                 .getFragmentManager().findFragmentById(R.id.maps)).getMap();
@@ -120,9 +125,13 @@ public class ShowMapFoodActivity extends Activity implements Constant {
                     @Override
                     public void onDirectionSuccess(Direction direction, String rawBody) {
                         if (direction.isOK()) {
-                            // Do something
+                            Log.e("e", "tes");
+                            googleMap.addMarker(new MarkerOptions().position(foodLatLng).title(tvName.getText().toString().trim()));
+
+                            ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
+                            googleMap.addPolyline(DirectionConverter.createPolyline(ShowMapFoodActivity.this, directionPositionList, 5, Color.RED));
                         } else {
-                            // Do something
+                            Log.e("e not ok", "tes");
                         }
                     }
 

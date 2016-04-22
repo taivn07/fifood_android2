@@ -40,7 +40,9 @@
         <activity
             android:name="paditech.com.fifood_android.HomeActivity"
             android:theme="@style/MyTheme" />
-
+        <activity
+            android:name="paditech.com.fifood_android.PhotoViewPagerActivity"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
         <activity
             android:name="paditech.com.fifood_android.DetailFoodActivity"
             android:theme="@style/MyTheme" />

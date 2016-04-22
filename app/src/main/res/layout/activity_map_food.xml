@@ -7,7 +7,7 @@
     <LinearLayout
         android:id="@+id/detailLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_list_menu_food_height"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
         android:weightSum="10"
@@ -17,15 +17,16 @@
         <ImageView
             android:id="@+id/imgMain"
             android:layout_width="@dimen/item_list_menu_food_height"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/item_list_menu_food_height"
             android:padding="8dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/bg" />
 
         <RelativeLayout
+            android:id="@+id/btnShowMap"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_weight="6"
+            android:layout_weight="10"
 
             android:padding="10dp">
 
@@ -33,6 +34,8 @@
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:text="This is a food"
                 android:textColor="#000"
                 android:textSize="@dimen/text_size"
@@ -50,21 +53,17 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="1dp"
+            android:layout_width="90dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:paddingBottom="20dp"
             android:paddingTop="20dp">
-
 
             <RatingBar
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="@dimen/text_size"
                 android:layout_centerHorizontal="true"
                 android:isIndicator="true"
                 android:numStars="5"
-
                 android:progressDrawable="@drawable/ratingbar_yellow"
                 android:stepSize="0.1" />
 

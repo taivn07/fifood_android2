@@ -4,19 +4,15 @@ package GPSTracker;
  * Created by USER on 15/4/2016.
  */
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.NetworkInfo.State;
 
 public class CheckConnectNetwork {
-    public Context context;
 
-    public CheckConnectNetwork(Context paramContext) {
-        this.context = paramContext;
-    }
-
-    public boolean isNetworkOnline(Context context) {
+    public  static  boolean isNetworkOnline(Context context) {
         boolean status = false;
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -37,4 +33,16 @@ public class CheckConnectNetwork {
         return status;
 
     }
+
+    public static void showNotifyNetwork(Context context){
+        AlertDialog.Builder builder=new AlertDialog.Builder(context);
+        builder.setMessage("Không có kết nối mạng! Hãy kiểm tra lại kết nối!");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.show();
+    }
+
 }

@@ -85,7 +85,7 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
         final Food food = listFood.get(position);
         viewHolder.name.setText(food.getName());
         viewHolder.addr.setText(food.getAddress());
-        viewHolder.far.setText(String.format("%.02f", (float) (food.getDistance())) + " km");
+        viewHolder.far.setText(String.format("%.02f", (float) (food.getDistance())) + " m");
         int rateing = food.getRating();
         viewHolder.rating.setRating(rateing);
 

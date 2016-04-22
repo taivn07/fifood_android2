@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,7 +18,6 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import com.github.ksoichiro.android.observablescrollview.ObservableListView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -35,13 +33,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-
 import Adapter.ListFoodAdapter;
 import Constant.Constant;
 import cz.msebera.android.httpclient.Header;
@@ -49,7 +44,6 @@ import paditech.com.fifood_android.DetailFoodActivity;
 import paditech.com.fifood_android.HomeActivity;
 import paditech.com.fifood_android.R;
 import Object.Food;
-
 import Constant.ImageLoaderConfig;
 
 /**
@@ -65,15 +59,11 @@ public class NearFragment extends Fragment implements Constant {
     private View progressLayout;
     private Marker marker;
     private ArrayList<Marker> listMarker;
-
     private View view;
-
     private int index = 0;
     private boolean isLoading = false;
     private View maps;
 
-
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -91,9 +81,7 @@ public class NearFragment extends Fragment implements Constant {
         return view;
     }
 
-
     private void init(View view) {
-
         lvFood = (ObservableListView) view.findViewById(R.id.lvFood);
         maps = view.findViewById(R.id.mapLayout);
         progressLayout = view.findViewById(R.id.progressLayout);
@@ -107,17 +95,12 @@ public class NearFragment extends Fragment implements Constant {
     }
 
     private void setLvFoodChanged() {
-
-
         lvFood.setScrollViewCallbacks(new ObservableScrollViewCallbacks() {
             @Override
-            public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
-
-            }
+            public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {}
 
             @Override
-            public void onDownMotionEvent() {
-            }
+            public void onDownMotionEvent() {}
 
             @Override
             public void onUpOrCancelMotionEvent(ScrollState scrollState) {
@@ -126,7 +109,6 @@ public class NearFragment extends Fragment implements Constant {
                 }
                 if (scrollState == ScrollState.UP) {
                     hideMaps();
-
                 } else if (scrollState == ScrollState.DOWN) {
                     showMaps();
                 }
@@ -136,13 +118,10 @@ public class NearFragment extends Fragment implements Constant {
 
         lvFood.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
+            public void onScrollStateChanged(AbsListView view, int scrollState) {}
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
                 if (view.getLastVisiblePosition() >= totalItemCount - 1 && !isLoading) {
                     index++;
                     getListFoodNear("vi", 25, index);
@@ -164,7 +143,6 @@ public class NearFragment extends Fragment implements Constant {
         params.put(OFFSET, offset);
         params.put(INDEX, index);
 
-
         aClient.post(BASE_URL + RECOMMENT, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -175,11 +153,8 @@ public class NearFragment extends Fragment implements Constant {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 try {
                     JSONObject jsonObject = new JSONObject(responseString);
-
                     JSONObject response = jsonObject.getJSONObject(RESPONSE);
-
                     JSONArray shops = response.getJSONArray(SHOPS);
-
                     for (int i = 0; i < shops.length(); i++) {
                         Food food = new Food();
                         food.setAddress(shops.getJSONObject(i).getString(ADDRESS));
@@ -190,34 +165,23 @@ public class NearFragment extends Fragment implements Constant {
                         food.setRating(shops.getJSONObject(i).getInt(RATING));
                         food.setShop_id(shops.getJSONObject(i).getString(ID));
                         food.setImgUrl(shops.getJSONObject(i).getJSONObject(FILE).getString(URL));
-
                         listFood.add(food);
-
-
                     }
                     Log.e("SIZE", listFood.size() + "");
                     adapter.notifyDataSetChanged();
-
                     setMapLocation();
-
                     if (shops.length() == 25)
                         isLoading = false;
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 progressLayout.setVisibility(View.GONE);
-
-
             }
         });
-
-
     }
 
     public void hideMaps() {
-
         if (maps.isShown()) {
             TranslateAnimation animate = new TranslateAnimation(0, 0, 0, -maps.getHeight());
             animate.setDuration(300);
@@ -225,9 +189,7 @@ public class NearFragment extends Fragment implements Constant {
             maps.startAnimation(animate);
             animate.setAnimationListener(new Animation.AnimationListener() {
                 @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
+                public void onAnimationStart(Animation animation) {}
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
@@ -235,13 +197,9 @@ public class NearFragment extends Fragment implements Constant {
                 }
 
                 @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
+                public void onAnimationRepeat(Animation animation) {}
             });
-
         }
-
     }
 
     public void showMaps() {
@@ -257,20 +215,13 @@ public class NearFragment extends Fragment implements Constant {
                                              }
 
                                              @Override
-                                             public void onAnimationEnd(Animation animation) {
-
-                                             }
+                                             public void onAnimationEnd(Animation animation) {}
 
                                              @Override
-                                             public void onAnimationRepeat(Animation animation) {
-
-                                             }
+                                             public void onAnimationRepeat(Animation animation) {}
                                          }
             );
-
         }
-
-
     }
 
     public void showItemOnTopListview(int position) {
@@ -293,18 +244,13 @@ public class NearFragment extends Fragment implements Constant {
             googleMap.setMyLocationEnabled(true);
 
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
-            googleMap.clear();
-
             listMarker = new ArrayList<>();
             for (int i = 0; i < listFood.size(); i++) {
                 LatLng latLng = new LatLng(listFood.get(i).getLat(), listFood.get(i).getLongth());
                 builder.include(latLng);
-
                 markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_map_app));
                 markerOptions.position(latLng);
                 marker = googleMap.addMarker(markerOptions);
-                marker.showInfoWindow();
                 listMarker.add(marker);
 
             }
@@ -351,9 +297,8 @@ public class NearFragment extends Fragment implements Constant {
 
                         name.setText(listFood.get(position).getName());
                         ImageLoaderConfig.imageLoader.displayImage(listFood.get(position).getImgUrl(), img, ImageLoaderConfig.options);
-                        distance.setText(String.format("%.02f", (float) listFood.get(position).getDistance()) + " km");
+                        distance.setText(String.format("%.02f", (float) listFood.get(position).getDistance()) + " m");
                         ratingBar.setRating(listFood.get(position).getRating());
-
                         return v;
                     }
                     return null;
@@ -361,14 +306,11 @@ public class NearFragment extends Fragment implements Constant {
             });
         }
     }
-
     public void showMarker(LatLng latLng, int position) {
-
         if(googleMap!=null) {
             CameraUpdate cu = CameraUpdateFactory.newLatLng(latLng);
             googleMap.moveCamera(cu);
             googleMap.animateCamera(cu);
-
             listMarker.get(position).showInfoWindow();
         }
     }

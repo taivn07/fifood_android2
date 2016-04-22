@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import Adapter.ListPostAdapter;
 import Constant.Constant;
 import cz.msebera.android.httpclient.Header;
+import paditech.com.fifood_android.LoginActivity;
 import paditech.com.fifood_android.R;
 import Object.Food;
 
@@ -48,7 +49,7 @@ public class AccountFragment extends Fragment implements Constant {
     private void init(View view) {
 
         lvFood = (ListView) view.findViewById(R.id.lvFood);
-        getListPost("vi", 25, 0, "1", "8K2MY6IVCCOZ");
+        getListPost(LoginActivity.lang, 25, 0, LoginActivity.user.getUserID(), LoginActivity.user.getToken());
 
 
     }
@@ -102,10 +103,7 @@ public class AccountFragment extends Fragment implements Constant {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 getActivity().setProgressBarIndeterminateVisibility(false);
-
-
             }
         });
     }

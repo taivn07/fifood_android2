@@ -61,8 +61,8 @@ public class GPSTracker extends Service
     private void getLocation() {
         try {
             this.locationManager = ((LocationManager) this.context.getSystemService(LOCATION_SERVICE));
-            this.isGPSEnable = this.locationManager.isProviderEnabled("gps");
-            this.isNetworkEnable = this.locationManager.isProviderEnabled("network");
+            this.isGPSEnable = this.locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            this.isNetworkEnable = this.locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
             if ((this.isGPSEnable) || (this.isNetworkEnable)) {
                 if (this.isNetworkEnable) {
 

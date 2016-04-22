@@ -93,32 +93,32 @@
 
             </LinearLayout>
 
-            <FrameLayout
+            <RelativeLayout
+                android:id="@+id/pagerView"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_below="@+id/detailLayout"
-
                 android:layout_marginTop="@dimen/primary_login_margin">
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/pager"
+                    android:clickable="true"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
 
                 <TextView
                     android:id="@+id/tvShopID"
+                    android:layout_alignParentRight="true"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_gravity="right"
                     android:layout_margin="5dp"
                     android:background="@drawable/border_textview_post_numb_detail"
                     android:gravity="center"
-                    android:text="6"
                     android:textColor="#fff"
                     android:textSize="20dp"
                     android:textStyle="bold" />
-            </FrameLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
