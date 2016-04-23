@@ -5,16 +5,20 @@ import android.content.Intent;
 
 import Fragment.NearFragment;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
 
@@ -68,7 +72,7 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_list_menu_food, parent, false);
@@ -79,7 +83,7 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
             viewHolder.far = (TextView) convertView.findViewById(R.id.tvFar);
             viewHolder.rating = (RatingBar) convertView.findViewById(R.id.ratingBar);
             viewHolder.img = (ImageView) convertView.findViewById(R.id.imgFood);
-
+            viewHolder.progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -91,10 +95,27 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
         int rateing = food.getRating();
         viewHolder.rating.setRating(rateing);
 
+        ImageLoader.getInstance().displayImage(food.getImgUrl(), viewHolder.img, ImageLoaderConfig.options, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
+                viewHolder.progressBar.setVisibility(View.VISIBLE);
+            }
 
-        ImageLoader.getInstance().displayImage(food.getImgUrl(), viewHolder.img, ImageLoaderConfig.options);
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+                viewHolder.progressBar.setVisibility(View.GONE);
+            }
 
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                viewHolder.progressBar.setVisibility(View.GONE);
+            }
 
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+                viewHolder.progressBar.setVisibility(View.GONE);
+            }
+        });
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,5 +140,6 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
         TextView name, addr, far;
         ImageView img;
         RatingBar rating;
+        ProgressBar progressBar;
     }
 }

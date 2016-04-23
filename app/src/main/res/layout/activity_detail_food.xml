@@ -27,13 +27,24 @@
 
                 >
 
-                <ImageView
-                    android:id="@+id/imgMain"
-                    android:layout_width="@dimen/item_list_menu_food_height"
-                    android:layout_height="@dimen/item_list_menu_food_height"
-                    android:padding="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/bg" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgMain"
+                        android:layout_width="@dimen/item_list_menu_food_height"
+                        android:layout_height="@dimen/item_list_menu_food_height"
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/bg" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/btnShowMap"
@@ -102,16 +113,16 @@
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/pager"
-                    android:clickable="true"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:clickable="true" />
 
 
                 <TextView
                     android:id="@+id/tvShopID"
-                    android:layout_alignParentRight="true"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
                     android:layout_margin="5dp"
                     android:background="@drawable/border_textview_post_numb_detail"
                     android:gravity="center"
@@ -252,6 +263,7 @@
                 android:layout_weight="2"
                 android:gravity="center"
                 android:text="@string/post"
+                android:textStyle="bold"
                 android:textColor="@color/colorBgMenu" />
         </LinearLayout>
 
@@ -266,7 +278,7 @@
                 android:id="@+id/btnCamera"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@mipmap/bt_addphoto" />
+                android:background="@drawable/btn_camera_clicked" />
 
             <RadioGroup
                 android:id="@+id/rgBadGood"
@@ -290,8 +302,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:textSize="@dimen/text_size"
-                    android:text="Tốt" />
+                    android:text="Tốt"
+                    android:textSize="@dimen/text_size" />
 
                 <RadioButton
                     android:id="@+id/rbBad"
@@ -303,11 +315,11 @@
 
                 <TextView
                     android:id="@+id/tvBad"
-                    android:textSize="@dimen/text_size"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Xấu" />
+                    android:text="Xấu"
+                    android:textSize="@dimen/text_size" />
 
 
             </RadioGroup>
@@ -330,11 +342,11 @@
                     android:layout_height="40dp"
                     android:layout_alignParentBottom="true"
                     android:layout_toLeftOf="@+id/cbReport"
-                    android:gravity="center"
                     android:layout_toRightOf="@+id/rgBadGood"
+                    android:gravity="center"
+                    android:lines="2"
                     android:text="Báo cáo vi phạm VSATTP"
-                    android:textSize="@dimen/text_size"
-                    android:lines="2"/>
+                    android:textSize="@dimen/text_size" />
             </RelativeLayout>
 
         </LinearLayout>

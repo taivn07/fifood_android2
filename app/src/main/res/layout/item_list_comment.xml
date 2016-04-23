@@ -46,15 +46,27 @@
             android:text="" />
 
 
-        <ImageView
-            android:id="@+id/img"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvComment"
             android:layout_marginTop="@dimen/padding_small"
-            android:layout_toRightOf="@+id/imgAvartar"
-            android:maxHeight="150dp"
-            android:maxWidth="150dp"></ImageView>
+            android:layout_toRightOf="@+id/imgAvartar">
+
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxHeight="150dp"
+                android:maxWidth="150dp"></ImageView>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
 
     </RelativeLayout>
 

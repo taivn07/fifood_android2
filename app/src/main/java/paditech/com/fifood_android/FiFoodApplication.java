@@ -9,6 +9,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
+import Constant.ImageLoaderConfig;
+
 /**
  * Created by USER on 15/4/2016.
  */
@@ -31,5 +33,7 @@ public class FiFoodApplication extends Application {
                 .discCacheSize(100 * 1024 * 1024).build();
 
         ImageLoader.getInstance().init(config);
+
+        ImageLoaderConfig.imageLoaderConfig();
     }
 }

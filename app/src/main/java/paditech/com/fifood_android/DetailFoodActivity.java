@@ -21,24 +21,31 @@ import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import Constant.ImageLoaderConfig;
 import Object.Comment;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import Adapter.ListCommentAdapter;
 import Adapter.ViewPagerAdapter;
 import Constant.Constant;
@@ -65,11 +72,10 @@ public class DetailFoodActivity extends Activity implements Constant {
     private ViewPager pager;
     private ExpandableHeightListView lvComment;
     private EditText etComment;
-
+    private ProgressBar progressBar;
     private String detailResponse;
     private int imagesResponseID = -1;
     private Bitmap commentBitmap;
-
     private ArrayList<Comment> listComment;
     private ListCommentAdapter adapter;
     private View scrollView;
@@ -117,6 +123,7 @@ public class DetailFoodActivity extends Activity implements Constant {
         rgBadGood = (RadioGroup) findViewById(R.id.rgBadGood);
         cbReport = (CheckBox) findViewById(R.id.cbReport);
         scrollView = findViewById(R.id.scrollView);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         setBtnShowMapClicked();
         btnCameraClicked();
@@ -160,8 +167,8 @@ public class DetailFoodActivity extends Activity implements Constant {
             @Override
             public void onClick(View v) {
                 HideKeyBoard.hideSoftKeyboard(DetailFoodActivity.this);
-                if(LoginActivity.user==null){
-                    final AlertDialog.Builder builder=new AlertDialog.Builder(DetailFoodActivity.this);
+                if (LoginActivity.user == null) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(DetailFoodActivity.this);
                     builder.setMessage("Bạn cần phải đăng nhập để bình luận!");
                     builder.setPositiveButton("Đăng nhập", new DialogInterface.OnClickListener() {
                         @Override
@@ -176,12 +183,11 @@ public class DetailFoodActivity extends Activity implements Constant {
                         }
                     });
                     builder.show();
-                }else
-                    if(etComment.getText().toString().trim().equals("")){
-                        Toast.makeText(DetailFoodActivity.this, "Bạn chưa nhập bình luận!", Toast.LENGTH_SHORT).show();
-                    }else {
-                        createComment(LoginActivity.lang);
-                    }
+                } else if (etComment.getText().toString().trim().equals("")) {
+                    Toast.makeText(DetailFoodActivity.this, "Bạn chưa nhập bình luận!", Toast.LENGTH_SHORT).show();
+                } else {
+                    createComment(LoginActivity.lang);
+                }
 
             }
         });
@@ -217,7 +223,6 @@ public class DetailFoodActivity extends Activity implements Constant {
                 alertDialog.show();
 
 
-
             }
         });
     }
@@ -243,7 +248,7 @@ public class DetailFoodActivity extends Activity implements Constant {
         }
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
-            File finalFile = GetImageFile.getImageFile(this ,photo);
+            File finalFile = GetImageFile.getImageFile(this, photo);
 
             uploadImage(finalFile, LoginActivity.user.getUserID(), LoginActivity.user.getToken(), LoginActivity.lang);
         }
@@ -307,7 +312,7 @@ public class DetailFoodActivity extends Activity implements Constant {
     }
 
     private void getShopDetail(String lang) {
-        listComment=new ArrayList<>();
+        listComment = new ArrayList<>();
         AsyncHttpClient aClient = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put(LANG, lang);
@@ -338,7 +343,27 @@ public class DetailFoodActivity extends Activity implements Constant {
                     ratingBar.setRating((int) response.getDouble(RATING));
 
 
-                    ImageLoader.getInstance().displayImage(response.getJSONObject(FILE).getString(URL), imgMain, ImageLoaderConfig.options);
+                    ImageLoader.getInstance().displayImage(response.getJSONObject(FILE).getString(URL), imgMain, ImageLoaderConfig.options, new ImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String s, View view) {
+                            progressBar.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String s, View view, FailReason failReason) {
+                            progressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                            progressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String s, View view) {
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
 
 
                     JSONArray comments = response.getJSONArray(COMMENTS);
@@ -346,7 +371,7 @@ public class DetailFoodActivity extends Activity implements Constant {
                     for (int i = 0; i < comments.length(); i++) {
                         Comment comment = new Comment();
                         comment.setContent(comments.getJSONObject(i).getString(CONTENT));
-                        if(comments.getJSONObject(i).getJSONArray(FILES).length()>0)
+                        if (comments.getJSONObject(i).getJSONArray(FILES).length() > 0)
                             comment.setImgUrl(comments.getJSONObject(i).getJSONArray(FILES).getJSONObject(0).getString(THUMBNAIL_URL));
                         comment.setIsLike(comments.getJSONObject(i).getInt(IS_LIKE));
                         comment.setIsMain(comments.getJSONObject(i).getInt(IS_MAIN));
@@ -357,7 +382,7 @@ public class DetailFoodActivity extends Activity implements Constant {
                         comment.setTime(comments.getJSONObject(i).getDouble(TIME));
                         listComment.add(comment);
                     }
-                    adapter=new ListCommentAdapter(listComment,DetailFoodActivity.this);
+                    adapter = new ListCommentAdapter(listComment, DetailFoodActivity.this);
                     lvComment.setAdapter(adapter);
 
                 } catch (JSONException e) {
@@ -421,7 +446,15 @@ public class DetailFoodActivity extends Activity implements Constant {
     }
 
     private void setImageViewpager(JSONArray a) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(a, this);
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < a.length(); i++) {
+            try {
+                list.add(a.getJSONObject(i).getString(URL));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        ViewPagerAdapter adapter = new ViewPagerAdapter(list, this, a);
         pager.setAdapter(adapter);
 
     }
@@ -452,11 +485,11 @@ public class DetailFoodActivity extends Activity implements Constant {
         params.put(USER_ID, LoginActivity.user.getUserID());
         params.put(TOKEN, LoginActivity.user.getToken());
         params.put(CONTENT, etComment.getText().toString().trim());
-        if(imagesResponseID>0) params.put(FILES, imagesResponseID);
+        if (imagesResponseID > 0) params.put(FILES, imagesResponseID);
 
 
         if (rgBadGood.getCheckedRadioButtonId() == R.id.rbGood) params.put(IS_LIKE, 1);
-        if(rgBadGood.getCheckedRadioButtonId() == R.id.rbBad) params.put(IS_MAIN, 1);
+        if (rgBadGood.getCheckedRadioButtonId() == R.id.rbBad) params.put(IS_MAIN, 1);
         if (cbReport.isChecked()) params.put(IS_REPORT, 1);
 
 
@@ -466,6 +499,7 @@ public class DetailFoodActivity extends Activity implements Constant {
                 Log.e("JSON", "POST FAIL");
                 progressDialog.dismiss();
             }
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 Log.e("JSON", responseString + "");
@@ -476,7 +510,7 @@ public class DetailFoodActivity extends Activity implements Constant {
                         getShopDetail(LoginActivity.lang);
                         progressDialog.dismiss();
                         imagesResponseID = -1;
-                        lvComment.setSelection(listComment.size()-1);
+                        lvComment.setSelection(listComment.size() - 1);
                         etComment.setText("");
                     }
                 } catch (JSONException e) {

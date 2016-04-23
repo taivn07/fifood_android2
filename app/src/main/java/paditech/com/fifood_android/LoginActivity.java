@@ -1,11 +1,14 @@
 package paditech.com.fifood_android;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -23,12 +26,16 @@ import com.facebook.login.LoginResult;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
+
 import GPSTracker.CheckConnectNetwork;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+
 import Constant.Constant;
 import Object.User;
 import cz.msebera.android.httpclient.Header;
@@ -59,9 +66,7 @@ public class LoginActivity extends AppCompatActivity implements Constant {
     }
 
     private void init() {
-
         callbackManager = CallbackManager.Factory.create();
-
         btnLoginFb = findViewById(R.id.btnLoginFb);
         btnJoinNow = findViewById(R.id.tvJoinNow);
 
@@ -120,7 +125,7 @@ public class LoginActivity extends AppCompatActivity implements Constant {
     }
 
     private void getUserInfo(String lang, String token, final LoginResult loginResult) {
-        progressDialog=new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
         AsyncHttpClient aClient = new AsyncHttpClient();
@@ -131,6 +136,7 @@ public class LoginActivity extends AppCompatActivity implements Constant {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.e("POST AUTH", "FAIL");
+                Toast.makeText(LoginActivity.this, "Lỗi! Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -144,8 +150,6 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                         JSONObject u = response.getJSONObject(USER);
                         preferences.edit().putString(TOKEN, u.getString(TOKEN)).commit();
                         preferences.edit().putString(ID, u.getString(ID)).commit();
-
-
                         user.setEmail(u.getString(EMAIL));
                         user.setUserID(u.getString(ID));
                         user.setProfile_image(u.getString(PROFILE_IMAGE));
@@ -172,14 +176,14 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         Log.v("LoginActivity", response.toString());
-                        String email = object.optString("email");
-                        String id = object.optString("id");
-                        String name = object.optString("name");
+                        String email = object.optString(EMAIL);
+                        String id = object.optString(ID);
+                        String name = object.optString(NAME);
                         Log.e("FB", response.toString() + "");
 
                         User user = new User();
                         user.setEmail(email);
-                        user.setFb_id(id + "11");
+                        user.setFb_id(id);
                         user.setNickname(name);
                         user.setProfile_image("http://graph.facebook.com/" + id + "/picture?type=large");
                         Date cDate = new Date();
@@ -192,7 +196,7 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                     }
                 });
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email");
+        parameters.putString("fields","id,name,email");
         request.setParameters(parameters);
         request.executeAsync();
     }
@@ -220,10 +224,9 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                 try {
                     String res = responseString.substring(responseString.indexOf("{"));
                     Log.e("REGISTER", res + "");
-                    if(res.contains("\"result\":false")){
+                    if (res.contains("\"result\":false")) {
                         Toast.makeText(LoginActivity.this, "Facebook đã tồn tại", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         JSONObject response = new JSONObject(res).getJSONObject(RESPONSE).getJSONObject(USER);
                         preferences.edit().putString(TOKEN, response.getString(TOKEN)).commit();
                         preferences.edit().putString(ID, response.getString(ID)).commit();

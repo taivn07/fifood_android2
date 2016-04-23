@@ -187,7 +187,7 @@
                     android:id="@+id/btnCamera"
                     android:layout_width="@dimen/btn_take_photo_size"
                     android:layout_height="match_parent"
-                    android:background="@mipmap/bt_addphoto" />
+                    android:background="@drawable/btn_camera_clicked" />
 
 
                 <ImageView
@@ -225,7 +225,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:background="@color/colorBgMenuClicked"
+                android:background="@drawable/button_clicked"
                 android:paddingLeft="@dimen/activity_vertical_margin"
                 android:paddingRight="@dimen/activity_vertical_margin"
                 android:text="@string/add_store"

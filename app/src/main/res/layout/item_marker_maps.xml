@@ -5,13 +5,25 @@
     android:orientation="vertical"
     android:padding="@dimen/padding_small">
 
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_centerVertical="true"
-        android:scaleType="center"
-        android:src="@mipmap/bg" />
+    <RelativeLayout
+        android:id="@+id/imgLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="center"
+            android:src="@mipmap/bg" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tvName"
@@ -19,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/padding_small"
         android:layout_marginTop="@dimen/padding_small"
-        android:layout_toRightOf="@+id/img"
+        android:layout_toRightOf="@+id/imgLayout"
         android:ellipsize="end"
         android:lines="1"
         android:text="This is food"
@@ -34,7 +46,7 @@
         android:layout_below="@+id/tvName"
         android:layout_marginLeft="@dimen/padding_small"
         android:layout_marginTop="@dimen/padding_small"
-        android:layout_toRightOf="@+id/img"
+        android:layout_toRightOf="@+id/imgLayout"
         android:text="18m"
         android:textColor="@color/colorAddress"
         android:textSize="@dimen/text_address_size" />
@@ -47,7 +59,7 @@
         android:layout_below="@+id/tvDistance"
         android:layout_marginLeft="@dimen/padding_small"
         android:layout_marginTop="@dimen/padding_small"
-        android:layout_toRightOf="@+id/img"
+        android:layout_toRightOf="@+id/imgLayout"
         android:isIndicator="true"
         android:numStars="5"
         android:progressDrawable="@drawable/ratingbar_yellow"

@@ -3,13 +3,20 @@ package Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.AbsListView;
 import android.widget.EditText;
 
+import com.github.ksoichiro.android.observablescrollview.ObservableListView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -25,6 +32,7 @@ import Constant.Constant;
 import Constant.ExpandableHeightListView;
 import cz.msebera.android.httpclient.Header;
 import paditech.com.fifood_android.HomeActivity;
+import paditech.com.fifood_android.LoginActivity;
 import paditech.com.fifood_android.R;
 import Object.Food;
 import Constant.HideKeyBoard;
@@ -36,37 +44,40 @@ public class SearchFragment extends Fragment implements Constant {
 
     private EditText etName, etAddress;
     private View btnSearch;
-    private ExpandableHeightListView lvFood;
+    private ObservableListView lvFood;
     private ArrayList<Food> listFood;
     private ListFoodAdapter adapter;
-    private View mainLayout;
+    private View mainLayout, progressLayout;
+    private SwipeRefreshLayout refreshLayout;
+    private int index = 0;
+    private boolean isLoading = false;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        getActivity().setProgressBarIndeterminateVisibility(false);
-
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         init(view);
+        getActivity().setProgressBarIndeterminateVisibility(false);
         return view;
     }
 
     private void init(View view) {
-
+        listFood = new ArrayList<>();
+        adapter = new ListFoodAdapter(getActivity(), listFood);
         etAddress = (EditText) view.findViewById(R.id.etAddress);
         etName = (EditText) view.findViewById(R.id.etName);
-        lvFood = (ExpandableHeightListView) view.findViewById(R.id.lvFood);
+        lvFood = (ObservableListView) view.findViewById(R.id.lvFood);
         btnSearch = view.findViewById(R.id.btnSearch);
         mainLayout = view.findViewById(R.id.mainLayout);
-
+        progressLayout = view.findViewById(R.id.progressLayout);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         listFood = new ArrayList<>();
-        lvFood.setExpanded(true);
-
         setBtnSearchClicked();
         hideKeyBoard();
+        setLvFoodScrollChanged();
+        setRefreshLayoutLoading();
 
-
+        refreshLayout.setRefreshing(false);
     }
 
     private void hideKeyBoard() {
@@ -93,16 +104,111 @@ public class SearchFragment extends Fragment implements Constant {
             @Override
             public void onClick(View v) {
                 getActivity().setProgressBarIndeterminateVisibility(true);
-                getListFood("vi", 25, 0);
+                getListFood(LoginActivity.lang, 25, 0);
             }
         });
     }
 
-    private void getListFood(String lang, int offset, int index) {
-        listFood = new ArrayList<>();
+    private void setLvFoodScrollChanged() {
+        lvFood.setScrollViewCallbacks(new ObservableScrollViewCallbacks() {
+            @Override
+            public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+            }
+
+            @Override
+            public void onDownMotionEvent() {
+            }
+
+            @Override
+            public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+
+                if (scrollState == ScrollState.UP) {
+                    hideMainLayout();
+                } else if (scrollState == ScrollState.DOWN) {
+                    showMainLayout();
+                }
+            }
+        });
+
+        lvFood.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (view.getLastVisiblePosition() >= totalItemCount - 1 && !isLoading) {
+                    index++;
+                    progressLayout.setVisibility(View.VISIBLE);
+                    getListFood(LoginActivity.lang, 25, index);
+                    isLoading = true;
+                }
+            }
+        });
+
+    }
+
+    public void hideMainLayout() {
+        if (mainLayout.isShown()) {
+            TranslateAnimation animate = new TranslateAnimation(0, 0, 0, -mainLayout.getHeight());
+            animate.setDuration(300);
+            animate.setFillAfter(true);
+            mainLayout.startAnimation(animate);
+            animate.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mainLayout.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+        }
+    }
+
+    public void showMainLayout() {
+        if (!mainLayout.isShown()) {
+            TranslateAnimation animate = new TranslateAnimation(0, 0, -mainLayout.getHeight(), 0);
+            animate.setDuration(300);
+            animate.setFillAfter(true);
+            mainLayout.startAnimation(animate);
+            animate.setAnimationListener(new Animation.AnimationListener() {
+                                             @Override
+                                             public void onAnimationStart(Animation animation) {
+                                                 mainLayout.setVisibility(View.VISIBLE);
+                                             }
+
+                                             @Override
+                                             public void onAnimationEnd(Animation animation) {
+                                             }
+
+                                             @Override
+                                             public void onAnimationRepeat(Animation animation) {
+                                             }
+                                         }
+            );
+        }
+    }
+
+    private void setRefreshLayoutLoading() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                listFood = new ArrayList<>();
+                getListFood(LoginActivity.lang, 25, 0);
+                index = 0;
+            }
+        });
+    }
+
+    private void getListFood(String lang, int offset, final int index) {
         AsyncHttpClient aClient = new AsyncHttpClient();
-
-
         RequestParams params = new RequestParams();
         params.put(LANG, lang);
         params.put(LAT, HomeActivity.currLat);
@@ -116,6 +222,8 @@ public class SearchFragment extends Fragment implements Constant {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.e("JSON", "POST FAIL");
+                refreshLayout.setRefreshing(false);
+                progressLayout.setVisibility(View.GONE);
             }
 
             @Override
@@ -142,15 +250,19 @@ public class SearchFragment extends Fragment implements Constant {
                     }
                     Log.e("SIZE search", listFood.size() + "");
 
-                    adapter = new ListFoodAdapter(getActivity(), listFood);
-                    lvFood.setAdapter(adapter);
-
-
+                    if (index == 0) {
+                        adapter = new ListFoodAdapter(getActivity(), listFood);
+                        lvFood.setAdapter(adapter);
+                        refreshLayout.setRefreshing(false);
+                    } else {
+                        if (shops.length() == 25)
+                            isLoading = false;
+                        adapter.notifyDataSetChanged();
+                        progressLayout.setVisibility(View.GONE);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                getActivity().setProgressBarIndeterminateVisibility(false);
 
 
             }

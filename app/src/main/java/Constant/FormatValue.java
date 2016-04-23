@@ -25,11 +25,11 @@ public class FormatValue {
     }
 
     public static String getTimeComment(double dif, String create){
-        String rs = "";
         String date= create.split(" ")[0];
 
+        dif = dif *1000;
         if(dif< 6){
-            return "just now";
+            return "Vừa xong";
         }else {
             if(dif < 60){
 

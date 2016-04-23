@@ -1,13 +1,16 @@
 package paditech.com.fifood_android;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +21,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.ArrayList;
@@ -46,6 +52,9 @@ public class PickMultiPhotoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_multi_photo);
 
+        ActionBar actionBar = getActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorBgMenu)));
+        actionBar.setTitle(Html.fromHtml("<b>Chọn ảnh</b>"));
 
         final String[] columns = {MediaStore.Images.Media.DATA,
                 MediaStore.Images.Media._ID};
@@ -166,10 +175,29 @@ public class PickMultiPhotoActivity extends Activity {
                     .findViewById(R.id.cbImage);
             final ImageView imageView = (ImageView) convertView
                     .findViewById(R.id.img);
+            final ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
 
             ImageLoader.getInstance().displayImage("file://" + imageUrls.get(position),
-                    imageView, options, new SimpleImageLoadingListener() {
+                    imageView, options, new ImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String s, View view) {
+                            progressBar.setVisibility(View.VISIBLE);
+                        }
 
+                        @Override
+                        public void onLoadingFailed(String s, View view, FailReason failReason) {
+                            progressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                            progressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String s, View view) {
+                            progressBar.setVisibility(View.GONE);
+                        }
                     });
             mCheckBox.setTag(position);
             mCheckBox.setChecked(mSparseBooleanArray.get(position));
@@ -186,7 +214,7 @@ public class PickMultiPhotoActivity extends Activity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCheckBox.setChecked(mSparseBooleanArray.get(position));
+                    mCheckBox.setChecked(true);
                 }
             });
             return convertView;

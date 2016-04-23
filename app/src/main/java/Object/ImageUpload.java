@@ -12,11 +12,20 @@ public class ImageUpload {
     private Bitmap bitmap;
     private int progress;
     private File file;
+    private String imgID = "";
 
     public ImageUpload(Bitmap bitmap, int progress, File file) {
         this.bitmap = bitmap;
         this.progress = progress;
         this.file = file;
+    }
+
+    public String getImgID() {
+        return imgID;
+    }
+
+    public void setImgID(String imgID) {
+        this.imgID = imgID;
     }
 
     public ImageUpload() {

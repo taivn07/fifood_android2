@@ -3,12 +3,17 @@ package paditech.com.fifood_android;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import Constant.ImageLoaderConfig;
@@ -24,12 +29,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-
 import Constant.Constant;
 import Constant.FormatValue;
 
@@ -43,17 +48,16 @@ public class ShowMapFoodActivity extends Activity implements Constant {
     private RatingBar ratingBar;
     private String detailResponse;
     private GoogleMap googleMap;
-
+    private ProgressBar progressBar;
     private Marker marker;
+    private ActionBar actionBar;
 
 
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_map_food);
-
         Bundle bundle = getIntent().getExtras();
         detailResponse = bundle.getString(DETAIL_RESPONSE);
 
@@ -62,32 +66,57 @@ public class ShowMapFoodActivity extends Activity implements Constant {
     }
 
     private void init() {
-        ActionBar actionBar = getActionBar();
+        actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorBgMenu)));
 
         imgMain = (ImageView) findViewById(R.id.imgMain);
         tvName = (TextView) findViewById(R.id.tvName);
         tvAddress = (TextView) findViewById(R.id.tvAddress);
         tvDistance = (TextView) findViewById(R.id.tvDistance);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         getShopDetail(detailResponse);
-
-
     }
 
     private void getShopDetail(String responseString) {
         JSONObject jsonObject = null;
         try {
-            jsonObject = new JSONObject(responseString);
-            JSONObject response = jsonObject.getJSONObject(RESPONSE);
+            JSONObject response;
+            if(responseString.contains("\"response\":")) {
+                jsonObject = new JSONObject(responseString);
+                response = jsonObject.getJSONObject(RESPONSE);
+            }else {
+                response = new JSONObject(responseString);
+            }
 
+            actionBar.setTitle(Html.fromHtml("<b>" + response.getString(NAME) + "</b>"));
             tvName.setText(response.getString(NAME));
             tvAddress.setText(response.getString(ADDRESS));
             tvDistance.setText(FormatValue.getDistance(response.getDouble(DISTANCE)));
             ratingBar.setRating((int) response.getDouble(RATING));
 
-            ImageLoader.getInstance().displayImage(response.getJSONObject(FILE).getString(THUMBNAIL_URL), imgMain, ImageLoaderConfig.options);
+            ImageLoader.getInstance().displayImage(response.getJSONObject(FILE).getString(URL), imgMain, ImageLoaderConfig.options, new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String s, View view) {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onLoadingFailed(String s, View view, FailReason failReason) {
+                    progressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                    progressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onLoadingCancelled(String s, View view) {
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
 
             double lat = response.getDouble(LAT);
             double lng = response.getDouble(LONGTH);

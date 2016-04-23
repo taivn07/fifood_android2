@@ -73,6 +73,7 @@ public interface Constant {
     public final static String PACKAGE_NAME ="paditech.com.fifood_android";
     public final static String RESULT="result";
     public final static String THUMBNAIL_URL="thumbnail_url";
+    public final static String TOTAL= "total";
 
     public final static String DETAIL_RESPONSE = "DETAIL_RESPONSE";
     public final static String IMAGES_RESPONSE = "IMAGES_RESPONSE";

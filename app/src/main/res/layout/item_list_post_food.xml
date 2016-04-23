@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/item_list_menu_food_height"
+    android:layout_height="@dimen/list_item_size"
     android:background="#fff"
     android:orientation="horizontal"
     android:padding="10dp"
-    android:weightSum="10"
+    android:weightSum="10">
 
-    >
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imgFood"
-        android:layout_width="@dimen/item_list_menu_food_height"
-        android:layout_height="match_parent"
-        android:padding="8dp"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/bg" />
+        <ImageView
+            android:id="@+id/imgFood"
+            android:layout_width="@dimen/item_list_menu_food_height"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/bg" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="1dp"
@@ -39,6 +49,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvFoodName"
             android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:text="This is a food"
             android:textColor="@color/colorAddress"
             android:textSize="@dimen/text_address_size" />

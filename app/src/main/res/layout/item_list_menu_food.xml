@@ -11,21 +11,34 @@
 
     >
 
-    <ImageView
-        android:id="@+id/imgFood"
-        android:layout_width="@dimen/item_list_menu_food_height"
-        android:layout_height="@dimen/item_list_menu_food_height"
-        android:padding="8dp"
-        android:scaleType="center"
-        android:src="@mipmap/bg" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgFood"
+            android:layout_width="@dimen/item_list_menu_food_height"
+            android:layout_height="@dimen/item_list_menu_food_height"
+            android:padding="8dp"
+            android:scaleType="center"
+            android:src="@mipmap/bg" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:id="@+id/progressBar"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:progressDrawable="@drawable/progressbar_refresh_style" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="1dp"
         android:layout_height="match_parent"
         android:layout_weight="10"
+        android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:gravity="center_vertical"
         android:paddingTop="10dp">
 
         <TextView

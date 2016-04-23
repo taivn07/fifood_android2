@@ -2,14 +2,18 @@ package Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
 
@@ -30,7 +34,6 @@ public class ListPostAdapter extends BaseAdapter implements Constant {
         this.context = context;
         this.listFood = listFood;
     }
-
     @Override
     public int getCount() {
         return listFood.size();
@@ -51,7 +54,7 @@ public class ListPostAdapter extends BaseAdapter implements Constant {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_list_post_food, parent, false);
@@ -62,7 +65,7 @@ public class ListPostAdapter extends BaseAdapter implements Constant {
             viewHolder.sum = (TextView) convertView.findViewById(R.id.tvSum);
             viewHolder.numb = (TextView) convertView.findViewById(R.id.tvNumb);
             viewHolder.img = (ImageView) convertView.findViewById(R.id.imgFood);
-
+            viewHolder.progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -73,7 +76,27 @@ public class ListPostAdapter extends BaseAdapter implements Constant {
         viewHolder.sum.setText("Phản hồi: " + food.getTotalComment());
         viewHolder.numb.setText(food.getNotifyNum() + "");
 
-        ImageLoader.getInstance().displayImage(food.getImgUrl(), viewHolder.img, ImageLoaderConfig.options);
+        ImageLoader.getInstance().displayImage(food.getImgUrl(), viewHolder.img, ImageLoaderConfig.options, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
+                viewHolder.progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+                viewHolder.progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                viewHolder.progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+                viewHolder.progressBar.setVisibility(View.GONE);
+            }
+        });
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +113,6 @@ public class ListPostAdapter extends BaseAdapter implements Constant {
 
         TextView name, addr, numb, sum;
         ImageView img;
-
+        ProgressBar progressBar;
     }
 }

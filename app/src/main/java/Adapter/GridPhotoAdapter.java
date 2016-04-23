@@ -70,7 +70,6 @@ public class GridPhotoAdapter extends BaseAdapter {
             circleProgress.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //addFragment.listBitmap.remove(position);
                     addFragment.uploadImage(listBitmap.get(position).getFile(), position, LoginActivity.user.getUserID()
                             , LoginActivity.user.getToken(), LoginActivity.lang);
 

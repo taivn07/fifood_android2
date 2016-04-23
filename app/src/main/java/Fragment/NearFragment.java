@@ -4,9 +4,11 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import com.github.ksoichiro.android.observablescrollview.ObservableListView;
@@ -34,6 +37,8 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,9 +49,11 @@ import Constant.Constant;
 import cz.msebera.android.httpclient.Header;
 import paditech.com.fifood_android.DetailFoodActivity;
 import paditech.com.fifood_android.HomeActivity;
+import paditech.com.fifood_android.LoginActivity;
 import paditech.com.fifood_android.R;
 import Object.Food;
 import Constant.ImageLoaderConfig;
+import paditech.com.fifood_android.ShowMapFoodActivity;
 
 /**
  * Created by USER on 13/4/2016.
@@ -65,6 +72,8 @@ public class NearFragment extends Fragment implements Constant {
     private int index = 0;
     private boolean isLoading = false;
     private View maps;
+    private SwipeRefreshLayout refreshLayout;
+    public String detailResponse;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,22 +96,37 @@ public class NearFragment extends Fragment implements Constant {
         lvFood = (ObservableListView) view.findViewById(R.id.lvFood);
         maps = view.findViewById(R.id.mapLayout);
         progressLayout = view.findViewById(R.id.progressLayout);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 
         adapter = new ListFoodAdapter(getActivity(), listFood, this);
         lvFood.setAdapter(adapter);
 
         setMapLocation();
         setLvFoodChanged();
+        setRefreshLayoutLoading();
+    }
 
+    private void setRefreshLayoutLoading(){
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                listFood = new ArrayList<Food>();
+                getListFoodNear(LoginActivity.lang, 25, 0);
+                index = 0;
+            }
+        });
     }
 
     private void setLvFoodChanged() {
         lvFood.setScrollViewCallbacks(new ObservableScrollViewCallbacks() {
             @Override
-            public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {}
+            public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+            }
 
             @Override
-            public void onDownMotionEvent() {}
+            public void onDownMotionEvent() {
+            }
 
             @Override
             public void onUpOrCancelMotionEvent(ScrollState scrollState) {
@@ -115,18 +139,19 @@ public class NearFragment extends Fragment implements Constant {
                     showMaps();
                 }
             }
-
         });
 
         lvFood.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {}
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (view.getLastVisiblePosition() >= totalItemCount - 1 && !isLoading) {
                     index++;
-                    getListFoodNear("vi", 25, index);
+                    progressLayout.setVisibility(View.VISIBLE);
+                    getListFoodNear(LoginActivity.lang, 25, index);
                     isLoading = true;
                 }
             }
@@ -134,8 +159,7 @@ public class NearFragment extends Fragment implements Constant {
 
     }
 
-    private void getListFoodNear(String lang, int offset, int index) {
-        progressLayout.setVisibility(View.VISIBLE);
+    private void getListFoodNear(String lang, int offset, final int index) {
         AsyncHttpClient aClient = new AsyncHttpClient();
 
         RequestParams params = new RequestParams();
@@ -149,6 +173,8 @@ public class NearFragment extends Fragment implements Constant {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.e("JSON", "POST FAIL");
+                refreshLayout.setRefreshing(false);
+                progressLayout.setVisibility(View.GONE);
             }
 
             @Override
@@ -170,15 +196,22 @@ public class NearFragment extends Fragment implements Constant {
                         listFood.add(food);
                     }
                     Log.e("SIZE", listFood.size() + "");
-                    adapter.notifyDataSetChanged();
                     setMapLocation();
-                    if (shops.length() == 25)
-                        isLoading = false;
+                    if(index == 0){
+                        adapter = new ListFoodAdapter(getActivity(), listFood, NearFragment.this);
+                        lvFood.setAdapter(adapter);
+                        refreshLayout.setRefreshing(false);
+                    }else {
+                        if (shops.length() == 25)
+                            isLoading = false;
+                        adapter.notifyDataSetChanged();
+                        progressLayout.setVisibility(View.GONE);
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                progressLayout.setVisibility(View.GONE);
+
             }
         });
     }
@@ -289,21 +322,63 @@ public class NearFragment extends Fragment implements Constant {
                 @Override
                 public View getInfoContents(Marker marker) {
                     final int position = listMarker.indexOf(marker);
-                    if (position != -1) {
+                    if (position != - 1 && listFood.size() > position) {
                         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         View v = inflater.inflate(R.layout.item_marker_maps, null);
                         TextView name = (TextView) v.findViewById(R.id.tvName);
                         TextView distance = (TextView) v.findViewById(R.id.tvDistance);
                         ImageView img = (ImageView) v.findViewById(R.id.img);
                         RatingBar ratingBar = (RatingBar) v.findViewById(R.id.ratingBar);
-
+                        final ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
                         name.setText(listFood.get(position).getName());
-                        ImageLoader.getInstance().displayImage(listFood.get(position).getImgUrl(), img, ImageLoaderConfig.options);
+                        ImageLoader.getInstance().displayImage(listFood.get(position).getImgUrl(), img, ImageLoaderConfig.options, new ImageLoadingListener() {
+                            @Override
+                            public void onLoadingStarted(String s, View view) {
+                                progressBar.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onLoadingFailed(String s, View view, FailReason failReason) {
+                                progressBar.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                                progressBar.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onLoadingCancelled(String s, View view) {
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
                         distance.setText(String.format("%.02f", (float) listFood.get(position).getDistance()) + " m");
                         ratingBar.setRating(listFood.get(position).getRating());
                         return v;
                     }
                     return null;
+                }
+            });
+
+            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    try {
+                        int index= listMarker.indexOf(marker);
+                        if(index > -1) {
+                            JSONObject jsonObject = new JSONObject(detailResponse);
+                            JSONObject response = jsonObject.getJSONObject(RESPONSE);
+                            JSONArray shops = response.getJSONArray(SHOPS);
+                            String rs = shops.getJSONObject(index).toString();
+                            Intent intent = new Intent(getActivity(), ShowMapFoodActivity.class);
+                            intent.putExtra(DETAIL_RESPONSE, rs );
+                            startActivity(intent);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    return false;
                 }
             });
         }

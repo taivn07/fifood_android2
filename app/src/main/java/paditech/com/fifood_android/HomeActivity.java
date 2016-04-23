@@ -88,7 +88,7 @@ public class HomeActivity extends FragmentActivity implements Constant {
         }
         rgMenu.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
+            public void onCheckedChanged(RadioGroup group, final int checkedId) {
                 switch (checkedId) {
                     case R.id.btnHome: {
                         actionBar.setTitle(Html.fromHtml("<b>Home</b>"));
@@ -99,7 +99,7 @@ public class HomeActivity extends FragmentActivity implements Constant {
                     case R.id.btnAccount: {
                         listPost = new ArrayList<>();
                         if(LoginActivity.user!=null)
-                            getListPost(LoginActivity.lang, 25, 0, LoginActivity.user.getUserID(), LoginActivity.user.getToken());
+                            getListPost(LoginActivity.lang, 100, 0, LoginActivity.user.getUserID(), LoginActivity.user.getToken());
                         accountFragment.listPost = listPost;
                         actionBar.setTitle(Html.fromHtml("<b>Các bài đã đăng</b>"));
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -126,10 +126,10 @@ public class HomeActivity extends FragmentActivity implements Constant {
                         break;
                     }
                 }
+
             }
         });
     }
-
 
     private void getListFoodNear(String lang, int offset, int index) {
 
@@ -155,11 +155,14 @@ public class HomeActivity extends FragmentActivity implements Constant {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.e("JSON", "POST FAIL");
+                btnRefresh.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 try {
+                    nearFragment.detailResponse = responseString;
                     JSONObject jsonObject = new JSONObject(responseString);
 
                     JSONObject response = jsonObject.getJSONObject(RESPONSE);
