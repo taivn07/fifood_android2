@@ -1,6 +1,7 @@
 package Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,16 +9,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.util.ArrayList;
 
+import Constant.Constant;
 import Constant.ImageLoaderConfig;
 import Object.Food;
+import paditech.com.fifood_android.DetailFoodActivity;
 import paditech.com.fifood_android.R;
 
 /**
  * Created by USER on 13/4/2016.
  */
-public class ListPostAdapter extends BaseAdapter {
+public class ListPostAdapter extends BaseAdapter implements Constant {
     private Context context;
     private ArrayList<Food> listFood = new ArrayList<>();
 
@@ -62,14 +67,22 @@ public class ListPostAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        Food food = listFood.get(position);
+        final Food food = listFood.get(position);
         viewHolder.name.setText(food.getName());
         viewHolder.addr.setText(food.getAddress());
         viewHolder.sum.setText("Phản hồi: " + food.getTotalComment());
         viewHolder.numb.setText(food.getNotifyNum() + "");
 
-        ImageLoaderConfig.imageLoader.displayImage(food.getImgUrl(), viewHolder.img, ImageLoaderConfig.options);
-
+        ImageLoader.getInstance().displayImage(food.getImgUrl(), viewHolder.img, ImageLoaderConfig.options);
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailFoodActivity.class);
+                intent.putExtra(ID, food.getShop_id());
+                intent.putExtra(NAME, food.getName());
+                context.startActivity(intent);
+            }
+        });
         return convertView;
     }
 

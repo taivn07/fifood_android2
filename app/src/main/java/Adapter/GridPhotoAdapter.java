@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.github.lzyzsd.circleprogress.CircleProgress;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.util.ArrayList;
 
 import Fragment.AddFragment;
+import paditech.com.fifood_android.LoginActivity;
 import paditech.com.fifood_android.R;
+import Object.ImageUpload;
 
 /**
  * Created by USER on 17/4/2016.
@@ -21,11 +24,9 @@ import paditech.com.fifood_android.R;
 public class GridPhotoAdapter extends BaseAdapter {
 
     private AddFragment addFragment;
-
-    private ArrayList<Bitmap> listBitmap;
+    private ArrayList<ImageUpload> listBitmap;
     private Context context;
-
-    public GridPhotoAdapter(ArrayList<Bitmap> listBitmap, Context context, AddFragment addFragment) {
+    public GridPhotoAdapter(ArrayList<ImageUpload> listBitmap, Context context, AddFragment addFragment) {
         this.listBitmap = listBitmap;
         this.context = context;
         this.addFragment = addFragment;
@@ -49,23 +50,43 @@ public class GridPhotoAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_gridview_photo, parent, false);
-        }
 
-        ImageView img = (ImageView) convertView.findViewById(R.id.img);
+        convertView = inflater.inflate(R.layout.item_gridview_photo, parent, false);
+
         View btnDel = convertView.findViewById(R.id.btnDel);
         DonutProgress circleProgress = (DonutProgress) convertView.findViewById(R.id.pbUploadImg);
+        ImageView img = (ImageView) convertView.findViewById(R.id.img);
 
-        circleProgress.setProgress(100);
-        img.setImageBitmap(listBitmap.get(position));
-
+        circleProgress.setProgress(listBitmap.get(position).getProgress());
+        img.setImageBitmap(listBitmap.get(position).getBitmap());
         btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addFragment.deleteImage(position);
             }
         });
+
+        if (listBitmap.get(position).getProgress() == 0) {
+            circleProgress.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //addFragment.listBitmap.remove(position);
+                    addFragment.uploadImage(listBitmap.get(position).getFile(), position, LoginActivity.user.getUserID()
+                            , LoginActivity.user.getToken(), LoginActivity.lang);
+
+                }
+            });
+        }
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (addFragment.isSelector) {
+                        addFragment.setImageAvatarID(position);
+                        addFragment.gridPhoto.setSelection(position);
+                    }
+                }
+            });
+
         return convertView;
     }
 

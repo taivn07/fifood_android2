@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -44,9 +45,8 @@ public class LoginActivity extends AppCompatActivity implements Constant {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this);
-
         user = new User();
-        preferences = this.getSharedPreferences("paditech.com.fifood_android", MODE_PRIVATE);
+        preferences = this.getSharedPreferences(PACKAGE_NAME, MODE_PRIVATE);
         user.setUserID(preferences.getString(ID, null));
         user.setToken(preferences.getString(TOKEN, null));
         if (user.getUserID() != null) {
@@ -97,6 +97,7 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                         public void onSuccess(LoginResult loginResult) {
                             AccessToken accessToken = AccessToken.getCurrentAccessToken();
                             String fbToken = accessToken.getToken().toString();
+                            preferences.edit().putString(FB_TOKEN, fbToken).commit();
                             Log.e("SUCCESS", fbToken + "\n" + loginResult.getAccessToken().getToken());
                             getUserInfo(LoginActivity.lang, fbToken, loginResult);
                         }
@@ -143,6 +144,7 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                         JSONObject u = response.getJSONObject(USER);
                         preferences.edit().putString(TOKEN, u.getString(TOKEN)).commit();
                         preferences.edit().putString(ID, u.getString(ID)).commit();
+
 
                         user.setEmail(u.getString(EMAIL));
                         user.setUserID(u.getString(ID));
@@ -218,20 +220,25 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                 try {
                     String res = responseString.substring(responseString.indexOf("{"));
                     Log.e("REGISTER", res + "");
-                    JSONObject response = new JSONObject(res).getJSONObject(RESPONSE).getJSONObject(USER);
-                    preferences.edit().putString(TOKEN, response.getString(TOKEN)).commit();
-                    preferences.edit().putString(ID, response.getString(ID)).commit();
+                    if(res.contains("\"result\":false")){
+                        Toast.makeText(LoginActivity.this, "Facebook đã tồn tại", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        JSONObject response = new JSONObject(res).getJSONObject(RESPONSE).getJSONObject(USER);
+                        preferences.edit().putString(TOKEN, response.getString(TOKEN)).commit();
+                        preferences.edit().putString(ID, response.getString(ID)).commit();
 
-                    user.setEmail(response.getString(EMAIL));
-                    user.setUserID(response.getString(ID));
-                    user.setProfile_image(response.getString(PROFILE_IMAGE));
-                    user.setNickname(response.getString(NICKNAME));
-                    user.setToken(response.getString(TOKEN));
+                        user.setEmail(response.getString(EMAIL));
+                        user.setUserID(response.getString(ID));
+                        user.setProfile_image(response.getString(PROFILE_IMAGE));
+                        user.setNickname(response.getString(NICKNAME));
+                        user.setToken(response.getString(TOKEN));
 
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
-                    progressDialog.dismiss();
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                        progressDialog.dismiss();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     progressDialog.dismiss();

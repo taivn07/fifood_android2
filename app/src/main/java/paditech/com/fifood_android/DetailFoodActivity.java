@@ -30,6 +30,8 @@ import Object.Comment;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +46,7 @@ import cz.msebera.android.httpclient.Header;
 import Constant.ExpandableHeightListView;
 import Constant.GetImageFile;
 import Constant.HideKeyBoard;
+import Constant.FormatValue;
 
 /**
  * Created by USER on 14/4/2016.
@@ -84,7 +87,6 @@ public class DetailFoodActivity extends Activity implements Constant {
         String name = bundle.getString(NAME);
 
         ActionBar actionBar = getActionBar();
-
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorBgMenu)));
         actionBar.setTitle(Html.fromHtml("<b>" + name + "</b>"));
 
@@ -330,12 +332,13 @@ public class DetailFoodActivity extends Activity implements Constant {
 
                     tvName.setText(response.getString(NAME));
                     tvAddress.setText(response.getString(ADDRESS));
-                    tvDistance.setText((int) response.getDouble(DISTANCE) + " m");
+                    tvDistance.setText(FormatValue.getDistance(response.getDouble(DISTANCE)));
                     tvGoodNumb.setText(response.getString(LIKE_NUMB));
                     tvBadNumb.setText(response.getString(DISLIKE_NUMB));
                     ratingBar.setRating((int) response.getDouble(RATING));
 
-                    ImageLoaderConfig.imageLoader.displayImage(response.getJSONObject(FILE).getString(URL), imgMain, ImageLoaderConfig.options);
+
+                    ImageLoader.getInstance().displayImage(response.getJSONObject(FILE).getString(URL), imgMain, ImageLoaderConfig.options);
 
 
                     JSONArray comments = response.getJSONArray(COMMENTS);
@@ -344,12 +347,14 @@ public class DetailFoodActivity extends Activity implements Constant {
                         Comment comment = new Comment();
                         comment.setContent(comments.getJSONObject(i).getString(CONTENT));
                         if(comments.getJSONObject(i).getJSONArray(FILES).length()>0)
-                            comment.setImgUrl(comments.getJSONObject(i).getJSONArray(FILES).getJSONObject(0).getString(URL));
+                            comment.setImgUrl(comments.getJSONObject(i).getJSONArray(FILES).getJSONObject(0).getString(THUMBNAIL_URL));
                         comment.setIsLike(comments.getJSONObject(i).getInt(IS_LIKE));
                         comment.setIsMain(comments.getJSONObject(i).getInt(IS_MAIN));
                         comment.setIsReport(comments.getJSONObject(i).getInt(IS_REPORT));
                         comment.setNickname(comments.getJSONObject(i).getString(NICKNAME));
                         comment.setUserProfifeImage(comments.getJSONObject(i).getString(USER_PROFILE_IMAGE));
+                        comment.setDateCreated(comments.getJSONObject(i).getString(CREATED));
+                        comment.setTime(comments.getJSONObject(i).getDouble(TIME));
                         listComment.add(comment);
                     }
                     adapter=new ListCommentAdapter(listComment,DetailFoodActivity.this);

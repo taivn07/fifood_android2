@@ -22,6 +22,8 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import Adapter.ListPostAdapter;
 import Constant.Constant;
 import Fragment.AccountFragment;
 import Fragment.AddFragment;
@@ -95,7 +97,10 @@ public class HomeActivity extends FragmentActivity implements Constant {
                         break;
                     }
                     case R.id.btnAccount: {
-                        accountFragment.listFood = listPost;
+                        listPost = new ArrayList<>();
+                        if(LoginActivity.user!=null)
+                            getListPost(LoginActivity.lang, 25, 0, LoginActivity.user.getUserID(), LoginActivity.user.getToken());
+                        accountFragment.listPost = listPost;
                         actionBar.setTitle(Html.fromHtml("<b>Các bài đã đăng</b>"));
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.mainLayout, accountFragment).commit();
@@ -220,6 +225,64 @@ public class HomeActivity extends FragmentActivity implements Constant {
         }
     }
 
+    private void getListPost(String lang, int offset, int index, String userID, String token) {
+        for(int i=1; i<5; i++){
+            rgMenu.getChildAt(i).setEnabled(false);
+        }
+        setProgressBarIndeterminateVisibility(true);
+        listPost = new ArrayList<>();
+        AsyncHttpClient aClient = new AsyncHttpClient();
+
+        RequestParams params = new RequestParams();
+        params.put(LANG, lang);
+        params.put(OFFSET, offset);
+        params.put(INDEX, index);
+        params.put(USER_ID, userID);
+        params.put(TOKEN, token);
+
+        aClient.post(BASE_URL + MY_SHOP, params, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.e("JSON", "POST FAIL");
+                for(int i=1; i<5; i++){
+                    rgMenu.getChildAt(i).setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                try {
+                    JSONObject jsonObject = new JSONObject(responseString);
+
+                    JSONObject response = jsonObject.getJSONObject(RESPONSE);
+
+                    JSONArray shops = response.getJSONArray(SHOPS);
+
+                    for (int i = 0; i < shops.length(); i++) {
+                        Food food = new Food();
+                        food.setAddress(shops.getJSONObject(i).getString(ADDRESS));
+                        food.setName(shops.getJSONObject(i).getString(NAME));
+                        food.setRating(shops.getJSONObject(i).getInt(RATING));
+                        food.setShop_id(shops.getJSONObject(i).getString(ID));
+                        food.setImgUrl(shops.getJSONObject(i).getJSONObject(FILE).getString(THUMBNAIL_URL));
+                        food.setTotalComment(shops.getJSONObject(i).getInt(TOTAL_COMMENT));
+                        food.setNotifyNum(shops.getJSONObject(i).getInt(NOTIFY_NUM));
+
+                        listPost.add(food);
+                    }
+                    Log.e("SIZE search", listFood.size() + "");
+                    accountFragment.updateList();
+                    setProgressBarIndeterminateVisibility(false);
+                    for(int i=1; i<5; i++){
+                        rgMenu.getChildAt(i).setEnabled(true);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

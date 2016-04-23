@@ -5,10 +5,18 @@ package Object;
  */
 public class Comment {
 
-    private String id, userID, userName, nickname, userProfifeImage, imgUrl;
+    private String id, userID, userName, nickname, userProfifeImage, imgUrl, dateCreated;
     private String content;
     private int isLike, isReport, isMain;
     private double time;
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
     public String getId() {
         return id;

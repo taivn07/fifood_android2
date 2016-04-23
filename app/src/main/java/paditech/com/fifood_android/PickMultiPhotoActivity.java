@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.SparseBooleanArray;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
@@ -52,13 +55,11 @@ public class PickMultiPhotoActivity extends Activity {
                 null, orderBy + " DESC");
 
         this.imageUrls = new ArrayList<String>();
-
         for (int i = 0; i < imagecursor.getCount(); i++) {
             imagecursor.moveToPosition(i);
             int dataColumnIndex = imagecursor
                     .getColumnIndex(MediaStore.Images.Media.DATA);
             imageUrls.add(imagecursor.getString(dataColumnIndex));
-
             System.out.println("=====> Array path => " + imageUrls.get(i));
         }
 
@@ -90,8 +91,9 @@ public class PickMultiPhotoActivity extends Activity {
             @Override
             public void onClick(View v) {
                 selectedItems = new ArrayList<String>();
-
                 selectedItems = imageAdapter.getCheckedItems();
+
+                ImageLoader.getInstance().stop();
                 Toast.makeText(PickMultiPhotoActivity.this,
                         "Total photos selected: " + selectedItems.size(),
                         Toast.LENGTH_SHORT).show();
@@ -111,6 +113,7 @@ public class PickMultiPhotoActivity extends Activity {
 
         ArrayList<String> mList;
         LayoutInflater mInflater;
+
         Context mContext;
         SparseBooleanArray mSparseBooleanArray;
 
@@ -152,23 +155,22 @@ public class PickMultiPhotoActivity extends Activity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
             if (convertView == null) {
                 convertView = mInflater.inflate(R.layout.item_pick_multi_photos,
                         parent, false);
             }
 
-            CheckBox mCheckBox = (CheckBox) convertView
+            final CheckBox mCheckBox = (CheckBox) convertView
                     .findViewById(R.id.cbImage);
             final ImageView imageView = (ImageView) convertView
                     .findViewById(R.id.img);
 
-            ImageLoaderConfig.imageLoader.displayImage("file://" + imageUrls.get(position),
+            ImageLoader.getInstance().displayImage("file://" + imageUrls.get(position),
                     imageView, options, new SimpleImageLoadingListener() {
 
                     });
-
             mCheckBox.setTag(position);
             mCheckBox.setChecked(mSparseBooleanArray.get(position));
             mCheckBox
@@ -181,6 +183,12 @@ public class PickMultiPhotoActivity extends Activity {
                                     (Integer) buttonView.getTag(), isChecked);
                         }
                     });
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCheckBox.setChecked(mSparseBooleanArray.get(position));
+                }
+            });
             return convertView;
         }
 

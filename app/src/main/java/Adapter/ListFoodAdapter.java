@@ -14,6 +14,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,7 @@ import Object.Food;
 import paditech.com.fifood_android.DetailFoodActivity;
 import paditech.com.fifood_android.R;
 import Constant.ImageLoaderConfig;
+import Constant.FormatValue;
 
 /**
  * Created by USER on 13/4/2016.
@@ -85,12 +87,12 @@ public class ListFoodAdapter extends BaseAdapter implements Constant {
         final Food food = listFood.get(position);
         viewHolder.name.setText(food.getName());
         viewHolder.addr.setText(food.getAddress());
-        viewHolder.far.setText(String.format("%.02f", (float) (food.getDistance())) + " m");
+        viewHolder.far.setText(FormatValue.getDistance(food.getDistance()));
         int rateing = food.getRating();
         viewHolder.rating.setRating(rateing);
 
 
-        ImageLoaderConfig.imageLoader.displayImage(food.getImgUrl(), viewHolder.img, ImageLoaderConfig.options);
+        ImageLoader.getInstance().displayImage(food.getImgUrl(), viewHolder.img, ImageLoaderConfig.options);
 
 
         convertView.setOnClickListener(new View.OnClickListener() {

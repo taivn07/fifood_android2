@@ -22,6 +22,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_app_logo"
         android:label="@string/app_name"
+        android:hardwareAccelerated="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="paditech.com.fifood_android.LoginActivity">
@@ -39,18 +40,22 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="paditech.com.fifood_android.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyTheme" />
         <activity
             android:name="paditech.com.fifood_android.PhotoViewPagerActivity"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+            android:hardwareAccelerated="true"/>
         <activity
             android:name="paditech.com.fifood_android.DetailFoodActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyTheme" />
         <activity
             android:name="paditech.com.fifood_android.ShowMapFoodActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyTheme" />
         <activity
             android:name="paditech.com.fifood_android.PickMultiPhotoActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyTheme" />
 
         <meta-data

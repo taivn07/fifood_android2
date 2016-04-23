@@ -1,8 +1,12 @@
 package paditech.com.fifood_android;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +29,6 @@ public class PhotoViewPagerActivity extends Activity implements Constant{
         setContentView(R.layout.activity_viewpager_photo);
 
         pager = (ViewPager) findViewById(R.id.pager);
-
         Bundle bundle= getIntent().getExtras();
         int index= bundle.getInt(INDEX);
         String responseJSON= bundle.getString(RESPONSE);

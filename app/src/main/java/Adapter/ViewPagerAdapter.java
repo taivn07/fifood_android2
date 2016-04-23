@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -50,7 +52,7 @@ public class ViewPagerAdapter extends PagerAdapter implements Constant{
 
         ImageView img = new ImageView(context);
         try {
-            ImageLoaderConfig.imageLoader.displayImage(imgUrls.getJSONObject(position).getString(URL), img, ImageLoaderConfig.options);
+            ImageLoader.getInstance().displayImage(imgUrls.getJSONObject(position).getString(URL), img, ImageLoaderConfig.options);
         } catch (JSONException e) {
             e.printStackTrace();
         }

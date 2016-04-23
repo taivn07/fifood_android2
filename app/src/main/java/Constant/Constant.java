@@ -69,8 +69,10 @@ public interface Constant {
     public final static String EXPIRES = "expires";
     public final static String PROFILE_IMAGE = "profile_image";
     public final static String USER = "user";
-
+    public final static String CREATED = "created";
+    public final static String PACKAGE_NAME ="paditech.com.fifood_android";
     public final static String RESULT="result";
+    public final static String THUMBNAIL_URL="thumbnail_url";
 
     public final static String DETAIL_RESPONSE = "DETAIL_RESPONSE";
     public final static String IMAGES_RESPONSE = "IMAGES_RESPONSE";

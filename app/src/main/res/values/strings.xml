@@ -21,4 +21,5 @@
     <string name="post">Gửi</string>
     <string name="hint_comment">Viết bình luận</string>
     <string name="add_store">Thêm cửa hàng</string>
+    <string name="log_out">Đăng xuất</string>
 </resources>

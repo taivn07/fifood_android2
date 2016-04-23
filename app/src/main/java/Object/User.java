@@ -4,10 +4,18 @@ package Object;
  * Created by USER on 21/4/2016.
  */
 public class User {
-    private String email, fb_id, expires, nickname, profile_image, userID, token;
+    private String email, fb_id, expires, nickname, profile_image, userID, token, fb_token;
 
     public String getToken() {
         return token;
+    }
+
+    public String getFb_token() {
+        return fb_token;
+    }
+
+    public void setFb_token(String fb_token) {
+        this.fb_token = fb_token;
     }
 
     public void setToken(String token) {

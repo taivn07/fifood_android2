@@ -11,10 +11,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import Constant.ImageLoaderConfig;
-
-
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
 import com.akexorcist.googledirection.constant.AvoidType;
@@ -26,6 +23,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,18 +31,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import Constant.Constant;
+import Constant.FormatValue;
 
 /**
  * Created by USER on 14/4/2016.
  */
 public class ShowMapFoodActivity extends Activity implements Constant {
 
-    private double lat, longth;
     private ImageView imgMain;
     private TextView tvName, tvAddress, tvDistance;
     private RatingBar ratingBar;
     private String detailResponse;
-    private MarkerOptions markerOptions;
     private GoogleMap googleMap;
 
     private Marker marker;
@@ -87,10 +84,10 @@ public class ShowMapFoodActivity extends Activity implements Constant {
 
             tvName.setText(response.getString(NAME));
             tvAddress.setText(response.getString(ADDRESS));
-            tvDistance.setText((int) response.getDouble(DISTANCE) + " m");
+            tvDistance.setText(FormatValue.getDistance(response.getDouble(DISTANCE)));
             ratingBar.setRating((int) response.getDouble(RATING));
 
-            ImageLoaderConfig.imageLoader.displayImage(response.getJSONObject(FILE).getString(URL), imgMain, ImageLoaderConfig.options);
+            ImageLoader.getInstance().displayImage(response.getJSONObject(FILE).getString(THUMBNAIL_URL), imgMain, ImageLoaderConfig.options);
 
             double lat = response.getDouble(LAT);
             double lng = response.getDouble(LONGTH);
@@ -137,40 +134,8 @@ public class ShowMapFoodActivity extends Activity implements Constant {
 
                     @Override
                     public void onDirectionFailure(Throwable t) {
-                        // Do something
                     }
                 });
-
-        /*markerOptions = new MarkerOptions();
-        googleMap = ((MapFragment) this
-                .getFragmentManager().findFragmentById(R.id.map)).getMap();
-        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        googleMap.setMyLocationEnabled(true);
-
-        // set fit bound marker
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(latLng);
-        LatLngBounds bound = builder.build();
-
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bound, 20, 20, 3);
-
-        if (googleMap != null) {
-            markerOptions.position(latLng);
-            String name = "nha";
-            if (name.isEmpty()) {
-                name = "Current Location";
-            }
-            markerOptions.title(name);
-            marker = googleMap.addMarker(markerOptions);
-            marker.showInfoWindow();
-            googleMap.moveCamera(cu);
-            googleMap.animateCamera(cu);
-        }*/
     }
 
 

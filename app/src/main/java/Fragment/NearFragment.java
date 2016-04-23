@@ -33,6 +33,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -296,7 +298,7 @@ public class NearFragment extends Fragment implements Constant {
                         RatingBar ratingBar = (RatingBar) v.findViewById(R.id.ratingBar);
 
                         name.setText(listFood.get(position).getName());
-                        ImageLoaderConfig.imageLoader.displayImage(listFood.get(position).getImgUrl(), img, ImageLoaderConfig.options);
+                        ImageLoader.getInstance().displayImage(listFood.get(position).getImgUrl(), img, ImageLoaderConfig.options);
                         distance.setText(String.format("%.02f", (float) listFood.get(position).getDistance()) + " m");
                         ratingBar.setRating(listFood.get(position).getRating());
                         return v;

@@ -1,6 +1,7 @@
 package Fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,11 +20,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -38,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import Object.ImageUpload;
 import Adapter.GridPhotoAdapter;
 import Constant.Constant;
 import Constant.ExpandableHeightGridView;
@@ -59,16 +63,18 @@ public class AddFragment extends Fragment implements Constant {
     private static int PICK_MULTI_PHOTOS = 888;
     private EditText etName, etAddress, etDesc;
     private RadioGroup rgGoodBad;
-    private CheckBox cbReport;
+    private CheckBox cbReport, cbChooseAvatar;
     private View btnCamera, tvReport, btnCreateShop, mainLayout, btnRefresh;
     private TextView tvGood, tvBad;
-    private ExpandableHeightGridView gridPhoto;
-    private ArrayList<Bitmap> listBitmap;
-    private ArrayList<File> listFile;
+    public ExpandableHeightGridView gridPhoto;
+    private ImageView imgAvatar;
+    public ArrayList<ImageUpload> listBitmap;
+    private ArrayList<String> listFile;
     private GridPhotoAdapter adapter;
-    private String arrayImageId = "";
+    private String arrayImageId = "", avatarId = "";
     private ProgressBar progressBar;
     private boolean isLike;
+    public boolean isSelector = false;
 
     @Nullable
     @Override
@@ -85,6 +91,7 @@ public class AddFragment extends Fragment implements Constant {
         etDesc = (EditText) view.findViewById(R.id.etDesc);
         rgGoodBad = (RadioGroup) view.findViewById(R.id.rgBadGood);
         cbReport = (CheckBox) view.findViewById(R.id.cbReport);
+        cbChooseAvatar = (CheckBox) view.findViewById(R.id.btnChooseAvatar);
         btnCamera = view.findViewById(R.id.btnCamera);
         btnCreateShop = view.findViewById(R.id.btnCreateShop);
         btnRefresh = view.findViewById(R.id.btnRefresh);
@@ -92,6 +99,7 @@ public class AddFragment extends Fragment implements Constant {
         tvGood = (TextView) view.findViewById(R.id.tvGood);
         tvBad = (TextView) view.findViewById(R.id.tvBad);
         tvReport = view.findViewById(R.id.tvReport);
+        imgAvatar = (ImageView) view.findViewById(R.id.imgAvartar);
         gridPhoto = (ExpandableHeightGridView) view.findViewById(R.id.gridPhoto);
         mainLayout = view.findViewById(R.id.mainLayout);
         setRgGoodBadCheckedChange();
@@ -107,6 +115,22 @@ public class AddFragment extends Fragment implements Constant {
 
         setCurrentAddress();
         setBtnRefreshClicked();
+        setCbChooseAvatarClicked();
+    }
+
+    private void setCbChooseAvatarClicked() {
+        cbChooseAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (cbChooseAvatar.isChecked()) isSelector = true;
+                else isSelector = false;
+            }
+        });
+    }
+
+    public void setImageAvatarID(int position) {
+        avatarId = listFile.get(position);
+        imgAvatar.setImageBitmap(listBitmap.get(position).getBitmap());
     }
 
     private void setBtnRefreshClicked() {
@@ -159,7 +183,7 @@ public class AddFragment extends Fragment implements Constant {
                     Toast.makeText(getActivity(), "Hãy điền đầy đủ thông tin trước nhé!", Toast.LENGTH_SHORT).show();
                 } else if (rgGoodBad.getCheckedRadioButtonId() < 0) {
                     Toast.makeText(getActivity(), "Bạn chưa đánh giá quán ăn!", Toast.LENGTH_SHORT).show();
-                } else if (arrayImageId.equals("")) {
+                } else if (listFile.size() == 0) {
                     Toast.makeText(getActivity(), "Bạn chưa chọn ảnh cho quán ăn!", Toast.LENGTH_SHORT).show();
                 } else {
                     getActivity().setProgressBarIndeterminateVisibility(true);
@@ -235,12 +259,10 @@ public class AddFragment extends Fragment implements Constant {
         if (requestCode == CAMERA_REQUEST && resultCode == getActivity().RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             File finalFile = GetImageFile.getImageFile(getActivity(), photo);
-
-            uploadImage(finalFile, LoginActivity.user.getUserID(), LoginActivity.user.getToken(), LoginActivity.lang);
-            listFile.add(finalFile);
-            listBitmap.add(photo);
+            Bitmap bitmap = Bitmap.createScaledBitmap(photo, 100, 100, false);
+            listBitmap.add(new ImageUpload(bitmap, 0, finalFile));
+            uploadImage(finalFile, listBitmap.size()-1, LoginActivity.user.getUserID(), LoginActivity.user.getToken(), LoginActivity.lang);
             adapter.notifyDataSetChanged();
-
         }
         if (requestCode == PICK_MULTI_PHOTOS && resultCode == getActivity().RESULT_OK) {
 
@@ -248,18 +270,15 @@ public class AddFragment extends Fragment implements Constant {
             ArrayList<String> imagePath = data.getExtras().getStringArrayList("data");
 
             for (int i = 0; i < imagePath.size(); i++) {
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath.get(i));
-                listBitmap.add(bitmap);
                 File file = new File(imagePath.get(i));
-                listFile.add(file);
-                uploadImage(file, LoginActivity.user.getUserID(), LoginActivity.user.getToken(), LoginActivity.lang);
+                Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeFile(imagePath.get(i)), 100, 100, false);
+                listBitmap.add(new ImageUpload(bitmap, 0, file));
+                uploadImage(file, listBitmap.size() - 1, LoginActivity.user.getUserID(), LoginActivity.user.getToken(), LoginActivity.lang);
             }
             adapter.notifyDataSetChanged();
         }
-
     }
-
-    private void uploadImage(File file, final String userID, final String token, final String lang) {
+    public void uploadImage(final File file, final int index, final String userID, final String token, final String lang) {
 
         AsyncHttpClient aClient = new AsyncHttpClient();
         aClient.addHeader(KEY_X_API_TOKEN, API_TOCKEN);
@@ -285,18 +304,18 @@ public class AddFragment extends Fragment implements Constant {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.e("JSON", "POST FAIL");
+
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 try {
                     JSONObject jsonObject = new JSONObject(responseString);
-
                     JSONObject response = jsonObject.getJSONObject(RESPONSE);
+                    listFile.add(response.getString(ID));
 
-                    arrayImageId += response.getString(ID) + ",";
-
-                    Log.e("FILE ID", arrayImageId);
+                    listBitmap.get(index).setProgress(100);
+                    adapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -304,6 +323,7 @@ public class AddFragment extends Fragment implements Constant {
             }
         });
     }
+
 
     private void createShop(String userID, String token, String lang) {
 
@@ -323,11 +343,16 @@ public class AddFragment extends Fragment implements Constant {
         params.put(LAT, HomeActivity.currLat);
         params.put(LONGTH, HomeActivity.currLongth);
         params.put(CONTENT, etDesc.getText().toString().trim());
+        if (listFile.size() > 0) {
+            for (int i = 0; i < listFile.size(); i++) {
+                arrayImageId += listFile.get(i) + ",";
+            }
+        }
         params.put(FILES, arrayImageId);
         if (isLike) params.put(IS_LIKE, 1);
         if (cbReport.isChecked()) params.put(IS_REPORT, 1);
         if (!isLike) params.put(IS_MAIN, 1);
-        params.put(MAIN_FILE_ID, arrayImageId.split(",")[0]);
+        params.put(MAIN_FILE_ID, avatarId);
 
 
         aClient.post(BASE_URL + SHOP_CREATE, params, new TextHttpResponseHandler() {
@@ -342,12 +367,11 @@ public class AddFragment extends Fragment implements Constant {
                     JSONObject jsonObject = new JSONObject(responseString);
 
                     final JSONObject response = jsonObject.getJSONObject(RESPONSE);
-
                     int result = response.getInt(RESULT);
+                    Log.e("FILE ID", arrayImageId);
 
                     if (result == 1) {
                         getActivity().setProgressBarIndeterminateVisibility(false);
-                        arrayImageId = "";
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setMessage("Tạo thành công! Bạn có muốn xem quán ăn đã tạo không?");
@@ -372,17 +396,25 @@ public class AddFragment extends Fragment implements Constant {
                         builder.show();
                     }
 
-
+                    etDesc.setText("");
+                    etName.setText("");
+                    etAddress.setText("");
+                    listBitmap.clear();
+                    listFile.clear();
+                    adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
+
     }
 
     public void deleteImage(int position) {
+
         listBitmap.remove(position);
-        listFile.remove(position);
+        if (listFile.size() > position)
+            listFile.remove(position);
         adapter.notifyDataSetChanged();
 
     }
@@ -400,7 +432,6 @@ public class AddFragment extends Fragment implements Constant {
                 addresses = geocoder.getFromLocation(HomeActivity.currLat, HomeActivity.currLongth, 1);
                 if (addresses.size() > 0) {
                     address = addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getLocality();
-
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -416,5 +447,4 @@ public class AddFragment extends Fragment implements Constant {
             progressBar.setVisibility(View.GONE);
         }
     }
-
 }

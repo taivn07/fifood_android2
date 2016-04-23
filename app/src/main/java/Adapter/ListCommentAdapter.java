@@ -10,11 +10,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import Constant.Constant;
 import Constant.ImageLoaderConfig;
 import paditech.com.fifood_android.R;
+import Constant.FormatValue;
 
 /**
  * Created by USER on 15/4/2016.
@@ -67,11 +73,10 @@ public class ListCommentAdapter extends BaseAdapter implements Constant {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         Comment comment = listComment.get(position);
-        double time = comment.getTime();
-        viewHolder.tvTime.setText(comment.getTime() + "");
+        viewHolder.tvTime.setText(FormatValue.getTimeComment(comment.getTime(), comment.getDateCreated()));
         viewHolder.tvComment.setText(comment.getContent());
         viewHolder.tvNickname.setText(comment.getNickname());
-        ImageLoaderConfig.imageLoader.displayImage(comment.getUserProfifeImage(), viewHolder.imgAvartar, ImageLoaderConfig.options);
+        ImageLoader.getInstance().displayImage(comment.getUserProfifeImage(), viewHolder.imgAvartar, ImageLoaderConfig.options);
         if(comment.getImgUrl()!=null)
             ImageLoaderConfig.imageLoader.displayImage(comment.getImgUrl(), viewHolder.img, ImageLoaderConfig.options);
 
