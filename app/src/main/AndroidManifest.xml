@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="paditech.com.fifood_android">
 
     <uses-sdk android:minSdkVersion="14"></uses-sdk>
@@ -12,20 +13,21 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <permission android:name="com.phamnha.googlemap.permission.MAPS_RECEIVE"></permission>
+
+    <permission android:name="com.phamnha.googlemap.permission.MAPS_RECEIVE" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
 
     <application
-        android:name="paditech.com.fifood_android.FiFoodApplication"
+        android:name=".FiFoodApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_app_logo"
         android:label="@string/app_name"
         android:hardwareAccelerated="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="paditech.com.fifood_android.LoginActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,24 +39,26 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            tools:replace="android:theme" />
         <activity
-            android:name="paditech.com.fifood_android.HomeActivity"
+            android:name=".HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyTheme" />
         <activity
-            android:name="paditech.com.fifood_android.PhotoViewPagerActivity"
+            android:name=".PhotoViewPagerActivity"
+            android:theme="@style/AppTheme.FullScreen"
             android:hardwareAccelerated="true"/>
         <activity
-            android:name="paditech.com.fifood_android.DetailFoodActivity"
+            android:name=".DetailFoodActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyTheme" />
         <activity
-            android:name="paditech.com.fifood_android.ShowMapFoodActivity"
+            android:name=".ShowMapFoodActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyTheme" />
         <activity
-            android:name="paditech.com.fifood_android.PickMultiPhotoActivity"
+            android:name=".PickMultiPhotoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyTheme" />
 

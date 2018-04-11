@@ -14,7 +14,9 @@
             android:id="@+id/imgAvartar"
             android:layout_width="@dimen/button_login_height"
             android:layout_height="@dimen/button_login_height"
-            android:src="@mipmap/ic_launcher"
+            android:src="@color/colorBackgroundGray"
+            app:civ_border_color="@color/colorBackgroundGray"
+            app:civ_border_width="1dp"
             app:civ_shadow="false"
             app:civ_shadow_radius="0" />
 
@@ -24,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
             android:layout_toRightOf="@+id/imgAvartar"
-            android:text="NHA nha"
             android:textColor="#000"
             android:textStyle="bold" />
 
@@ -32,8 +33,7 @@
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="1:am" />
+            android:layout_alignParentRight="true" />
 
         <TextView
             android:id="@+id/tvComment"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvNickname"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/padding_small"
             android:layout_toRightOf="@+id/imgAvartar"
             android:text="" />
 
@@ -50,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvComment"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
             android:layout_marginTop="@dimen/padding_small"
             android:layout_toRightOf="@+id/imgAvartar">
 
@@ -62,10 +63,10 @@
 
             <ProgressBar
                 android:id="@+id/progressBar"
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true" />
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
         </RelativeLayout>
 
     </RelativeLayout>

@@ -2,16 +2,15 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorBgMenuAction"></solid>
+            <solid android:color="@color/colorPrimaryDark" />
             <corners android:radius="5dp"></corners>
         </shape>
     </item>
 
     <item android:state_pressed="false">
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorBgMenuClicked"></solid>
+            <solid android:color="@color/colorPrimary" />
             <corners android:radius="5dp"></corners>
         </shape>
     </item>
-
 </selector>

@@ -37,11 +37,11 @@ public class FormatValue {
             }
             else {
                 if(dif < 3600){
-                   return (int) dif/60 +"phút trước";
+                   return (int) dif/60 +" phút trước";
                 }
                 else {
                     if(dif< 24*3600){
-                        return (int) dif/3600  +"giờ trước";
+                        return (int) dif/3600  +" giờ trước";
                     }
                     else {
                         return date;

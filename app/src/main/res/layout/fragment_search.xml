@@ -41,17 +41,24 @@
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
             android:background="#fff"
-            android:padding="@dimen/padding_small" />
+            android:paddingBottom="@dimen/padding_small"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingRight="50dp"
+            android:paddingTop="@dimen/padding_small" />
 
         <Button
             android:id="@+id/btnSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="@dimen/padding_small"
+            android:layout_marginTop="20dp"
             android:background="@drawable/button_clicked"
+            android:minHeight="0dp"
+            android:paddingBottom="5dp"
             android:paddingLeft="@dimen/activity_vertical_margin"
             android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="5dp"
             android:text="@string/search"
             android:textColor="#fff"
             android:textStyle="bold" />
